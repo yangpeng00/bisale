@@ -1,12 +1,10 @@
 package controllers
 
 import (
-	"net/http"
 	"github.com/labstack/echo"
+	"bisale/bisale-console-api/codes"
 )
 
 func PostCreateMember(c echo.Context) error {
-	return c.JSON(http.StatusOK, Status{
-
-	})
+	return Status(c, codes.Success, "success")
 }
