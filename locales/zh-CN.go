@@ -1,5 +1,7 @@
 package locales
 
+import "bisale/bisale-console-api/codes"
+
 var zhCN = map[int32]string{
-	Success: "操作成功",
+	codes.Success: "操作成功",
 }

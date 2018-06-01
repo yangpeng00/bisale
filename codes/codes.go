@@ -1,4 +1,4 @@
-package locales
+package codes
 
 const (
 	Success             int32 = 200

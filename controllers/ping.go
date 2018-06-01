@@ -2,11 +2,10 @@ package controllers
 
 import (
 	"github.com/labstack/echo"
+	"bisale/bisale-console-api/codes"
 )
 
 func Ping(c echo.Context) error {
 
-	return Response(c, Status{
-		Code: 200,
-	})
+	return Status(c, codes.Success, "success")
 }
