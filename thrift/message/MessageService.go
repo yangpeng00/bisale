@@ -30,7 +30,6 @@ func NewStatus() *Status {
   return &Status{}
 }
 
-
 func (p *Status) GetCode() int32 {
   return p.Code
 }

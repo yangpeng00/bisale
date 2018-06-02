@@ -11,7 +11,6 @@ import (
 
 func openBisaleServiceClient(host, port string, ConnTimeout time.Duration) (*thriftPool.IdleClient, error) {
 
-
 	//protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
 
 	socket, _ := thrift.NewTSocket(net.JoinHostPort(host, port))
@@ -20,14 +19,12 @@ func openBisaleServiceClient(host, port string, ConnTimeout time.Duration) (*thr
 
 	protocol := thrift.NewTBinaryProtocolTransport(transport)
 
-	mp :=thrift.NewTMultiplexedProtocol(protocol,"userKyc")
+	mp := thrift.NewTMultiplexedProtocol(protocol, "userKyc")
 
 	if err := transport.Open(); err != nil {
 		Log.Error(fmt.Printf("Open bisale user service connection error: %s", err.Error()))
+		return nil, err
 	}
-
-	// iprot := protocolFactory.GetProtocol(transport)
-	// oprot := protocol.GetProtocol(transport)
 
 	standardClient := thrift.NewTStandardClient(mp, mp)
 
@@ -41,9 +38,12 @@ func openBisaleServiceClient(host, port string, ConnTimeout time.Duration) (*thr
 
 func closeBisaleServiceClient(c *thriftPool.IdleClient) error {
 	err := c.Socket.Close()
-	fmt.Println(err.Error())
-	Log.Error(fmt.Printf("Close bisale user service connection error: %s", err.Error()))
-	return err
+	if err != nil {
+		Log.Error(fmt.Printf("Close bisale user service connection error: %s", err.Error()))
+		return err
+	}
+	Log.Info("Close bisale user client success")
+	return nil
 }
 
 func GetBisaleServiceClient() (c *user.TUserKycServiceClient) {

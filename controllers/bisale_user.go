@@ -8,7 +8,7 @@ import (
 )
 
 func GetBisaleUsers(c echo.Context) error {
-	log := common.GetLoggerWithTraceId(c)
+	log, _ := common.GetLoggerWithTraceId(c)
 	userService := common.GetBisaleServiceClient()
 	ctx := context.Background()
 	res, err := userService.SelectUserKycByConditions(ctx, "", "", 1, 100)

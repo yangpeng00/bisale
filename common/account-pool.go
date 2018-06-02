@@ -19,6 +19,7 @@ func openAccountServiceClient(host, port string, ConnTimeout time.Duration) (*th
 
 	if err := transport.Open(); err != nil {
 		Log.Error(fmt.Printf("Open account service connection error: %s", err.Error()))
+		return nil, err
 	}
 
 	iprot := protocolFactory.GetProtocol(transport)
@@ -36,8 +37,12 @@ func openAccountServiceClient(host, port string, ConnTimeout time.Duration) (*th
 
 func closeAccountServiceClient(c *thriftPool.IdleClient) error {
 	err := c.Socket.Close()
-	Log.Error(fmt.Printf("Close account service connection error: %s", err.Error()))
-	return err
+	if err != nil {
+		Log.Error(fmt.Printf("Close account service connection error: %s", err.Error()))
+		return err
+	}
+	Log.Info("Close account client success")
+	return nil
 }
 
 func GetAccountServiceClient() (c *account.AccountClient) {

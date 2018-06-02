@@ -4,11 +4,11 @@ log_level: info
 version: 1.0.0
 
 account_service:
-  host: 0.0.0.0
+  host: 47.75.183.114
   port: 10002
 
 captcha_service:
-  host: 0.0.0.0
+  host: 47.75.183.114
   port: 10003
 
 message_service:
@@ -16,7 +16,7 @@ message_service:
   port: 10004
 
 storage_service:
-  host: 0.0.0.0
+  host: 47.75.183.114
   port: 10005
 
 bisale_user_service:
