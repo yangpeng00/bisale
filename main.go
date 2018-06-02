@@ -5,34 +5,27 @@ import (
 	"bisale/bisale-console-api/config"
 	"github.com/labstack/echo/middleware"
 	"bisale/bisale-console-api/controllers"
+	"bisale/bisale-console-api/middlewares"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
 
 	e := echo.New()
-
-	e.Use(middleware.Logger())
+	e.Logger = middlewares.LogrusLogger{logrus.StandardLogger()}
+	e.Use(middlewares.LogrusHook())
 	e.Use(middleware.Recover())
-	e.Use(serverHeader)
+	e.Use(middlewares.FilterRequests)
 
 	e.GET("/ping", controllers.Ping)
 
 	api := e.Group("/api")
-
 	api.POST("/login", controllers.PostLogin)
 	api.POST("/member", controllers.PostCreateMember)
 	api.POST("/role", controllers.PostCreateRole)
 
-	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
-}
+	bisale := e.Group("/api/bisale")
+	bisale.GET("/users", controllers.GetBisaleUsers)
 
-func serverHeader(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(c echo.Context) error {
-		c.Response().Header().Set(echo.HeaderServer, "Echo/3.0")
-		//c.Response().
-		if err := next(c); err != nil {
-			c.Error(err)
-		}
-		return nil
-	}
+	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"bisale/bisale-console-api/config"
 	"bisale/foundation/thrift/pool"
+	"github.com/labstack/echo"
 )
 
 var Log *logrus.Logger
@@ -36,4 +37,10 @@ func init() {
 		openAccountServiceClient,
 		closeAccountServiceClient,
 	)
+}
+
+func GetLoggerWithTraceId(c echo.Context) *logrus.Entry {
+	return Log.WithFields(logrus.Fields{
+		"trace-id": c.Request().Header.Get("Trace-id"),
+	})
 }
