@@ -7,7 +7,6 @@ import (
 	"bisale/foundation/thrift/pool"
 	"bisale/thrift-account/thrift/account"
 	"git.apache.org/thrift.git/lib/go/thrift"
-	"bisale/thrift-message/thrift/message"
 )
 
 func openAccountServiceClient(host, port string, ConnTimeout time.Duration) (*thriftPool.IdleClient, error) {
@@ -19,7 +18,7 @@ func openAccountServiceClient(host, port string, ConnTimeout time.Duration) (*th
 	transport := thrift.NewTFramedTransport(socket)
 
 	if err := transport.Open(); err != nil {
-		Log.Error(fmt.Printf("Open account service connection error: %s", err))
+		Log.Error(fmt.Printf("Open account service connection error: %s", err.Error()))
 	}
 
 	iprot := protocolFactory.GetProtocol(transport)
@@ -37,16 +36,16 @@ func openAccountServiceClient(host, port string, ConnTimeout time.Duration) (*th
 
 func closeAccountServiceClient(c *thriftPool.IdleClient) error {
 	err := c.Socket.Close()
-	Log.Error(fmt.Printf("Close account service connection error: %s", err))
+	Log.Error(fmt.Printf("Close account service connection error: %s", err.Error()))
 	return err
 }
 
-func getAccountServiceClient(messageClientPool *thriftPool.ThriftPool) (c *message.MessageClient) {
+func GetAccountServiceClient() (c *account.AccountClient) {
 
-	client, err := messageClientPool.Get()
+	client, err := AccountServicePool.Get()
 
 	if err != nil {
-		Log.Error(fmt.Printf("Get account service client error: %s", err))
+		Log.Error(fmt.Printf("Get account service client error: %s", err.Error()))
 		return
 	}
 
@@ -54,12 +53,14 @@ func getAccountServiceClient(messageClientPool *thriftPool.ThriftPool) (c *messa
 		Log.Error(fmt.Printf("Account client has closed"))
 	}
 
-	err = messageClientPool.Put(client)
+	err = AccountServicePool.Put(client)
 
 	if err != nil {
-		Log.Error(fmt.Printf("Put account client to pool error: %s", err))
+		Log.Error(fmt.Printf("Put account client to pool error: %s", err.Error()))
 		return
 	}
 
-	return client.Client.(*message.MessageClient)
+	Log.Info("Get account client from pool success")
+
+	return client.Client.(*account.AccountClient)
 }

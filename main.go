@@ -21,6 +21,7 @@ func main() {
 
 	api := e.Group("/api")
 	api.POST("/login", controllers.PostLogin)
+	api.GET("/login/sms/code", controllers.GetLoginSMSCode)
 	api.POST("/member", controllers.PostCreateMember)
 	api.POST("/role", controllers.PostCreateRole)
 

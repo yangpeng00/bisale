@@ -11,6 +11,8 @@ import (
 
 var Log *logrus.Logger
 var AccountServicePool *thriftPool.ThriftPool
+var MessageServicePool *thriftPool.ThriftPool
+var BisaleUserServicePool *thriftPool.ThriftPool
 
 func init() {
 	// 配置日志
@@ -27,7 +29,7 @@ func init() {
 	Log.Out = os.Stdout
 	Log.Level = logLevel
 
-	// 配置服务连接池
+	// 配置 Account 服务连接池
 	AccountServicePool = thriftPool.NewThriftPool(
 		config.Config.AccountService.Host,
 		config.Config.AccountService.Port,
@@ -36,6 +38,28 @@ func init() {
 		config.Config.AccountService.IdleTimeout,
 		openAccountServiceClient,
 		closeAccountServiceClient,
+	)
+
+	// 配置 Message 服务连接池
+	MessageServicePool = thriftPool.NewThriftPool(
+		config.Config.MessageService.Host,
+		config.Config.MessageService.Port,
+		config.Config.MessageService.MaxConn,
+		config.Config.MessageService.ConnTimeout,
+		config.Config.MessageService.IdleTimeout,
+		openMessageServiceClient,
+		closeMessageServiceClient,
+	)
+
+	// 配置 Bisale User 服务连接池
+	BisaleUserServicePool = thriftPool.NewThriftPool(
+		config.Config.BisaleUserService.Host,
+		config.Config.BisaleUserService.Port,
+		config.Config.BisaleUserService.MaxConn,
+		config.Config.BisaleUserService.ConnTimeout,
+		config.Config.BisaleUserService.IdleTimeout,
+		openBisaleServiceClient,
+		closeBisaleServiceClient,
 	)
 }
 
