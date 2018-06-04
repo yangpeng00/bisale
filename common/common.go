@@ -89,7 +89,7 @@ func init() {
 	)
 
 	// 配置 Bisale Business 服务连接池
-	BisaleUserServicePool = thriftPool.NewThriftPool(
+	BisaleBusinessServicePool = thriftPool.NewThriftPool(
 		config.Config.BisaleBusinessService.Host,
 		config.Config.BisaleBusinessService.Port,
 		config.Config.BisaleBusinessService.MaxConn,
