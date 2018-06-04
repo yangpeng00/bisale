@@ -108,9 +108,9 @@ func PostCertResult(c echo.Context) error {
 		if err != nil {
 			log.Error(err)
 		}
-		messageService.SendMail(ctx, traceId, "bisale-admin", resp.Email, "template::mail::kyc-success", "{\"username\":"+resp.Email+"}", "zh-CN", 0)
+		messageService.SendMail(ctx, traceId, "bisale-admin", resp.Email, "template::mail::kyc-success", "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
 	} else {
-		messageService.SendMail(ctx, traceId, "bisale-admin", resp.Email, "template::mail::kyc-failed", "{\"username\":"+resp.Email+"}", "zh-CN", 0)
+		messageService.SendMail(ctx, traceId, "bisale-admin", resp.Email, "template::mail::kyc-failed", "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
 	}
 	if err != nil {
 		log.Error(err)
