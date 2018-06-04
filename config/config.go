@@ -5,12 +5,13 @@ import (
 )
 
 var Config = struct {
-	Version  string
-	Host     string
-	Port     string `env:"port"`
-	LogLevel string `yaml:"log_level" default:"debug"`
-	JWTToken string `yaml:"jwt_token" default:"123456"`
-	KYCBucket string `yaml:"kyc_bucket" defualt:"bisale-test-huadong"`
+	Version    string
+	Host       string
+	Port       string `env:"port"`
+	LogLevel   string `yaml:"log_level" default:"debug"`
+	JWTToken   string `yaml:"jwt_token" default:"123456"`
+	KYCBucket  string `yaml:"kyc_bucket" defualt:"bisale-test-huadong"`
+	OldKYCHost string `yaml:"kyc_bucket" defualt:"http://bi-sale.oss-cn-hongkong.aliyuncs.com/"`
 
 	AccountService struct {
 		Host        string
