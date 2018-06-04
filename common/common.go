@@ -100,7 +100,7 @@ func init() {
 }
 
 func GetLoggerWithTraceId(c echo.Context) (*logrus.Entry, string) {
-	traceId := c.Request().Header.Get("Trace-id")
+	traceId := c.Request().Header.Get("X-Trace-Id")
 	return Log.WithFields(logrus.Fields{
 		"trace-id": traceId,
 	}), traceId

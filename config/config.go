@@ -8,7 +8,8 @@ var Config = struct {
 	Version  string
 	Host     string
 	Port     string `env:"port"`
-	LogLevel string `yaml:"log_level" default:"debug" `
+	LogLevel string `yaml:"log_level" default:"debug"`
+	JWTToken string `yaml:"jwt_token" default:"123456"`
 
 	AccountService struct {
 		Host        string

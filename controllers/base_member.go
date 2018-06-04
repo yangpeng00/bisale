@@ -5,20 +5,35 @@ import (
 	"github.com/labstack/echo"
 	"bisale/bisale-console-api/codes"
 	"bisale/bisale-console-api/common"
-	accountInputs "bisale/thrift-account/thrift/inputs"
+	accountInputs "bisale/bisale-console-api/thrift/inputs"
+	"fmt"
 )
 
+type CreateMemberForm struct {
+	Mobile   string `json:"mobile" validate:"required"`
+	Password string `json:"password" validate:"required"`
+}
+
 func PostCreateMember(c echo.Context) error {
+
 	log, traceId := common.GetLoggerWithTraceId(c)
 	ctx := context.Background()
 
-	accountService := common.GetAccountServiceClient()
+	createMemberForm := new(CreateMemberForm)
 
+	if err := c.Bind(createMemberForm); err != nil {
+		return Status(c, codes.FormIsEmpty, err)
+	}
+
+	fmt.Println(createMemberForm)
+
+	if err := c.Validate(createMemberForm); err != nil {
+		return Status(c, codes.ValidateError, err)
+	}
+	accountService := common.GetAccountServiceClient()
 	createMemberInput := accountInputs.CreateMemberInput{
-		Account:  "koyeo",
-		Email:    "koyeo@qq.com",
-		Mobile:   "+86-18817392521",
-		Password: "Helloshic",
+		Mobile:   createMemberForm.Mobile,
+		Password: createMemberForm.Password,
 		Status:   0,
 	}
 
@@ -26,7 +41,7 @@ func PostCreateMember(c echo.Context) error {
 
 	if err != nil {
 		log.Error(err)
-		return err
+		return Status(c, codes.ServiceError, err)
 	}
 	return Status(c, codes.Success, createMemberOutput)
 }

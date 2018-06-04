@@ -1,14 +1,20 @@
 package controllers
 
 import (
-	"fmt"
 	"context"
 	"github.com/labstack/echo"
 	"bisale/bisale-console-api/codes"
 	"bisale/bisale-console-api/common"
+	"bisale/bisale-console-api/config"
 	"bisale/bisale-console-api/thrift/message"
-	accountInputs "bisale/thrift-account/thrift/inputs"
+	accountInputs "bisale/bisale-console-api/thrift/inputs"
 )
+
+type MobileLoginForm struct {
+	Mobile string `json:"mobile" validate:"required"`
+	Code   string `json:"code" validate:"required"`
+	Token  string `json:"token"`
+}
 
 func GetLoginCodeIdentify(mobile string) string {
 	return "login::" + mobile
@@ -32,45 +38,69 @@ func GetLoginSMSCode(c echo.Context) error {
 		log.Error(err)
 		return err
 	}
+
 	appId := "bisale-console-api"
 	template := "template::sms::login-code"
 	err = messageService.SendSMS(ctx, traceId, appId, mobile, template, "{\"code\":"+numberCode.Value+"}", "zh-CN", 60)
+
 	if err != nil {
 		log.Error(err)
 		if status, ok := err.(*message.Status); ok {
 			if status.Code == 30060 {
 				return Status(c, codes.SendCodeLock60Seconds, "")
 			}
-		} else {
-			fmt.Println(ok)
 		}
-		return err
+		return Status(c, codes.ServiceError, err)
 	}
+
 	times++
 	expired, _ := captchaService.GetTodayLeftSeconds(ctx, traceId)
 	err = captchaService.SetCount(ctx, traceId, identify, times, expired)
+
 	if err != nil {
-		return err
+		return Status(c, codes.ServiceError, err)
 	}
+
 	return Status(c, codes.Success, map[string]string{
 		"token": numberCode.Token,
 	})
 }
 
 func PostLogin(c echo.Context) error {
-	//mobile := c.FormValue("mobile")
-	//code := c.FormValue("code")
-	//token := c.FormValue("token")
+
+	mobileLoginForm := new(MobileLoginForm)
+
+	if err := c.Bind(mobileLoginForm); err != nil {
+		return Status(c, codes.FormIsEmpty, err)
+	}
+	if err := c.Validate(mobileLoginForm); err != nil {
+		return Status(c, codes.ValidateError, err)
+	}
+
 	log, traceId := common.GetLoggerWithTraceId(c)
 	ctx := context.Background()
-	// messageService := common.GetMessageServiceClient()
-	// captchaService := common.GetCaptchaServiceClient()
-	accountService := common.GetAccountServiceClient()
-	token, err := accountService.GenerateJWTToken(ctx, traceId, &accountInputs.JWTInput{MemberId: "123"}, "123456", 12)
+
+	captchaService := common.GetCaptchaServiceClient()
+
+	correct, err := captchaService.ValidateNumberCode(ctx, traceId, mobileLoginForm.Mobile, mobileLoginForm.Code, mobileLoginForm.Token)
+
 	if err != nil {
 		log.Error(err)
-		return err
+		return Status(c, codes.ServiceError, err)
 	}
+
+	if !correct {
+		return Status(c, codes.SMSCodeError, err)
+	}
+
+	accountService := common.GetAccountServiceClient()
+	token, err := accountService.GenerateJWTToken(ctx, traceId, &accountInputs.JWTInput{MemberId: "123"}, config.Config.JWTToken, 12)
+
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
 	return Status(c, codes.Success, map[string]string{
 		"token": token,
 	})

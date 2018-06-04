@@ -108,7 +108,7 @@ func logrusMiddlewareHandler(c echo.Context, next echo.HandlerFunc) error {
 
 	common.Log.WithFields(map[string]interface{}{
 		// "time_rfc3339":          time.Now().Format(time.RFC3339),
-		"trace_id":      req.Header.Get("Trace-ID"),
+		"trace_id":      req.Header.Get("X-Trace-ID"),
 		"remote_ip":     c.RealIP(),
 		"host":          req.Host,
 		"uri":           req.RequestURI,
