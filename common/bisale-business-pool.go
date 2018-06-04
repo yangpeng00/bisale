@@ -11,15 +11,13 @@ import (
 
 func openBisaleBusinessServiceClient(host, port string, ConnTimeout time.Duration) (*thriftPool.IdleClient, error) {
 
-	//protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
-
 	socket, _ := thrift.NewTSocket(net.JoinHostPort(host, port))
 
 	transport := thrift.NewTFramedTransport(socket)
 
 	protocol := thrift.NewTBinaryProtocolTransport(transport)
 
-	mp := thrift.NewTMultiplexedProtocol(protocol, "businessKyc")
+	mp := thrift.NewTMultiplexedProtocol(protocol, "reformationActivity")
 
 	if err := transport.Open(); err != nil {
 		Log.Error(fmt.Printf("Open bisale business service connection error: %s", err.Error()))
