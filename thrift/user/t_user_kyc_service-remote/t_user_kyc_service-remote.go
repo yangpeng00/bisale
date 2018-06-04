@@ -23,9 +23,9 @@ func Usage() {
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
   fmt.Fprintln(os.Stderr, "   selectUserKycByConditions(string userName, string status, i32 startPage, i32 pageSize)")
-  fmt.Fprintln(os.Stderr, "  i32 selectCountByConditions(string userName, string status)")
+  fmt.Fprintln(os.Stderr, "  i32 selectUserKycCountByConditions(string userName, string status)")
   fmt.Fprintln(os.Stderr, "  TUserKyc selectUserKycById(i32 id)")
-  fmt.Fprintln(os.Stderr, "  i32 auditUserKyc(i32 id, string status, string mark)")
+  fmt.Fprintln(os.Stderr, "  i32 auditUserKyc(i32 id, string status, string mark, i32 loginUserId)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -149,16 +149,16 @@ func main() {
     fmt.Print(client.SelectUserKycByConditions(context.Background(), value0, value1, value2, value3))
     fmt.Print("\n")
     break
-  case "selectCountByConditions":
+  case "selectUserKycCountByConditions":
     if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "SelectCountByConditions requires 2 args")
+      fmt.Fprintln(os.Stderr, "SelectUserKycCountByConditions requires 2 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
     argvalue1 := flag.Arg(2)
     value1 := argvalue1
-    fmt.Print(client.SelectCountByConditions(context.Background(), value0, value1))
+    fmt.Print(client.SelectUserKycCountByConditions(context.Background(), value0, value1))
     fmt.Print("\n")
     break
   case "selectUserKycById":
@@ -177,8 +177,8 @@ func main() {
     fmt.Print("\n")
     break
   case "auditUserKyc":
-    if flag.NArg() - 1 != 3 {
-      fmt.Fprintln(os.Stderr, "AuditUserKyc requires 3 args")
+    if flag.NArg() - 1 != 4 {
+      fmt.Fprintln(os.Stderr, "AuditUserKyc requires 4 args")
       flag.Usage()
     }
     tmp0, err18 := (strconv.Atoi(flag.Arg(1)))
@@ -192,7 +192,14 @@ func main() {
     value1 := argvalue1
     argvalue2 := flag.Arg(3)
     value2 := argvalue2
-    fmt.Print(client.AuditUserKyc(context.Background(), value0, value1, value2))
+    tmp3, err21 := (strconv.Atoi(flag.Arg(4)))
+    if err21 != nil {
+      Usage()
+      return
+    }
+    argvalue3 := int32(tmp3)
+    value3 := argvalue3
+    fmt.Print(client.AuditUserKyc(context.Background(), value0, value1, value2, value3))
     fmt.Print("\n")
     break
   case "":

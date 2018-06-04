@@ -843,6 +843,9 @@ func (p *TUserKyc) String() string {
 //  - Mobile
 //  - CreatedAt
 //  - Status
+//  - VerifyType
+//  - PassportLastName
+//  - PassportFirstName
 type TUserKycResult_ struct {
   ID int32 `thrift:"id,1" db:"id" json:"id"`
   IdRealName string `thrift:"idRealName,2" db:"idRealName" json:"idRealName"`
@@ -850,6 +853,9 @@ type TUserKycResult_ struct {
   Mobile string `thrift:"mobile,4" db:"mobile" json:"mobile"`
   CreatedAt string `thrift:"createdAt,5" db:"createdAt" json:"createdAt"`
   Status string `thrift:"status,6" db:"status" json:"status"`
+  VerifyType string `thrift:"verifyType,7" db:"verifyType" json:"verifyType"`
+  PassportLastName string `thrift:"passportLastName,8" db:"passportLastName" json:"passportLastName"`
+  PassportFirstName string `thrift:"passportFirstName,9" db:"passportFirstName" json:"passportFirstName"`
 }
 
 func NewTUserKycResult_() *TUserKycResult_ {
@@ -879,6 +885,18 @@ func (p *TUserKycResult_) GetCreatedAt() string {
 
 func (p *TUserKycResult_) GetStatus() string {
   return p.Status
+}
+
+func (p *TUserKycResult_) GetVerifyType() string {
+  return p.VerifyType
+}
+
+func (p *TUserKycResult_) GetPassportLastName() string {
+  return p.PassportLastName
+}
+
+func (p *TUserKycResult_) GetPassportFirstName() string {
+  return p.PassportFirstName
 }
 func (p *TUserKycResult_) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -946,6 +964,36 @@ func (p *TUserKycResult_) Read(iprot thrift.TProtocol) error {
     case 6:
       if fieldTypeId == thrift.STRING {
         if err := p.ReadField6(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 7:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField7(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 8:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField8(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 9:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField9(iprot); err != nil {
           return err
         }
       } else {
@@ -1022,6 +1070,33 @@ func (p *TUserKycResult_)  ReadField6(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TUserKycResult_)  ReadField7(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 7: ", err)
+} else {
+  p.VerifyType = v
+}
+  return nil
+}
+
+func (p *TUserKycResult_)  ReadField8(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 8: ", err)
+} else {
+  p.PassportLastName = v
+}
+  return nil
+}
+
+func (p *TUserKycResult_)  ReadField9(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 9: ", err)
+} else {
+  p.PassportFirstName = v
+}
+  return nil
+}
+
 func (p *TUserKycResult_) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TUserKycResult"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1032,6 +1107,9 @@ func (p *TUserKycResult_) Write(oprot thrift.TProtocol) error {
     if err := p.writeField4(oprot); err != nil { return err }
     if err := p.writeField5(oprot); err != nil { return err }
     if err := p.writeField6(oprot); err != nil { return err }
+    if err := p.writeField7(oprot); err != nil { return err }
+    if err := p.writeField8(oprot); err != nil { return err }
+    if err := p.writeField9(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -1100,6 +1178,36 @@ func (p *TUserKycResult_) writeField6(oprot thrift.TProtocol) (err error) {
   return err
 }
 
+func (p *TUserKycResult_) writeField7(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("verifyType", thrift.STRING, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:verifyType: ", p), err) }
+  if err := oprot.WriteString(string(p.VerifyType)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.verifyType (7) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:verifyType: ", p), err) }
+  return err
+}
+
+func (p *TUserKycResult_) writeField8(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("passportLastName", thrift.STRING, 8); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:passportLastName: ", p), err) }
+  if err := oprot.WriteString(string(p.PassportLastName)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.passportLastName (8) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 8:passportLastName: ", p), err) }
+  return err
+}
+
+func (p *TUserKycResult_) writeField9(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("passportFirstName", thrift.STRING, 9); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:passportFirstName: ", p), err) }
+  if err := oprot.WriteString(string(p.PassportFirstName)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.passportFirstName (9) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 9:passportFirstName: ", p), err) }
+  return err
+}
+
 func (p *TUserKycResult_) String() string {
   if p == nil {
     return "<nil>"
@@ -1117,7 +1225,7 @@ type TUserKycService interface {
   // Parameters:
   //  - UserName
   //  - Status
-  SelectCountByConditions(ctx context.Context, userName string, status string) (r int32, err error)
+  SelectUserKycCountByConditions(ctx context.Context, userName string, status string) (r int32, err error)
   // Parameters:
   //  - ID
   SelectUserKycById(ctx context.Context, id int32) (r *TUserKyc, err error)
@@ -1125,7 +1233,8 @@ type TUserKycService interface {
   //  - ID
   //  - Status
   //  - Mark
-  AuditUserKyc(ctx context.Context, id int32, status string, mark string) (r int32, err error)
+  //  - LoginUserId
+  AuditUserKyc(ctx context.Context, id int32, status string, mark string, loginUserId int32) (r int32, err error)
 }
 
 type TUserKycServiceClient struct {
@@ -1173,12 +1282,12 @@ func (p *TUserKycServiceClient) SelectUserKycByConditions(ctx context.Context, u
 // Parameters:
 //  - UserName
 //  - Status
-func (p *TUserKycServiceClient) SelectCountByConditions(ctx context.Context, userName string, status string) (r int32, err error) {
-  var _args2 TUserKycServiceSelectCountByConditionsArgs
+func (p *TUserKycServiceClient) SelectUserKycCountByConditions(ctx context.Context, userName string, status string) (r int32, err error) {
+  var _args2 TUserKycServiceSelectUserKycCountByConditionsArgs
   _args2.UserName = userName
   _args2.Status = status
-  var _result3 TUserKycServiceSelectCountByConditionsResult
-  if err = p.c.Call(ctx, "selectCountByConditions", &_args2, &_result3); err != nil {
+  var _result3 TUserKycServiceSelectUserKycCountByConditionsResult
+  if err = p.c.Call(ctx, "selectUserKycCountByConditions", &_args2, &_result3); err != nil {
     return
   }
   return _result3.GetSuccess(), nil
@@ -1200,11 +1309,13 @@ func (p *TUserKycServiceClient) SelectUserKycById(ctx context.Context, id int32)
 //  - ID
 //  - Status
 //  - Mark
-func (p *TUserKycServiceClient) AuditUserKyc(ctx context.Context, id int32, status string, mark string) (r int32, err error) {
+//  - LoginUserId
+func (p *TUserKycServiceClient) AuditUserKyc(ctx context.Context, id int32, status string, mark string, loginUserId int32) (r int32, err error) {
   var _args6 TUserKycServiceAuditUserKycArgs
   _args6.ID = id
   _args6.Status = status
   _args6.Mark = mark
+  _args6.LoginUserId = loginUserId
   var _result7 TUserKycServiceAuditUserKycResult
   if err = p.c.Call(ctx, "auditUserKyc", &_args6, &_result7); err != nil {
     return
@@ -1234,7 +1345,7 @@ func NewTUserKycServiceProcessor(handler TUserKycService) *TUserKycServiceProces
 
   self8 := &TUserKycServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
   self8.processorMap["selectUserKycByConditions"] = &tUserKycServiceProcessorSelectUserKycByConditions{handler:handler}
-  self8.processorMap["selectCountByConditions"] = &tUserKycServiceProcessorSelectCountByConditions{handler:handler}
+  self8.processorMap["selectUserKycCountByConditions"] = &tUserKycServiceProcessorSelectUserKycCountByConditions{handler:handler}
   self8.processorMap["selectUserKycById"] = &tUserKycServiceProcessorSelectUserKycById{handler:handler}
   self8.processorMap["auditUserKyc"] = &tUserKycServiceProcessorAuditUserKyc{handler:handler}
 return self8
@@ -1305,16 +1416,16 @@ var retval []*TUserKycResult_
   return true, err
 }
 
-type tUserKycServiceProcessorSelectCountByConditions struct {
+type tUserKycServiceProcessorSelectUserKycCountByConditions struct {
   handler TUserKycService
 }
 
-func (p *tUserKycServiceProcessorSelectCountByConditions) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-  args := TUserKycServiceSelectCountByConditionsArgs{}
+func (p *tUserKycServiceProcessorSelectUserKycCountByConditions) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TUserKycServiceSelectUserKycCountByConditionsArgs{}
   if err = args.Read(iprot); err != nil {
     iprot.ReadMessageEnd()
     x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-    oprot.WriteMessageBegin("selectCountByConditions", thrift.EXCEPTION, seqId)
+    oprot.WriteMessageBegin("selectUserKycCountByConditions", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
     oprot.Flush(ctx)
@@ -1322,12 +1433,12 @@ func (p *tUserKycServiceProcessorSelectCountByConditions) Process(ctx context.Co
   }
 
   iprot.ReadMessageEnd()
-  result := TUserKycServiceSelectCountByConditionsResult{}
+  result := TUserKycServiceSelectUserKycCountByConditionsResult{}
 var retval int32
   var err2 error
-  if retval, err2 = p.handler.SelectCountByConditions(ctx, args.UserName, args.Status); err2 != nil {
-    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectCountByConditions: " + err2.Error())
-    oprot.WriteMessageBegin("selectCountByConditions", thrift.EXCEPTION, seqId)
+  if retval, err2 = p.handler.SelectUserKycCountByConditions(ctx, args.UserName, args.Status); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectUserKycCountByConditions: " + err2.Error())
+    oprot.WriteMessageBegin("selectUserKycCountByConditions", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
     oprot.Flush(ctx)
@@ -1335,7 +1446,7 @@ var retval int32
   } else {
     result.Success = &retval
 }
-  if err2 = oprot.WriteMessageBegin("selectCountByConditions", thrift.REPLY, seqId); err2 != nil {
+  if err2 = oprot.WriteMessageBegin("selectUserKycCountByConditions", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
   if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -1421,7 +1532,7 @@ func (p *tUserKycServiceProcessorAuditUserKyc) Process(ctx context.Context, seqI
   result := TUserKycServiceAuditUserKycResult{}
 var retval int32
   var err2 error
-  if retval, err2 = p.handler.AuditUserKyc(ctx, args.ID, args.Status, args.Mark); err2 != nil {
+  if retval, err2 = p.handler.AuditUserKyc(ctx, args.ID, args.Status, args.Mark, args.LoginUserId); err2 != nil {
     x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing auditUserKyc: " + err2.Error())
     oprot.WriteMessageBegin("auditUserKyc", thrift.EXCEPTION, seqId)
     x.Write(oprot)
@@ -1772,24 +1883,24 @@ func (p *TUserKycServiceSelectUserKycByConditionsResult) String() string {
 // Attributes:
 //  - UserName
 //  - Status
-type TUserKycServiceSelectCountByConditionsArgs struct {
+type TUserKycServiceSelectUserKycCountByConditionsArgs struct {
   UserName string `thrift:"userName,1" db:"userName" json:"userName"`
   Status string `thrift:"status,2" db:"status" json:"status"`
 }
 
-func NewTUserKycServiceSelectCountByConditionsArgs() *TUserKycServiceSelectCountByConditionsArgs {
-  return &TUserKycServiceSelectCountByConditionsArgs{}
+func NewTUserKycServiceSelectUserKycCountByConditionsArgs() *TUserKycServiceSelectUserKycCountByConditionsArgs {
+  return &TUserKycServiceSelectUserKycCountByConditionsArgs{}
 }
 
 
-func (p *TUserKycServiceSelectCountByConditionsArgs) GetUserName() string {
+func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) GetUserName() string {
   return p.UserName
 }
 
-func (p *TUserKycServiceSelectCountByConditionsArgs) GetStatus() string {
+func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) GetStatus() string {
   return p.Status
 }
-func (p *TUserKycServiceSelectCountByConditionsArgs) Read(iprot thrift.TProtocol) error {
+func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1837,7 +1948,7 @@ func (p *TUserKycServiceSelectCountByConditionsArgs) Read(iprot thrift.TProtocol
   return nil
 }
 
-func (p *TUserKycServiceSelectCountByConditionsArgs)  ReadField1(iprot thrift.TProtocol) error {
+func (p *TUserKycServiceSelectUserKycCountByConditionsArgs)  ReadField1(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
@@ -1846,7 +1957,7 @@ func (p *TUserKycServiceSelectCountByConditionsArgs)  ReadField1(iprot thrift.TP
   return nil
 }
 
-func (p *TUserKycServiceSelectCountByConditionsArgs)  ReadField2(iprot thrift.TProtocol) error {
+func (p *TUserKycServiceSelectUserKycCountByConditionsArgs)  ReadField2(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
@@ -1855,8 +1966,8 @@ func (p *TUserKycServiceSelectCountByConditionsArgs)  ReadField2(iprot thrift.TP
   return nil
 }
 
-func (p *TUserKycServiceSelectCountByConditionsArgs) Write(oprot thrift.TProtocol) error {
-  if err := oprot.WriteStructBegin("selectCountByConditions_args"); err != nil {
+func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectUserKycCountByConditions_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if p != nil {
     if err := p.writeField1(oprot); err != nil { return err }
@@ -1869,7 +1980,7 @@ func (p *TUserKycServiceSelectCountByConditionsArgs) Write(oprot thrift.TProtoco
   return nil
 }
 
-func (p *TUserKycServiceSelectCountByConditionsArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) writeField1(oprot thrift.TProtocol) (err error) {
   if err := oprot.WriteFieldBegin("userName", thrift.STRING, 1); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:userName: ", p), err) }
   if err := oprot.WriteString(string(p.UserName)); err != nil {
@@ -1879,7 +1990,7 @@ func (p *TUserKycServiceSelectCountByConditionsArgs) writeField1(oprot thrift.TP
   return err
 }
 
-func (p *TUserKycServiceSelectCountByConditionsArgs) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) writeField2(oprot thrift.TProtocol) (err error) {
   if err := oprot.WriteFieldBegin("status", thrift.STRING, 2); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:status: ", p), err) }
   if err := oprot.WriteString(string(p.Status)); err != nil {
@@ -1889,35 +2000,35 @@ func (p *TUserKycServiceSelectCountByConditionsArgs) writeField2(oprot thrift.TP
   return err
 }
 
-func (p *TUserKycServiceSelectCountByConditionsArgs) String() string {
+func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("TUserKycServiceSelectCountByConditionsArgs(%+v)", *p)
+  return fmt.Sprintf("TUserKycServiceSelectUserKycCountByConditionsArgs(%+v)", *p)
 }
 
 // Attributes:
 //  - Success
-type TUserKycServiceSelectCountByConditionsResult struct {
+type TUserKycServiceSelectUserKycCountByConditionsResult struct {
   Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
-func NewTUserKycServiceSelectCountByConditionsResult() *TUserKycServiceSelectCountByConditionsResult {
-  return &TUserKycServiceSelectCountByConditionsResult{}
+func NewTUserKycServiceSelectUserKycCountByConditionsResult() *TUserKycServiceSelectUserKycCountByConditionsResult {
+  return &TUserKycServiceSelectUserKycCountByConditionsResult{}
 }
 
-var TUserKycServiceSelectCountByConditionsResult_Success_DEFAULT int32
-func (p *TUserKycServiceSelectCountByConditionsResult) GetSuccess() int32 {
+var TUserKycServiceSelectUserKycCountByConditionsResult_Success_DEFAULT int32
+func (p *TUserKycServiceSelectUserKycCountByConditionsResult) GetSuccess() int32 {
   if !p.IsSetSuccess() {
-    return TUserKycServiceSelectCountByConditionsResult_Success_DEFAULT
+    return TUserKycServiceSelectUserKycCountByConditionsResult_Success_DEFAULT
   }
 return *p.Success
 }
-func (p *TUserKycServiceSelectCountByConditionsResult) IsSetSuccess() bool {
+func (p *TUserKycServiceSelectUserKycCountByConditionsResult) IsSetSuccess() bool {
   return p.Success != nil
 }
 
-func (p *TUserKycServiceSelectCountByConditionsResult) Read(iprot thrift.TProtocol) error {
+func (p *TUserKycServiceSelectUserKycCountByConditionsResult) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -1955,7 +2066,7 @@ func (p *TUserKycServiceSelectCountByConditionsResult) Read(iprot thrift.TProtoc
   return nil
 }
 
-func (p *TUserKycServiceSelectCountByConditionsResult)  ReadField0(iprot thrift.TProtocol) error {
+func (p *TUserKycServiceSelectUserKycCountByConditionsResult)  ReadField0(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadI32(); err != nil {
   return thrift.PrependError("error reading field 0: ", err)
 } else {
@@ -1964,8 +2075,8 @@ func (p *TUserKycServiceSelectCountByConditionsResult)  ReadField0(iprot thrift.
   return nil
 }
 
-func (p *TUserKycServiceSelectCountByConditionsResult) Write(oprot thrift.TProtocol) error {
-  if err := oprot.WriteStructBegin("selectCountByConditions_result"); err != nil {
+func (p *TUserKycServiceSelectUserKycCountByConditionsResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectUserKycCountByConditions_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if p != nil {
     if err := p.writeField0(oprot); err != nil { return err }
@@ -1977,7 +2088,7 @@ func (p *TUserKycServiceSelectCountByConditionsResult) Write(oprot thrift.TProto
   return nil
 }
 
-func (p *TUserKycServiceSelectCountByConditionsResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *TUserKycServiceSelectUserKycCountByConditionsResult) writeField0(oprot thrift.TProtocol) (err error) {
   if p.IsSetSuccess() {
     if err := oprot.WriteFieldBegin("success", thrift.I32, 0); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
@@ -1989,11 +2100,11 @@ func (p *TUserKycServiceSelectCountByConditionsResult) writeField0(oprot thrift.
   return err
 }
 
-func (p *TUserKycServiceSelectCountByConditionsResult) String() string {
+func (p *TUserKycServiceSelectUserKycCountByConditionsResult) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("TUserKycServiceSelectCountByConditionsResult(%+v)", *p)
+  return fmt.Sprintf("TUserKycServiceSelectUserKycCountByConditionsResult(%+v)", *p)
 }
 
 // Attributes:
@@ -2191,10 +2302,12 @@ func (p *TUserKycServiceSelectUserKycByIdResult) String() string {
 //  - ID
 //  - Status
 //  - Mark
+//  - LoginUserId
 type TUserKycServiceAuditUserKycArgs struct {
   ID int32 `thrift:"id,1" db:"id" json:"id"`
   Status string `thrift:"status,2" db:"status" json:"status"`
   Mark string `thrift:"mark,3" db:"mark" json:"mark"`
+  LoginUserId int32 `thrift:"loginUserId,4" db:"loginUserId" json:"loginUserId"`
 }
 
 func NewTUserKycServiceAuditUserKycArgs() *TUserKycServiceAuditUserKycArgs {
@@ -2212,6 +2325,10 @@ func (p *TUserKycServiceAuditUserKycArgs) GetStatus() string {
 
 func (p *TUserKycServiceAuditUserKycArgs) GetMark() string {
   return p.Mark
+}
+
+func (p *TUserKycServiceAuditUserKycArgs) GetLoginUserId() int32 {
+  return p.LoginUserId
 }
 func (p *TUserKycServiceAuditUserKycArgs) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -2249,6 +2366,16 @@ func (p *TUserKycServiceAuditUserKycArgs) Read(iprot thrift.TProtocol) error {
     case 3:
       if fieldTypeId == thrift.STRING {
         if err := p.ReadField3(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 4:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField4(iprot); err != nil {
           return err
         }
       } else {
@@ -2298,6 +2425,15 @@ func (p *TUserKycServiceAuditUserKycArgs)  ReadField3(iprot thrift.TProtocol) er
   return nil
 }
 
+func (p *TUserKycServiceAuditUserKycArgs)  ReadField4(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.LoginUserId = v
+}
+  return nil
+}
+
 func (p *TUserKycServiceAuditUserKycArgs) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("auditUserKyc_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -2305,6 +2441,7 @@ func (p *TUserKycServiceAuditUserKycArgs) Write(oprot thrift.TProtocol) error {
     if err := p.writeField1(oprot); err != nil { return err }
     if err := p.writeField2(oprot); err != nil { return err }
     if err := p.writeField3(oprot); err != nil { return err }
+    if err := p.writeField4(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -2340,6 +2477,16 @@ func (p *TUserKycServiceAuditUserKycArgs) writeField3(oprot thrift.TProtocol) (e
   return thrift.PrependError(fmt.Sprintf("%T.mark (3) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 3:mark: ", p), err) }
+  return err
+}
+
+func (p *TUserKycServiceAuditUserKycArgs) writeField4(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("loginUserId", thrift.I32, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:loginUserId: ", p), err) }
+  if err := oprot.WriteI32(int32(p.LoginUserId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.loginUserId (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:loginUserId: ", p), err) }
   return err
 }
 

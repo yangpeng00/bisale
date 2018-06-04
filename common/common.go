@@ -11,6 +11,7 @@ import (
 
 var Log *logrus.Logger
 var AccountServicePool *thriftPool.ThriftPool
+var InvitationServicePool *thriftPool.ThriftPool
 var MessageServicePool *thriftPool.ThriftPool
 var CaptchaServicePool *thriftPool.ThriftPool
 var StorageServicePool *thriftPool.ThriftPool
@@ -88,7 +89,7 @@ func init() {
 	)
 
 	// 配置 Bisale Business 服务连接池
-	BisaleUserServicePool = thriftPool.NewThriftPool(
+	BisaleBusinessServicePool = thriftPool.NewThriftPool(
 		config.Config.BisaleBusinessService.Host,
 		config.Config.BisaleBusinessService.Port,
 		config.Config.BisaleBusinessService.MaxConn,
