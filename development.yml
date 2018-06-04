@@ -4,7 +4,7 @@ log_level: info
 version: 1.0.0
 
 account_service:
-  host: 47.75.183.114
+  host: 0.0.0.0
   port: 10002
 
 captcha_service:

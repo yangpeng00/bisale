@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"time"
 	"bisale/foundation/thrift/pool"
-	"bisale/bisale-console-api/thrift/message"
+	"bisale/bisale-console-api/thrift/captcha"
 	"git.apache.org/thrift.git/lib/go/thrift"
 )
 
-func openMessageServiceClient(host, port string, ConnTimeout time.Duration) (*thriftPool.IdleClient, error) {
+func openCaptchaServiceClient(host, port string, ConnTimeout time.Duration) (*thriftPool.IdleClient, error) {
 
 	protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
 
@@ -18,7 +18,7 @@ func openMessageServiceClient(host, port string, ConnTimeout time.Duration) (*th
 	transport := thrift.NewTFramedTransport(socket)
 
 	if err := transport.Open(); err != nil {
-		Log.Error(fmt.Printf("Open message service connection error: %s", err.Error()))
+		Log.Error(fmt.Printf("Open captcha service connection error: %s", err.Error()))
 		return nil, err
 	}
 
@@ -27,7 +27,7 @@ func openMessageServiceClient(host, port string, ConnTimeout time.Duration) (*th
 
 	standardClient := thrift.NewTStandardClient(iprot, oprot)
 
-	client := message.NewMessageClient(standardClient)
+	client := captcha.NewCaptchaClient(standardClient)
 
 	return &thriftPool.IdleClient{
 		Client: client,
@@ -35,37 +35,37 @@ func openMessageServiceClient(host, port string, ConnTimeout time.Duration) (*th
 	}, nil
 }
 
-func closeMessageServiceClient(c *thriftPool.IdleClient) error {
+func closeCaptchaServiceClient(c *thriftPool.IdleClient) error {
 	err := c.Socket.Close()
 	if err != nil {
-		Log.Error(fmt.Printf("Close message service connection error: %s", err.Error()))
+		Log.Error(fmt.Printf("Close captcha service connection error: %s", err.Error()))
 		return err
 	}
-	Log.Info("Close message client success")
+	Log.Info("Close captcha client success")
 	return nil
 }
 
-func GetMessageServiceClient() (c *message.MessageClient) {
+func GetCaptchaServiceClient() (c *captcha.CaptchaClient) {
 
 	client, err := CaptchaServicePool.Get()
 
 	if err != nil {
-		Log.Error(fmt.Printf("Get message service client error: %s", err.Error()))
+		Log.Error(fmt.Printf("Get captcha service client error: %s", err.Error()))
 		return
 	}
 
 	if !client.Socket.IsOpen() {
-		Log.Error(fmt.Printf("Account client has closed"))
+		Log.Error(fmt.Printf("Captcha client has closed"))
 	}
 
 	err = CaptchaServicePool.Put(client)
 
 	if err != nil {
-		Log.Error(fmt.Printf("Put message client to pool error: %s", err.Error()))
+		Log.Error(fmt.Printf("Put captcha client to pool error: %s", err.Error()))
 		return
 	}
 
-	Log.Info("Get message client from pool success")
+	Log.Info("Get captcha client from pool success")
 
-	return client.Client.(*message.MessageClient)
+	return client.Client.(*captcha.CaptchaClient)
 }
