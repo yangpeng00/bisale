@@ -16,7 +16,7 @@ import (
         "git.apache.org/thrift.git/lib/go/thrift"
 	"bisale/bisale-console-api/thrift/inputs"
 	"bisale/bisale-console-api/thrift/outputs"
-        "bisale/bisale-console-api/thrift/account"
+        "bisale/thrift-account/thrift/account"
 )
 
 var _ = inputs.GoUnusedProtection__

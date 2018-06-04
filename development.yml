@@ -3,6 +3,10 @@ port: 1025
 log_level: info
 version: 1.0.0
 
+bisale_business_service:
+  host: 47.75.183.114
+  port: 10001
+
 account_service:
   host: 0.0.0.0
   port: 10002
@@ -22,3 +26,5 @@ storage_service:
 bisale_user_service:
   host: 47.75.183.114
   port: 10011
+
+

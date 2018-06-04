@@ -15,6 +15,7 @@ var MessageServicePool *thriftPool.ThriftPool
 var CaptchaServicePool *thriftPool.ThriftPool
 var StorageServicePool *thriftPool.ThriftPool
 var BisaleUserServicePool *thriftPool.ThriftPool
+var BisaleBusinessServicePool *thriftPool.ThriftPool
 
 func init() {
 	// 配置日志
@@ -75,15 +76,26 @@ func init() {
 		closeStroageServiceClient,
 	)
 
-	// 配置 Bisale User 服务连接池
+	// 配置 Bisale OSS 服务连接池
 	BisaleUserServicePool = thriftPool.NewThriftPool(
 		config.Config.BisaleUserService.Host,
 		config.Config.BisaleUserService.Port,
 		config.Config.BisaleUserService.MaxConn,
 		config.Config.BisaleUserService.ConnTimeout,
 		config.Config.BisaleUserService.IdleTimeout,
-		openBisaleServiceClient,
-		closeBisaleServiceClient,
+		openBisaleUserServiceClient,
+		closeBisaleUserServiceClient,
+	)
+
+	// 配置 Bisale Business 服务连接池
+	BisaleUserServicePool = thriftPool.NewThriftPool(
+		config.Config.BisaleBusinessService.Host,
+		config.Config.BisaleBusinessService.Port,
+		config.Config.BisaleBusinessService.MaxConn,
+		config.Config.BisaleBusinessService.ConnTimeout,
+		config.Config.BisaleBusinessService.IdleTimeout,
+		openBisaleBusinessServiceClient,
+		closeBisaleBusinessServiceClient,
 	)
 }
 

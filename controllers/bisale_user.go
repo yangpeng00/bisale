@@ -9,7 +9,7 @@ import (
 
 func GetBisaleUsers(c echo.Context) error {
 	log, _ := common.GetLoggerWithTraceId(c)
-	userService := common.GetBisaleServiceClient()
+	userService := common.GetBisaleUserServiceClient()
 	ctx := context.Background()
 	res, err := userService.SelectUserKycByConditions(ctx, "", "", 1, 100)
 	if err != nil {

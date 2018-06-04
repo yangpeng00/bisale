@@ -9,7 +9,7 @@ import (
 	"git.apache.org/thrift.git/lib/go/thrift"
 )
 
-func openBisaleServiceClient(host, port string, ConnTimeout time.Duration) (*thriftPool.IdleClient, error) {
+func openBisaleUserServiceClient(host, port string, ConnTimeout time.Duration) (*thriftPool.IdleClient, error) {
 
 	//protocolFactory := thrift.NewTBinaryProtocolFactoryDefault()
 
@@ -36,7 +36,7 @@ func openBisaleServiceClient(host, port string, ConnTimeout time.Duration) (*thr
 	}, nil
 }
 
-func closeBisaleServiceClient(c *thriftPool.IdleClient) error {
+func closeBisaleUserServiceClient(c *thriftPool.IdleClient) error {
 	err := c.Socket.Close()
 	if err != nil {
 		Log.Error(fmt.Printf("Close bisale user service connection error: %s", err.Error()))
@@ -46,7 +46,7 @@ func closeBisaleServiceClient(c *thriftPool.IdleClient) error {
 	return nil
 }
 
-func GetBisaleServiceClient() (c *user.TUserKycServiceClient) {
+func GetBisaleUserServiceClient() (c *user.TUserKycServiceClient) {
 
 	client, err := BisaleUserServicePool.Get()
 
