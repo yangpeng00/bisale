@@ -116,7 +116,7 @@ func GetCertListCount(c echo.Context) error {
 	res, err := userService.SelectUserKycCountByConditions(context.Background(), "", keyword, status)
 	if err != nil {
 		log.Error(err)
-		return Status(c, codes.ServiceError, nil)
+		return Status(c, codes.ServiceError, err)
 	}
 
 	return Status(c, codes.Success, res)
