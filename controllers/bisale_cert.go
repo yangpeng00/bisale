@@ -8,7 +8,7 @@ import (
 	"bisale/bisale-console-api/common"
 	"bisale/bisale-console-api/config"
 	"bisale/bisale-console-api/domain"
-	"fmt"
+	"strings"
 )
 
 func GetCertList(c echo.Context) error {
@@ -47,27 +47,42 @@ func GetCertDetailById(c echo.Context) error {
 	}
 
 	storageService := common.GetStorageServiceClient()
-	fmt.Println(res.IdPicFront)
-	images, err := storageService.GetProcessUrls(ctx, traceId, config.Config.KYCBucket, map[string]string{
-		"IdPicFront":       res.IdPicFront,
-		"IdPicBack":        res.IdPicBack,
-		"IdPicHold":        res.IdPicHold,
-		"PassportPicFront": res.PassportPicFront,
-		"PassportPicInfo":  res.PassportPicInfo,
-		"PassportPicHold":  res.PassportPicHold,
-	}, "", 60)
+	if strings.HasPrefix(res.IdPicFront, "U/") ||
+		strings.HasPrefix(res.IdPicBack, "U/") ||
+		strings.HasPrefix(res.IdPicHold, "U/") ||
+		strings.HasPrefix(res.PassportPicFront, "U/") ||
+		strings.HasPrefix(res.PassportPicInfo, "U/") ||
+		strings.HasPrefix(res.PassportPicHold, "U/") {
 
-	if err != nil {
-		log.Error(err)
-		return Status(c, codes.ServiceError, err)
+		images, err := storageService.GetProcessUrls(ctx, traceId, config.Config.KYCBucket, map[string]string{
+			"IdPicFront":       res.IdPicFront,
+			"IdPicBack":        res.IdPicBack,
+			"IdPicHold":        res.IdPicHold,
+			"PassportPicFront": res.PassportPicFront,
+			"PassportPicInfo":  res.PassportPicInfo,
+			"PassportPicHold":  res.PassportPicHold,
+		}, "", 60)
+
+		if err != nil {
+			log.Error(err)
+			return Status(c, codes.ServiceError, nil)
+		}
+
+		res.IdPicFront = images["IdPicFront"]
+		res.IdPicBack = images["IdPicBack"]
+		res.IdPicHold = images["IdPicHold"]
+		res.PassportPicFront = images["PassportPicFront"]
+		res.PassportPicInfo = images["PassportPicInfo"]
+		res.PassportPicHold = images["PassportPicHold"]
+
+	} else {
+		res.IdPicFront = config.Config.OldKYCHost + res.IdPicFront
+		res.IdPicBack = config.Config.OldKYCHost + res.IdPicBack
+		res.IdPicHold = config.Config.OldKYCHost + res.IdPicHold
+		res.PassportPicFront = config.Config.OldKYCHost + res.PassportPicFront
+		res.PassportPicInfo = config.Config.OldKYCHost + res.PassportPicInfo
+		res.PassportPicHold = config.Config.OldKYCHost + res.PassportPicHold
 	}
-
-	res.IdPicFront=images["IdPicFront"]
-	res.IdPicBack=images["IdPicBack"]
-	res.IdPicHold=images["IdPicHold"]
-	res.PassportPicFront=images["PassportPicFront"]
-	res.PassportPicInfo=images["PassportPicInfo"]
-	res.PassportPicHold=images["PassportPicHold"]
 
 	return Status(c, codes.Success, res)
 }
