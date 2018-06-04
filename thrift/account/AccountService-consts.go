@@ -9,8 +9,8 @@ import (
 	"context"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
-	"inputs"
-	"outputs"
+	"bisale/bisale-console-api/thrift/inputs"
+	"bisale/bisale-console-api/thrift/outputs"
 
 )
 

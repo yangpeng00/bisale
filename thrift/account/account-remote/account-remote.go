@@ -14,9 +14,9 @@ import (
         "strconv"
         "strings"
         "git.apache.org/thrift.git/lib/go/thrift"
-	"inputs"
-	"outputs"
-        "account"
+	"bisale/bisale-console-api/thrift/inputs"
+	"bisale/bisale-console-api/thrift/outputs"
+        "bisale/bisale-console-api/thrift/account"
 )
 
 var _ = inputs.GoUnusedProtection__
@@ -29,7 +29,9 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "  bool Ping()")
   fmt.Fprintln(os.Stderr, "  string Version()")
   fmt.Fprintln(os.Stderr, "  LoginOutput MobileLogin(string traceId, MobileLoginInput output)")
-  fmt.Fprintln(os.Stderr, "  CreateMemberOutput CreateMember(string traceId, CreateMemberInput output)")
+  fmt.Fprintln(os.Stderr, "  CreateMemberOutput CreateMember(string traceId, CreateMemberInput input)")
+  fmt.Fprintln(os.Stderr, "  string GenerateJWTToken(string traceId, string secretKey, i32 expired)")
+  fmt.Fprintln(os.Stderr, "  bool ValidateJWT(string traceId, string tokenString, string secretKey)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -150,19 +152,19 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    arg11 := flag.Arg(2)
-    mbTrans12 := thrift.NewTMemoryBufferLen(len(arg11))
-    defer mbTrans12.Close()
-    _, err13 := mbTrans12.WriteString(arg11)
-    if err13 != nil {
+    arg15 := flag.Arg(2)
+    mbTrans16 := thrift.NewTMemoryBufferLen(len(arg15))
+    defer mbTrans16.Close()
+    _, err17 := mbTrans16.WriteString(arg15)
+    if err17 != nil {
       Usage()
       return
     }
-    factory14 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt15 := factory14.GetProtocol(mbTrans12)
+    factory18 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt19 := factory18.GetProtocol(mbTrans16)
     argvalue1 := inputs.NewMobileLoginInput()
-    err16 := argvalue1.Read(jsProt15)
-    if err16 != nil {
+    err20 := argvalue1.Read(jsProt19)
+    if err20 != nil {
       Usage()
       return
     }
@@ -177,24 +179,57 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    arg18 := flag.Arg(2)
-    mbTrans19 := thrift.NewTMemoryBufferLen(len(arg18))
-    defer mbTrans19.Close()
-    _, err20 := mbTrans19.WriteString(arg18)
-    if err20 != nil {
+    arg22 := flag.Arg(2)
+    mbTrans23 := thrift.NewTMemoryBufferLen(len(arg22))
+    defer mbTrans23.Close()
+    _, err24 := mbTrans23.WriteString(arg22)
+    if err24 != nil {
       Usage()
       return
     }
-    factory21 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt22 := factory21.GetProtocol(mbTrans19)
+    factory25 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt26 := factory25.GetProtocol(mbTrans23)
     argvalue1 := inputs.NewCreateMemberInput()
-    err23 := argvalue1.Read(jsProt22)
-    if err23 != nil {
+    err27 := argvalue1.Read(jsProt26)
+    if err27 != nil {
       Usage()
       return
     }
     value1 := argvalue1
     fmt.Print(client.CreateMember(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "GenerateJWTToken":
+    if flag.NArg() - 1 != 3 {
+      fmt.Fprintln(os.Stderr, "GenerateJWTToken requires 3 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
+    value1 := argvalue1
+    tmp2, err30 := (strconv.Atoi(flag.Arg(3)))
+    if err30 != nil {
+      Usage()
+      return
+    }
+    argvalue2 := int32(tmp2)
+    value2 := argvalue2
+    fmt.Print(client.GenerateJWTToken(context.Background(), value0, value1, value2))
+    fmt.Print("\n")
+    break
+  case "ValidateJWT":
+    if flag.NArg() - 1 != 3 {
+      fmt.Fprintln(os.Stderr, "ValidateJWT requires 3 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
+    value1 := argvalue1
+    argvalue2 := flag.Arg(3)
+    value2 := argvalue2
+    fmt.Print(client.ValidateJWT(context.Background(), value0, value1, value2))
     fmt.Print("\n")
     break
   case "":

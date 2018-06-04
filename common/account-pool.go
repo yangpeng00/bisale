@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 	"bisale/foundation/thrift/pool"
-	"bisale/thrift-account/thrift/account"
+	"bisale/bisale-console-api/thrift/account"
 	"git.apache.org/thrift.git/lib/go/thrift"
 )
 

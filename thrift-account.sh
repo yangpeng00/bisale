@@ -11,6 +11,6 @@ else
     git clone git@git.bisale.org:backend/thrift-account.git $Dir
 fi
 
-thrift -out ./thrift -r --gen go $Dir/thrift/accountService.thrift
+thrift -out ./thrift -r --gen go:package_prefix=bisale/bisale-console-api/thrift/ $Dir/thrift/accountService.thrift
 
 sed -i '' 's/oprot.Flush()/oprot.Flush(ctx)/g' ./thrift/**/*.go
