@@ -1,12 +1,12 @@
 package controllers
 
 import (
+	"context"
+	"strconv"
 	"github.com/labstack/echo"
 	"bisale/bisale-console-api/codes"
 	"bisale/bisale-console-api/common"
-	"context"
-	"strconv"
-	"github.com/labstack/gommon/log"
+	"bisale/bisale-console-api/config"
 	"bisale/bisale-console-api/domain"
 )
 
@@ -36,14 +36,38 @@ func GetCertList(c echo.Context) error {
 func GetCertDetailById(c echo.Context) error {
 	id, _ := strconv.ParseInt(c.QueryParam("id"), 10, 32)
 
-	log, _ := common.GetLoggerWithTraceId(c)
+	log, traceId := common.GetLoggerWithTraceId(c)
 	userService := common.GetBisaleUserServiceClient()
-
-	res, err := userService.SelectUserKycById(context.Background(), int32(id))
+	ctx := context.Background()
+	res, err := userService.SelectUserKycById(ctx, int32(id))
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, nil)
 	}
+
+	storageService := common.GetStorageServiceClient()
+
+	images, err := storageService.GetProcessUrls(ctx, traceId, config.Config.KYCBucket, map[string]string{
+		"IdPicFront":       res.IdPicFront,
+		"IdPicBack":        res.IdPicBack,
+		"IdPicHold":        res.IdPicHold,
+		"PassportPicFront": res.PassportPicFront,
+		"PassportPicInfo":  res.PassportPicInfo,
+		"PassportPicHold":  res.PassportPicHold,
+	}, "", 60)
+
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, nil)
+	}
+
+	res.IdPicFront=images["IdPicFront"]
+	res.IdPicBack=images["IdPicBack"]
+	res.IdPicHold=images["IdPicHold"]
+	res.PassportPicFront=images["PassportPicFront"]
+	res.PassportPicInfo=images["PassportPicInfo"]
+	res.PassportPicHold=images["PassportPicHold"]
+
 	return Status(c, codes.Success, res)
 }
 
@@ -69,9 +93,9 @@ func PostCertResult(c echo.Context) error {
 }
 
 func GetCertListCount(c echo.Context) error {
+	log, _ := common.GetLoggerWithTraceId(c)
 	keyword := c.QueryParam("keyword")
 	status := c.QueryParam("status")
-
 	userService := common.GetBisaleUserServiceClient()
 	res, err := userService.SelectUserKycCountByConditions(context.Background(), keyword, status)
 	if err != nil {
