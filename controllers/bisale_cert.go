@@ -97,23 +97,22 @@ func PostCertResult(c echo.Context) error {
 		return Status(c, codes.ServiceError, nil)
 	}
 
-	// log, traceId := common.GetLoggerWithTraceId(c)
-	log, _ := common.GetLoggerWithTraceId(c)
+	log, traceId := common.GetLoggerWithTraceId(c)
 	userService := common.GetBisaleUserServiceClient()
 	businessService := common.GetBisaleBusinessServiceClient()
-	resp, err := userService.AuditUserKyc(context.Background(), "", req.Id, req.Status, req.Mark)
-	// messageService := common.GetMessageServiceClient()
-	// ctx := context.Background()
+	resp, err := userService.AuditUserKyc(context.Background(), "", req.Id, req.Status, req.Mark, req.UserId)
+	messageService := common.GetMessageServiceClient()
+	ctx := context.Background()
 	if req.Status == "2" {
-		err := businessService.EnableParticipant(context.Background(), "", req.Id)
+		err := businessService.EnableParticipant(context.Background(), "", req.UserId)
 		if err != nil {
 			log.Error(err)
 		}
-		// messageService.SendMail(ctx, traceId, "bisale-java-api", "", "template::mail::kyc-pass", "{}", "zh-CN", 0)
+		messageService.SendMail(ctx, traceId, "bisale-admin", resp.Email, "template::mail::kyc-success", "{\"username\":"+resp.Email+"}", "zh-CN", 0)
 	} else {
-		// messageService.SendMail(ctx, traceId, "bisale-java-api", "", "template::mail::kyc-refused", "{}", "zh-CN", 0)
+		messageService.SendMail(ctx, traceId, "bisale-admin", resp.Email, "template::mail::kyc-failed", "{\"username\":"+resp.Email+"}", "zh-CN", 0)
 	}
-	if resp == 0 || err != nil {
+	if err != nil {
 		log.Error(err)
 		return Status(c, codes.CertError, nil)
 	}
