@@ -25,6 +25,7 @@ func main() {
 	e.Logger = middlewares.LogrusLogger{logrus.StandardLogger()}
 	e.Use(middlewares.LogrusHook())
 	e.Use(middleware.Recover())
+	e.Use(middleware.CORS())
 	e.Use(middlewares.FilterRequests)
 
 	e.GET("/ping", controllers.Ping)
@@ -39,13 +40,12 @@ func main() {
 	member := e.Group("/api/member", middlewares.Auth)
 	member.POST("", controllers.PostCreateMember)
 
-
 	// bisale 业务路由
 	bisale := e.Group("/api/bisale", middlewares.Auth)
 
 	bisale.GET("/cert/list", controllers.GetCertList)
 	bisale.GET("/cert/list/count", controllers.GetCertListCount)
-	bisale.GET("/cert/detail",  controllers.GetCertDetailById)
+	bisale.GET("/cert/detail", controllers.GetCertDetailById)
 	bisale.POST("/cert/result", controllers.PostCertResult)
 
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
