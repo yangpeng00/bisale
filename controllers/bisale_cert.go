@@ -97,12 +97,21 @@ func PostCertResult(c echo.Context) error {
 		return Status(c, codes.ServiceError, nil)
 	}
 
+	// log, traceId := common.GetLoggerWithTraceId(c)
 	log, _ := common.GetLoggerWithTraceId(c)
 	userService := common.GetBisaleUserServiceClient()
 	businessService := common.GetBisaleBusinessServiceClient()
 	resp, err := userService.AuditUserKyc(context.Background(), "", req.Id, req.Status, req.Mark)
+	// messageService := common.GetMessageServiceClient()
+	// ctx := context.Background()
 	if req.Status == "2" {
-		businessService.EnableParticipant(context.Background(), "", req.Id)
+		err := businessService.EnableParticipant(context.Background(), "", req.Id)
+		if err != nil {
+			log.Error(err)
+		}
+		// messageService.SendMail(ctx, traceId, "bisale-java-api", "", "template::mail::kyc-pass", "{}", "zh-CN", 0)
+	} else {
+		// messageService.SendMail(ctx, traceId, "bisale-java-api", "", "template::mail::kyc-refused", "{}", "zh-CN", 0)
 	}
 	if resp == 0 || err != nil {
 		log.Error(err)
