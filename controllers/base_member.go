@@ -5,7 +5,7 @@ import (
 	"github.com/labstack/echo"
 	"bisale/bisale-console-api/codes"
 	"bisale/bisale-console-api/common"
-	accountInputs "bisale/bisale-console-api/thrift/inputs"
+	accountInputs "bisale/thrift-account/thrift/inputs"
 )
 
 func PostCreateMember(c echo.Context) error {

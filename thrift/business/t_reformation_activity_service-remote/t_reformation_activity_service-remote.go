@@ -14,24 +14,19 @@ import (
         "strconv"
         "strings"
         "git.apache.org/thrift.git/lib/go/thrift"
-	"bisale/bisale-console-api/thrift/inputs"
-	"bisale/bisale-console-api/thrift/outputs"
-        "bisale/thrift-account/thrift/account"
+        "business"
 )
 
-var _ = inputs.GoUnusedProtection__
-var _ = outputs.GoUnusedProtection__
 
 func Usage() {
   fmt.Fprintln(os.Stderr, "Usage of ", os.Args[0], " [-h host:port] [-u url] [-f[ramed]] function [arg1 [arg2...]]:")
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
-  fmt.Fprintln(os.Stderr, "  bool Ping()")
-  fmt.Fprintln(os.Stderr, "  string Version()")
-  fmt.Fprintln(os.Stderr, "  LoginOutput MobileLogin(string traceId, MobileLoginInput output)")
-  fmt.Fprintln(os.Stderr, "  CreateMemberOutput CreateMember(string traceId, CreateMemberInput input)")
-  fmt.Fprintln(os.Stderr, "  string GenerateJWTToken(string traceId, JWTInput input, string secretKey, i32 expired)")
-  fmt.Fprintln(os.Stderr, "  JWTOutput ValidateJWT(string traceId, string tokenString, string secretKey)")
+  fmt.Fprintln(os.Stderr, "  void InsertRelation(string traceId, TParticipantRelation participantRelation)")
+  fmt.Fprintln(os.Stderr, "   SelectTop10Account(string traceId)")
+  fmt.Fprintln(os.Stderr, "   SelectInviteeListByUserId(string traceId, i32 userId)")
+  fmt.Fprintln(os.Stderr, "  void EnableParticipant(string traceId, i32 userId)")
+  fmt.Fprintln(os.Stderr, "  TUsername selectRealNameByUsername(string traceId, string username)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -122,32 +117,16 @@ func main() {
   }
   iprot := protocolFactory.GetProtocol(trans)
   oprot := protocolFactory.GetProtocol(trans)
-  client := account.NewAccountClient(thrift.NewTStandardClient(iprot, oprot))
+  client := business.NewTReformationActivityServiceClient(thrift.NewTStandardClient(iprot, oprot))
   if err := trans.Open(); err != nil {
     fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
     os.Exit(1)
   }
   
   switch cmd {
-  case "Ping":
-    if flag.NArg() - 1 != 0 {
-      fmt.Fprintln(os.Stderr, "Ping requires 0 args")
-      flag.Usage()
-    }
-    fmt.Print(client.Ping(context.Background()))
-    fmt.Print("\n")
-    break
-  case "Version":
-    if flag.NArg() - 1 != 0 {
-      fmt.Fprintln(os.Stderr, "Version requires 0 args")
-      flag.Usage()
-    }
-    fmt.Print(client.Version(context.Background()))
-    fmt.Print("\n")
-    break
-  case "MobileLogin":
+  case "InsertRelation":
     if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "MobileLogin requires 2 args")
+      fmt.Fprintln(os.Stderr, "InsertRelation requires 2 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
@@ -162,91 +141,70 @@ func main() {
     }
     factory18 := thrift.NewTSimpleJSONProtocolFactory()
     jsProt19 := factory18.GetProtocol(mbTrans16)
-    argvalue1 := inputs.NewMobileLoginInput()
+    argvalue1 := business.NewTParticipantRelation()
     err20 := argvalue1.Read(jsProt19)
     if err20 != nil {
       Usage()
       return
     }
     value1 := argvalue1
-    fmt.Print(client.MobileLogin(context.Background(), value0, value1))
+    fmt.Print(client.InsertRelation(context.Background(), value0, value1))
     fmt.Print("\n")
     break
-  case "CreateMember":
+  case "SelectTop10Account":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "SelectTop10Account requires 1 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    fmt.Print(client.SelectTop10Account(context.Background(), value0))
+    fmt.Print("\n")
+    break
+  case "SelectInviteeListByUserId":
     if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "CreateMember requires 2 args")
+      fmt.Fprintln(os.Stderr, "SelectInviteeListByUserId requires 2 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    arg22 := flag.Arg(2)
-    mbTrans23 := thrift.NewTMemoryBufferLen(len(arg22))
-    defer mbTrans23.Close()
-    _, err24 := mbTrans23.WriteString(arg22)
-    if err24 != nil {
+    tmp1, err23 := (strconv.Atoi(flag.Arg(2)))
+    if err23 != nil {
       Usage()
       return
     }
-    factory25 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt26 := factory25.GetProtocol(mbTrans23)
-    argvalue1 := inputs.NewCreateMemberInput()
-    err27 := argvalue1.Read(jsProt26)
-    if err27 != nil {
-      Usage()
-      return
-    }
+    argvalue1 := int32(tmp1)
     value1 := argvalue1
-    fmt.Print(client.CreateMember(context.Background(), value0, value1))
+    fmt.Print(client.SelectInviteeListByUserId(context.Background(), value0, value1))
     fmt.Print("\n")
     break
-  case "GenerateJWTToken":
-    if flag.NArg() - 1 != 4 {
-      fmt.Fprintln(os.Stderr, "GenerateJWTToken requires 4 args")
+  case "EnableParticipant":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "EnableParticipant requires 2 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    arg29 := flag.Arg(2)
-    mbTrans30 := thrift.NewTMemoryBufferLen(len(arg29))
-    defer mbTrans30.Close()
-    _, err31 := mbTrans30.WriteString(arg29)
-    if err31 != nil {
+    tmp1, err25 := (strconv.Atoi(flag.Arg(2)))
+    if err25 != nil {
       Usage()
       return
     }
-    factory32 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt33 := factory32.GetProtocol(mbTrans30)
-    argvalue1 := inputs.NewJWTInput()
-    err34 := argvalue1.Read(jsProt33)
-    if err34 != nil {
-      Usage()
-      return
-    }
+    argvalue1 := int32(tmp1)
     value1 := argvalue1
-    argvalue2 := flag.Arg(3)
-    value2 := argvalue2
-    tmp3, err36 := (strconv.Atoi(flag.Arg(4)))
-    if err36 != nil {
-      Usage()
-      return
-    }
-    argvalue3 := int32(tmp3)
-    value3 := argvalue3
-    fmt.Print(client.GenerateJWTToken(context.Background(), value0, value1, value2, value3))
+    fmt.Print(client.EnableParticipant(context.Background(), value0, value1))
     fmt.Print("\n")
     break
-  case "ValidateJWT":
-    if flag.NArg() - 1 != 3 {
-      fmt.Fprintln(os.Stderr, "ValidateJWT requires 3 args")
+  case "selectRealNameByUsername":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectRealNameByUsername requires 2 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
     argvalue1 := flag.Arg(2)
     value1 := argvalue1
-    argvalue2 := flag.Arg(3)
-    value2 := argvalue2
-    fmt.Print(client.ValidateJWT(context.Background(), value0, value1, value2))
+    fmt.Print(client.SelectRealNameByUsername(context.Background(), value0, value1))
     fmt.Print("\n")
     break
   case "":

@@ -7,6 +7,7 @@ import (
 	"bisale/bisale-console-api/codes"
 	"bisale/bisale-console-api/common"
 	"bisale/bisale-console-api/thrift/message"
+	accountInputs "bisale/thrift-account/thrift/inputs"
 )
 
 func GetLoginCodeIdentify(mobile string) string {
@@ -65,7 +66,7 @@ func PostLogin(c echo.Context) error {
 	// messageService := common.GetMessageServiceClient()
 	// captchaService := common.GetCaptchaServiceClient()
 	accountService := common.GetAccountServiceClient()
-	token, err := accountService.GenerateJWTToken(ctx, traceId, "welcome to bad", 12)
+	token, err := accountService.GenerateJWTToken(ctx, traceId, &accountInputs.JWTInput{MemberId: "123"}, "123456", 12)
 	if err != nil {
 		log.Error(err)
 		return err
