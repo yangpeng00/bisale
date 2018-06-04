@@ -6,11 +6,10 @@ then
     cd $Dir
     git checkout .
     git pull
-    git checkout dev
     cd ../../
 else
     git clone git@git.bisale.org:backend/thrift-business.git $Dir
-    git checkout dev
+    git checkout -b dev origin/dev
 fi
 
 thrift -out ./thrift -r --gen go $Dir/thrift/reformationActivity.thrift
