@@ -26,7 +26,10 @@ func main() {
 	api.POST("/role", controllers.PostCreateRole)
 
 	bisale := e.Group("/api/bisale")
-	bisale.GET("/users", controllers.GetBisaleUsers)
+	bisale.GET("/cert/list", controllers.GetCertList)
+	bisale.GET("/cert/list/count", controllers.GetCertListCount)
+	bisale.GET("/cert/detail",  controllers.GetCertDetailById)
+	bisale.POST("/cert/result", controllers.PostCertResult)
 
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }

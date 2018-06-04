@@ -30,8 +30,8 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "  string Version()")
   fmt.Fprintln(os.Stderr, "  LoginOutput MobileLogin(string traceId, MobileLoginInput output)")
   fmt.Fprintln(os.Stderr, "  CreateMemberOutput CreateMember(string traceId, CreateMemberInput input)")
-  fmt.Fprintln(os.Stderr, "  string GenerateJWTToken(string traceId, string secretKey, i32 expired)")
-  fmt.Fprintln(os.Stderr, "  bool ValidateJWT(string traceId, string tokenString, string secretKey)")
+  fmt.Fprintln(os.Stderr, "  string GenerateJWTToken(string traceId, JWTInput input, string secretKey, i32 expired)")
+  fmt.Fprintln(os.Stderr, "  JWTOutput ValidateJWT(string traceId, string tokenString, string secretKey)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -200,22 +200,39 @@ func main() {
     fmt.Print("\n")
     break
   case "GenerateJWTToken":
-    if flag.NArg() - 1 != 3 {
-      fmt.Fprintln(os.Stderr, "GenerateJWTToken requires 3 args")
+    if flag.NArg() - 1 != 4 {
+      fmt.Fprintln(os.Stderr, "GenerateJWTToken requires 4 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    argvalue1 := flag.Arg(2)
-    value1 := argvalue1
-    tmp2, err30 := (strconv.Atoi(flag.Arg(3)))
-    if err30 != nil {
+    arg29 := flag.Arg(2)
+    mbTrans30 := thrift.NewTMemoryBufferLen(len(arg29))
+    defer mbTrans30.Close()
+    _, err31 := mbTrans30.WriteString(arg29)
+    if err31 != nil {
       Usage()
       return
     }
-    argvalue2 := int32(tmp2)
+    factory32 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt33 := factory32.GetProtocol(mbTrans30)
+    argvalue1 := inputs.NewJWTInput()
+    err34 := argvalue1.Read(jsProt33)
+    if err34 != nil {
+      Usage()
+      return
+    }
+    value1 := argvalue1
+    argvalue2 := flag.Arg(3)
     value2 := argvalue2
-    fmt.Print(client.GenerateJWTToken(context.Background(), value0, value1, value2))
+    tmp3, err36 := (strconv.Atoi(flag.Arg(4)))
+    if err36 != nil {
+      Usage()
+      return
+    }
+    argvalue3 := int32(tmp3)
+    value3 := argvalue3
+    fmt.Print(client.GenerateJWTToken(context.Background(), value0, value1, value2, value3))
     fmt.Print("\n")
     break
   case "ValidateJWT":

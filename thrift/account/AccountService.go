@@ -167,14 +167,15 @@ type Account interface {
   CreateMember(ctx context.Context, traceId string, input *inputs.CreateMemberInput) (r *outputs.CreateMemberOutput, err error)
   // Parameters:
   //  - TraceId
+  //  - Input
   //  - SecretKey
   //  - Expired
-  GenerateJWTToken(ctx context.Context, traceId string, secretKey string, expired int32) (r string, err error)
+  GenerateJWTToken(ctx context.Context, traceId string, input *inputs.JWTInput, secretKey string, expired int32) (r string, err error)
   // Parameters:
   //  - TraceId
   //  - TokenString
   //  - SecretKey
-  ValidateJWT(ctx context.Context, traceId string, tokenString string, secretKey string) (r bool, err error)
+  ValidateJWT(ctx context.Context, traceId string, tokenString string, secretKey string) (r *outputs.JWTOutput, err error)
 }
 
 type AccountClient struct {
@@ -269,11 +270,13 @@ func (p *AccountClient) CreateMember(ctx context.Context, traceId string, input 
 
 // Parameters:
 //  - TraceId
+//  - Input
 //  - SecretKey
 //  - Expired
-func (p *AccountClient) GenerateJWTToken(ctx context.Context, traceId string, secretKey string, expired int32) (r string, err error) {
+func (p *AccountClient) GenerateJWTToken(ctx context.Context, traceId string, input *inputs.JWTInput, secretKey string, expired int32) (r string, err error) {
   var _args8 AccountGenerateJWTTokenArgs
   _args8.TraceId = traceId
+  _args8.Input = input
   _args8.SecretKey = secretKey
   _args8.Expired = expired
   var _result9 AccountGenerateJWTTokenResult
@@ -292,7 +295,7 @@ func (p *AccountClient) GenerateJWTToken(ctx context.Context, traceId string, se
 //  - TraceId
 //  - TokenString
 //  - SecretKey
-func (p *AccountClient) ValidateJWT(ctx context.Context, traceId string, tokenString string, secretKey string) (r bool, err error) {
+func (p *AccountClient) ValidateJWT(ctx context.Context, traceId string, tokenString string, secretKey string) (r *outputs.JWTOutput, err error) {
   var _args10 AccountValidateJWTArgs
   _args10.TraceId = traceId
   _args10.TokenString = tokenString
@@ -588,7 +591,7 @@ func (p *accountProcessorGenerateJWTToken) Process(ctx context.Context, seqId in
   result := AccountGenerateJWTTokenResult{}
 var retval string
   var err2 error
-  if retval, err2 = p.handler.GenerateJWTToken(ctx, args.TraceId, args.SecretKey, args.Expired); err2 != nil {
+  if retval, err2 = p.handler.GenerateJWTToken(ctx, args.TraceId, args.Input, args.SecretKey, args.Expired); err2 != nil {
   switch v := err2.(type) {
     case *Status:
   result.Status = v
@@ -639,7 +642,7 @@ func (p *accountProcessorValidateJWT) Process(ctx context.Context, seqId int32, 
 
   iprot.ReadMessageEnd()
   result := AccountValidateJWTResult{}
-var retval bool
+var retval *outputs.JWTOutput
   var err2 error
   if retval, err2 = p.handler.ValidateJWT(ctx, args.TraceId, args.TokenString, args.SecretKey); err2 != nil {
   switch v := err2.(type) {
@@ -654,7 +657,7 @@ var retval bool
     return true, err2
   }
   } else {
-    result.Success = &retval
+    result.Success = retval
 }
   if err2 = oprot.WriteMessageBegin("ValidateJWT", thrift.REPLY, seqId); err2 != nil {
     err = err2
@@ -1629,12 +1632,14 @@ func (p *AccountCreateMemberResult) String() string {
 
 // Attributes:
 //  - TraceId
+//  - Input
 //  - SecretKey
 //  - Expired
 type AccountGenerateJWTTokenArgs struct {
   TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
-  SecretKey string `thrift:"secretKey,2" db:"secretKey" json:"secretKey"`
-  Expired int32 `thrift:"expired,3" db:"expired" json:"expired"`
+  Input *inputs.JWTInput `thrift:"input,2" db:"input" json:"input"`
+  SecretKey string `thrift:"secretKey,3" db:"secretKey" json:"secretKey"`
+  Expired int32 `thrift:"expired,4" db:"expired" json:"expired"`
 }
 
 func NewAccountGenerateJWTTokenArgs() *AccountGenerateJWTTokenArgs {
@@ -1645,6 +1650,13 @@ func NewAccountGenerateJWTTokenArgs() *AccountGenerateJWTTokenArgs {
 func (p *AccountGenerateJWTTokenArgs) GetTraceId() string {
   return p.TraceId
 }
+var AccountGenerateJWTTokenArgs_Input_DEFAULT *inputs.JWTInput
+func (p *AccountGenerateJWTTokenArgs) GetInput() *inputs.JWTInput {
+  if !p.IsSetInput() {
+    return AccountGenerateJWTTokenArgs_Input_DEFAULT
+  }
+return p.Input
+}
 
 func (p *AccountGenerateJWTTokenArgs) GetSecretKey() string {
   return p.SecretKey
@@ -1653,6 +1665,10 @@ func (p *AccountGenerateJWTTokenArgs) GetSecretKey() string {
 func (p *AccountGenerateJWTTokenArgs) GetExpired() int32 {
   return p.Expired
 }
+func (p *AccountGenerateJWTTokenArgs) IsSetInput() bool {
+  return p.Input != nil
+}
+
 func (p *AccountGenerateJWTTokenArgs) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1677,7 +1693,7 @@ func (p *AccountGenerateJWTTokenArgs) Read(iprot thrift.TProtocol) error {
         }
       }
     case 2:
-      if fieldTypeId == thrift.STRING {
+      if fieldTypeId == thrift.STRUCT {
         if err := p.ReadField2(iprot); err != nil {
           return err
         }
@@ -1687,8 +1703,18 @@ func (p *AccountGenerateJWTTokenArgs) Read(iprot thrift.TProtocol) error {
         }
       }
     case 3:
-      if fieldTypeId == thrift.I32 {
+      if fieldTypeId == thrift.STRING {
         if err := p.ReadField3(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 4:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField4(iprot); err != nil {
           return err
         }
       } else {
@@ -1721,17 +1747,25 @@ func (p *AccountGenerateJWTTokenArgs)  ReadField1(iprot thrift.TProtocol) error 
 }
 
 func (p *AccountGenerateJWTTokenArgs)  ReadField2(iprot thrift.TProtocol) error {
+  p.Input = &inputs.JWTInput{}
+  if err := p.Input.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Input), err)
+  }
+  return nil
+}
+
+func (p *AccountGenerateJWTTokenArgs)  ReadField3(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
+  return thrift.PrependError("error reading field 3: ", err)
 } else {
   p.SecretKey = v
 }
   return nil
 }
 
-func (p *AccountGenerateJWTTokenArgs)  ReadField3(iprot thrift.TProtocol) error {
+func (p *AccountGenerateJWTTokenArgs)  ReadField4(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 3: ", err)
+  return thrift.PrependError("error reading field 4: ", err)
 } else {
   p.Expired = v
 }
@@ -1745,6 +1779,7 @@ func (p *AccountGenerateJWTTokenArgs) Write(oprot thrift.TProtocol) error {
     if err := p.writeField1(oprot); err != nil { return err }
     if err := p.writeField2(oprot); err != nil { return err }
     if err := p.writeField3(oprot); err != nil { return err }
+    if err := p.writeField4(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -1764,22 +1799,33 @@ func (p *AccountGenerateJWTTokenArgs) writeField1(oprot thrift.TProtocol) (err e
 }
 
 func (p *AccountGenerateJWTTokenArgs) writeField2(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("secretKey", thrift.STRING, 2); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:secretKey: ", p), err) }
-  if err := oprot.WriteString(string(p.SecretKey)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.secretKey (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("input", thrift.STRUCT, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:input: ", p), err) }
+  if err := p.Input.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Input), err)
+  }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:secretKey: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:input: ", p), err) }
   return err
 }
 
 func (p *AccountGenerateJWTTokenArgs) writeField3(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("expired", thrift.I32, 3); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:expired: ", p), err) }
-  if err := oprot.WriteI32(int32(p.Expired)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.expired (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("secretKey", thrift.STRING, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:secretKey: ", p), err) }
+  if err := oprot.WriteString(string(p.SecretKey)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.secretKey (3) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:expired: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:secretKey: ", p), err) }
+  return err
+}
+
+func (p *AccountGenerateJWTTokenArgs) writeField4(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("expired", thrift.I32, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:expired: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Expired)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.expired (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:expired: ", p), err) }
   return err
 }
 
@@ -2102,7 +2148,7 @@ func (p *AccountValidateJWTArgs) String() string {
 //  - Success
 //  - Status
 type AccountValidateJWTResult struct {
-  Success *bool `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *outputs.JWTOutput `thrift:"success,0" db:"success" json:"success,omitempty"`
   Status *Status `thrift:"status,1" db:"status" json:"status,omitempty"`
 }
 
@@ -2110,12 +2156,12 @@ func NewAccountValidateJWTResult() *AccountValidateJWTResult {
   return &AccountValidateJWTResult{}
 }
 
-var AccountValidateJWTResult_Success_DEFAULT bool
-func (p *AccountValidateJWTResult) GetSuccess() bool {
+var AccountValidateJWTResult_Success_DEFAULT *outputs.JWTOutput
+func (p *AccountValidateJWTResult) GetSuccess() *outputs.JWTOutput {
   if !p.IsSetSuccess() {
     return AccountValidateJWTResult_Success_DEFAULT
   }
-return *p.Success
+return p.Success
 }
 var AccountValidateJWTResult_Status_DEFAULT *Status
 func (p *AccountValidateJWTResult) GetStatus() *Status {
@@ -2146,7 +2192,7 @@ func (p *AccountValidateJWTResult) Read(iprot thrift.TProtocol) error {
     if fieldTypeId == thrift.STOP { break; }
     switch fieldId {
     case 0:
-      if fieldTypeId == thrift.BOOL {
+      if fieldTypeId == thrift.STRUCT {
         if err := p.ReadField0(iprot); err != nil {
           return err
         }
@@ -2181,11 +2227,10 @@ func (p *AccountValidateJWTResult) Read(iprot thrift.TProtocol) error {
 }
 
 func (p *AccountValidateJWTResult)  ReadField0(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadBool(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+  p.Success = &outputs.JWTOutput{}
+  if err := p.Success.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Success), err)
+  }
   return nil
 }
 
@@ -2213,10 +2258,11 @@ func (p *AccountValidateJWTResult) Write(oprot thrift.TProtocol) error {
 
 func (p *AccountValidateJWTResult) writeField0(oprot thrift.TProtocol) (err error) {
   if p.IsSetSuccess() {
-    if err := oprot.WriteFieldBegin("success", thrift.BOOL, 0); err != nil {
+    if err := oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
-    if err := oprot.WriteBool(bool(*p.Success)); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T.success (0) field write error: ", p), err) }
+    if err := p.Success.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Success), err)
+    }
     if err := oprot.WriteFieldEnd(); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
   }

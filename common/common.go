@@ -11,6 +11,7 @@ import (
 
 var Log *logrus.Logger
 var AccountServicePool *thriftPool.ThriftPool
+var InvitationServicePool *thriftPool.ThriftPool
 var MessageServicePool *thriftPool.ThriftPool
 var CaptchaServicePool *thriftPool.ThriftPool
 var StorageServicePool *thriftPool.ThriftPool
