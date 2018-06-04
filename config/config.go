@@ -10,7 +10,7 @@ var Config = struct {
 	Port     string `env:"port"`
 	LogLevel string `yaml:"log_level" default:"debug"`
 	JWTToken string `yaml:"jwt_token" default:"123456"`
-	KYCBucket string `yaml:"kyc_bucket" defualt:"bisale-test-huadong"`
+	KYCBucket string `yaml:"kyc_bucket" default:"bisale-test-huadong"`
 
 	AccountService struct {
 		Host        string

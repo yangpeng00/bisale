@@ -22,10 +22,10 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "Usage of ", os.Args[0], " [-h host:port] [-u url] [-f[ramed]] function [arg1 [arg2...]]:")
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
-  fmt.Fprintln(os.Stderr, "   selectUserKycByConditions(string userName, string status, i32 startPage, i32 pageSize)")
-  fmt.Fprintln(os.Stderr, "  i32 selectUserKycCountByConditions(string userName, string status)")
-  fmt.Fprintln(os.Stderr, "  TUserKyc selectUserKycById(i32 id)")
-  fmt.Fprintln(os.Stderr, "  i32 auditUserKyc(i32 id, string status, string mark, i32 loginUserId)")
+  fmt.Fprintln(os.Stderr, "   selectUserKycByConditions(string traceId, string userName, string status, i32 startPage, i32 pageSize)")
+  fmt.Fprintln(os.Stderr, "  i32 selectUserKycCountByConditions(string traceId, string userName, string status)")
+  fmt.Fprintln(os.Stderr, "  TUserKyc selectUserKycById(string traceId, i32 id)")
+  fmt.Fprintln(os.Stderr, "  i32 auditUserKyc(string traceId, i32 id, string status, string mark)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -124,20 +124,15 @@ func main() {
   
   switch cmd {
   case "selectUserKycByConditions":
-    if flag.NArg() - 1 != 4 {
-      fmt.Fprintln(os.Stderr, "SelectUserKycByConditions requires 4 args")
+    if flag.NArg() - 1 != 5 {
+      fmt.Fprintln(os.Stderr, "SelectUserKycByConditions requires 5 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
     argvalue1 := flag.Arg(2)
     value1 := argvalue1
-    tmp2, err13 := (strconv.Atoi(flag.Arg(3)))
-    if err13 != nil {
-      Usage()
-      return
-    }
-    argvalue2 := int32(tmp2)
+    argvalue2 := flag.Arg(3)
     value2 := argvalue2
     tmp3, err14 := (strconv.Atoi(flag.Arg(4)))
     if err14 != nil {
@@ -146,34 +141,45 @@ func main() {
     }
     argvalue3 := int32(tmp3)
     value3 := argvalue3
-    fmt.Print(client.SelectUserKycByConditions(context.Background(), value0, value1, value2, value3))
+    tmp4, err15 := (strconv.Atoi(flag.Arg(5)))
+    if err15 != nil {
+      Usage()
+      return
+    }
+    argvalue4 := int32(tmp4)
+    value4 := argvalue4
+    fmt.Print(client.SelectUserKycByConditions(context.Background(), value0, value1, value2, value3, value4))
     fmt.Print("\n")
     break
   case "selectUserKycCountByConditions":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "SelectUserKycCountByConditions requires 2 args")
+    if flag.NArg() - 1 != 3 {
+      fmt.Fprintln(os.Stderr, "SelectUserKycCountByConditions requires 3 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
     argvalue1 := flag.Arg(2)
     value1 := argvalue1
-    fmt.Print(client.SelectUserKycCountByConditions(context.Background(), value0, value1))
+    argvalue2 := flag.Arg(3)
+    value2 := argvalue2
+    fmt.Print(client.SelectUserKycCountByConditions(context.Background(), value0, value1, value2))
     fmt.Print("\n")
     break
   case "selectUserKycById":
-    if flag.NArg() - 1 != 1 {
-      fmt.Fprintln(os.Stderr, "SelectUserKycById requires 1 args")
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectUserKycById requires 2 args")
       flag.Usage()
     }
-    tmp0, err17 := (strconv.Atoi(flag.Arg(1)))
-    if err17 != nil {
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err20 := (strconv.Atoi(flag.Arg(2)))
+    if err20 != nil {
       Usage()
       return
     }
-    argvalue0 := int32(tmp0)
-    value0 := argvalue0
-    fmt.Print(client.SelectUserKycById(context.Background(), value0))
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.SelectUserKycById(context.Background(), value0, value1))
     fmt.Print("\n")
     break
   case "auditUserKyc":
@@ -181,23 +187,18 @@ func main() {
       fmt.Fprintln(os.Stderr, "AuditUserKyc requires 4 args")
       flag.Usage()
     }
-    tmp0, err18 := (strconv.Atoi(flag.Arg(1)))
-    if err18 != nil {
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err22 := (strconv.Atoi(flag.Arg(2)))
+    if err22 != nil {
       Usage()
       return
     }
-    argvalue0 := int32(tmp0)
-    value0 := argvalue0
-    argvalue1 := flag.Arg(2)
+    argvalue1 := int32(tmp1)
     value1 := argvalue1
     argvalue2 := flag.Arg(3)
     value2 := argvalue2
-    tmp3, err21 := (strconv.Atoi(flag.Arg(4)))
-    if err21 != nil {
-      Usage()
-      return
-    }
-    argvalue3 := int32(tmp3)
+    argvalue3 := flag.Arg(4)
     value3 := argvalue3
     fmt.Print(client.AuditUserKyc(context.Background(), value0, value1, value2, value3))
     fmt.Print("\n")

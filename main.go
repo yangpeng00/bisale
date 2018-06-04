@@ -32,7 +32,7 @@ func main() {
 	// auth 路由
 	auth := e.Group("/api/auth")
 	auth.POST("/login", controllers.PostLogin)
-	auth.GET("/login/sms/code", controllers.GetLoginSMSCode)
+	auth.POST("/login/sms/code", controllers.PostLoginSMSCode)
 	auth.POST("/role", controllers.PostCreateRole)
 
 	// member 路由

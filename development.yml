@@ -8,7 +8,7 @@ bisale_business_service:
   port: 10001
 
 account_service:
-  host: 0.0.0.0
+  host: 47.75.183.114
   port: 10002
 
 captcha_service:

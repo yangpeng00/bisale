@@ -10,17 +10,17 @@ import (
 	accountInputs "bisale/bisale-console-api/thrift/inputs"
 )
 
-type MobileLoginForm struct {
-	Mobile string `json:"mobile" validate:"required"`
+type LoginForm struct {
+	Username string `json:"username" validate:"required"`
 	Code   string `json:"code" validate:"required"`
-	Token  string `json:"token"`
+	Key  string `json:"key"`
 }
 
 func GetLoginCodeIdentify(mobile string) string {
 	return "login::" + mobile
 }
 
-func GetLoginSMSCode(c echo.Context) error {
+func PostLoginSMSCode(c echo.Context) error {
 	log, traceId := common.GetLoggerWithTraceId(c)
 
 	messageService := common.GetMessageServiceClient()
@@ -68,12 +68,12 @@ func GetLoginSMSCode(c echo.Context) error {
 
 func PostLogin(c echo.Context) error {
 
-	mobileLoginForm := new(MobileLoginForm)
+	loginForm := new(LoginForm)
 
-	if err := c.Bind(mobileLoginForm); err != nil {
+	if err := c.Bind(loginForm); err != nil {
 		return Status(c, codes.FormIsEmpty, err)
 	}
-	if err := c.Validate(mobileLoginForm); err != nil {
+	if err := c.Validate(loginForm); err != nil {
 		return Status(c, codes.ValidateError, err)
 	}
 
@@ -82,7 +82,7 @@ func PostLogin(c echo.Context) error {
 
 	captchaService := common.GetCaptchaServiceClient()
 
-	correct, err := captchaService.ValidateNumberCode(ctx, traceId, mobileLoginForm.Mobile, mobileLoginForm.Code, mobileLoginForm.Token)
+	correct, err := captchaService.ValidateNumberCode(ctx, traceId, loginForm.Username, loginForm.Code, loginForm.Key)
 
 	if err != nil {
 		log.Error(err)

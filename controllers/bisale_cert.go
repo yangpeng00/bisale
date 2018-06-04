@@ -8,6 +8,7 @@ import (
 	"bisale/bisale-console-api/common"
 	"bisale/bisale-console-api/config"
 	"bisale/bisale-console-api/domain"
+	"fmt"
 )
 
 func GetCertList(c echo.Context) error {
@@ -25,7 +26,7 @@ func GetCertList(c echo.Context) error {
 	userService := common.GetBisaleUserServiceClient()
 
 	ctx := context.Background()
-	res, err := userService.SelectUserKycByConditions(ctx, keyword, status, int32(page), int32(size))
+	res, err := userService.SelectUserKycByConditions(ctx, "", keyword, status, int32(page), int32(size))
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, nil)
@@ -39,14 +40,14 @@ func GetCertDetailById(c echo.Context) error {
 	log, traceId := common.GetLoggerWithTraceId(c)
 	userService := common.GetBisaleUserServiceClient()
 	ctx := context.Background()
-	res, err := userService.SelectUserKycById(ctx, int32(id))
+	res, err := userService.SelectUserKycById(ctx, "", int32(id))
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, nil)
 	}
 
 	storageService := common.GetStorageServiceClient()
-
+	fmt.Println(res.IdPicFront)
 	images, err := storageService.GetProcessUrls(ctx, traceId, config.Config.KYCBucket, map[string]string{
 		"IdPicFront":       res.IdPicFront,
 		"IdPicBack":        res.IdPicBack,
@@ -58,7 +59,7 @@ func GetCertDetailById(c echo.Context) error {
 
 	if err != nil {
 		log.Error(err)
-		return Status(c, codes.ServiceError, nil)
+		return Status(c, codes.ServiceError, err)
 	}
 
 	res.IdPicFront=images["IdPicFront"]
@@ -80,7 +81,7 @@ func PostCertResult(c echo.Context) error {
 	log, _ := common.GetLoggerWithTraceId(c)
 	userService := common.GetBisaleUserServiceClient()
 	businessService := common.GetBisaleBusinessServiceClient()
-	resp, err := userService.AuditUserKyc(context.Background(), req.Id, req.Status, req.Mark, 0)
+	resp, err := userService.AuditUserKyc(context.Background(), "", req.Id, req.Status, req.Mark)
 	if req.Status == "2" {
 		businessService.EnableParticipant(context.Background(), "", req.Id)
 	}
@@ -97,7 +98,7 @@ func GetCertListCount(c echo.Context) error {
 	keyword := c.QueryParam("keyword")
 	status := c.QueryParam("status")
 	userService := common.GetBisaleUserServiceClient()
-	res, err := userService.SelectUserKycCountByConditions(context.Background(), keyword, status)
+	res, err := userService.SelectUserKycCountByConditions(context.Background(), "", keyword, status)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, nil)
