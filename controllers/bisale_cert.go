@@ -26,7 +26,11 @@ func GetCertList(c echo.Context) error {
 	userService := common.GetBisaleUserServiceClient()
 
 	ctx := context.Background()
+
+	log.Info("---wawawawawaw---")
+	log.Info("key", keyword, "status", status, int32(page), int32(size))
 	res, err := userService.SelectUserKycByConditions(ctx, "", keyword, status, int32(page), int32(size))
+	log.Info(res)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, nil)
