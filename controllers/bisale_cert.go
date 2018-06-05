@@ -24,7 +24,8 @@ func GetCertList(c echo.Context) error {
 	}
 
 	log, _ := common.GetLoggerWithTraceId(c)
-	userService := common.GetBisaleUserServiceClient()
+	userService, userClient := common.GetBisaleUserServiceClient()
+	defer common.BisaleUserServicePool.Put(userClient)
 
 	ctx := context.Background()
 
@@ -43,7 +44,9 @@ func GetCertDetailById(c echo.Context) error {
 	id, _ := strconv.ParseInt(c.QueryParam("id"), 10, 32)
 
 	log, traceId := common.GetLoggerWithTraceId(c)
-	userService := common.GetBisaleUserServiceClient()
+	userService, userClient := common.GetBisaleUserServiceClient()
+	defer common.BisaleUserServicePool.Put(userClient)
+
 	ctx := context.Background()
 	res, err := userService.SelectUserKycById(ctx, "", int32(id))
 	if err != nil {
@@ -51,7 +54,9 @@ func GetCertDetailById(c echo.Context) error {
 		return Status(c, codes.ServiceError, nil)
 	}
 
-	storageService := common.GetStorageServiceClient()
+	storageService, storageClient := common.GetStorageServiceClient()
+	defer common.StorageServicePool.Put(storageClient)
+
 	if strings.HasPrefix(res.IdPicFront, "U/") ||
 		strings.HasPrefix(res.IdPicBack, "U/") ||
 		strings.HasPrefix(res.IdPicHold, "U/") ||
@@ -99,10 +104,17 @@ func PostCertResult(c echo.Context) error {
 	}
 
 	log, traceId := common.GetLoggerWithTraceId(c)
-	userService := common.GetBisaleUserServiceClient()
-	businessService := common.GetBisaleBusinessServiceClient()
+
+	userService, userClient := common.GetBisaleUserServiceClient()
+	defer common.BisaleUserServicePool.Put(userClient)
+
+	businessService, businessClient := common.GetBisaleBusinessServiceClient()
+	defer common.BisaleBusinessServicePool.Put(businessClient)
+
 	resp, err := userService.AuditUserKyc(context.Background(), "", req.Id, req.Status, req.Mark, req.UserId)
-	messageService := common.GetMessageServiceClient()
+	messageService, messageClient := common.GetMessageServiceClient()
+	defer common.MessageServicePool.Put(messageClient)
+
 	ctx := context.Background()
 	if req.Status == "2" {
 		err := businessService.EnableParticipant(context.Background(), "", req.UserId)
@@ -155,7 +167,10 @@ func GetCertListCount(c echo.Context) error {
 	log, _ := common.GetLoggerWithTraceId(c)
 	keyword := c.QueryParam("keyword")
 	status := c.QueryParam("status")
-	userService := common.GetBisaleUserServiceClient()
+
+	userService, userClient := common.GetBisaleUserServiceClient()
+	defer common.BisaleUserServicePool.Put(userClient)
+
 	res, err := userService.SelectUserKycCountByConditions(context.Background(), "", keyword, status)
 	if err != nil {
 		log.Error(err)

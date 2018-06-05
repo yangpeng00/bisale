@@ -18,7 +18,9 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 			return controllers.Status(c, codes.AccessTokenIsEmpty, "")
 		}
 		// traceId := c.Request().Header.Get("X-Trace-Id")
-		accountService := common.GetAccountServiceClient()
+		accountService,accountClient := common.GetAccountServiceClient()
+		defer common.AccountServicePool.Put(accountClient)
+
 		jwtOutput, err := accountService.ValidateJWT(context.Background(), "", accessToken, config.Config.JWTToken)
 		if err != nil {
 			return err

@@ -45,7 +45,7 @@ func closeCaptchaServiceClient(c *thriftPool.IdleClient) error {
 	return nil
 }
 
-func GetCaptchaServiceClient() (c *captcha.CaptchaClient) {
+func GetCaptchaServiceClient() (s *captcha.CaptchaClient, c *thriftPool.IdleClient) {
 
 	client, err := CaptchaServicePool.Get()
 
@@ -58,14 +58,14 @@ func GetCaptchaServiceClient() (c *captcha.CaptchaClient) {
 		Log.Error(fmt.Printf("Captcha client has closed"))
 	}
 
-	err = CaptchaServicePool.Put(client)
-
-	if err != nil {
-		Log.Error(fmt.Printf("Put captcha client to pool error: %s", err.Error()))
-		return
-	}
+	//err = CaptchaServicePool.Put(client)
+	//
+	//if err != nil {
+	//	Log.Error(fmt.Printf("Put captcha client to pool error: %s", err.Error()))
+	//	return
+	//}
 
 	Log.Info("Get captcha client from pool success")
 
-	return client.Client.(*captcha.CaptchaClient)
+	return client.Client.(*captcha.CaptchaClient), client
 }

@@ -45,7 +45,7 @@ func closeStroageServiceClient(c *thriftPool.IdleClient) error {
 	return nil
 }
 
-func GetStorageServiceClient() (c *storage.StorageClient) {
+func GetStorageServiceClient() (s *storage.StorageClient, c *thriftPool.IdleClient) {
 
 	client, err := StorageServicePool.Get()
 
@@ -58,14 +58,14 @@ func GetStorageServiceClient() (c *storage.StorageClient) {
 		Log.Error(fmt.Printf("Storage client has closed"))
 	}
 
-	err = StorageServicePool.Put(client)
-
-	if err != nil {
-		Log.Error(fmt.Printf("Put storage client to pool error: %s", err.Error()))
-		return
-	}
+	//err = StorageServicePool.Put(client)
+	//
+	//if err != nil {
+	//	Log.Error(fmt.Printf("Put storage client to pool error: %s", err.Error()))
+	//	return
+	//}
 
 	Log.Info("Get storage client from pool success")
 
-	return client.Client.(*storage.StorageClient)
+	return client.Client.(*storage.StorageClient), client
 }

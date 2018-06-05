@@ -30,7 +30,10 @@ func PostCreateMember(c echo.Context) error {
 	if err := c.Validate(createMemberForm); err != nil {
 		return Status(c, codes.ValidateError, err)
 	}
-	accountService := common.GetAccountServiceClient()
+
+	accountService,accountClient := common.GetAccountServiceClient()
+	defer common.AccountServicePool.Put(accountClient)
+
 	createMemberInput := accountInputs.CreateMemberInput{
 		Mobile:   createMemberForm.Mobile,
 		Password: createMemberForm.Password,
