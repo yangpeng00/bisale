@@ -7,6 +7,7 @@ import (
 	"bisale/bisale-console-api/config"
 	"bisale/foundation/thrift/pool"
 	"github.com/labstack/echo"
+	"github.com/go-redis/redis"
 )
 
 var Log *logrus.Logger
@@ -17,6 +18,8 @@ var CaptchaServicePool *thriftPool.ThriftPool
 var StorageServicePool *thriftPool.ThriftPool
 var BisaleUserServicePool *thriftPool.ThriftPool
 var BisaleBusinessServicePool *thriftPool.ThriftPool
+
+var Cache *redis.Client
 
 func init() {
 	// 配置日志
@@ -32,6 +35,17 @@ func init() {
 	Log.Formatter = &logrus.JSONFormatter{}
 	Log.Out = os.Stdout
 	Log.Level = logLevel
+
+	// 配置缓存
+	Cache = redis.NewClient(&redis.Options{
+		Addr:     fmt.Sprintf("%s:%s", config.Config.Redis.Host, config.Config.Redis.Port),
+		Password: config.Config.Redis.Password,
+	})
+
+	if err := Cache.Ping().Err(); err != nil {
+		fmt.Printf("Ping redis error: %s", err)
+		os.Exit(1)
+	}
 
 	// 配置 Account 服务连接池
 	AccountServicePool = thriftPool.NewThriftPool(

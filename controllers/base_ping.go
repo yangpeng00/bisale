@@ -6,6 +6,5 @@ import (
 )
 
 func Ping(c echo.Context) error {
-
 	return Status(c, codes.Success, "success")
 }

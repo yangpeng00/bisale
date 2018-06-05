@@ -26,7 +26,8 @@ func main() {
 	e.Use(middlewares.LogrusHook())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
-	e.Use(middlewares.FilterRequests)
+	e.Use(middlewares.RequestHash)
+	e.Use(middlewares.FilterRequestsWithIp)
 
 	e.GET("/ping", controllers.Ping)
 
@@ -46,7 +47,7 @@ func main() {
 	bisale.GET("/cert/list", controllers.GetCertList)
 	bisale.GET("/cert/list/count", controllers.GetCertListCount)
 	bisale.GET("/cert/detail", controllers.GetCertDetailById)
-	bisale.POST("/cert/result", controllers.PostCertResult)
+	bisale.POST("/cert/result", controllers.PostCertResult, middlewares.FilterRequestsStrict)
 
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }

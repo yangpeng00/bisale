@@ -3,6 +3,12 @@ port: 1025
 log_level: info
 version: 1.0.0
 
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: ""
+
+
 bisale_business_service:
   #host: 47.75.183.114
   host: 52.196.219.81

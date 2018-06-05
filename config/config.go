@@ -12,7 +12,12 @@ var Config = struct {
 	JWTToken   string `yaml:"jwt_token" default:"123456"`
 	KYCBucket  string `yaml:"kyc_bucket" default:"bisale-test-huadong"`
 	OldKYCHost string `yaml:"old_kyc_bucket" default:"http://bi-sale.oss-cn-hongkong.aliyuncs.com/"`
-
+	Redis struct {
+		Host        string
+		Port        string
+		Password    string
+		CachePrefix string `yaml:"cache_prefix" default:"bse_console_api_"`
+	}
 	AccountService struct {
 		Host        string
 		Port        string
