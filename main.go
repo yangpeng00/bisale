@@ -27,7 +27,7 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 	e.Use(middlewares.RequestHash)
-	e.Use(middlewares.FilterRequestsWithIp)
+	e.Use(middlewares.FilterIteratedRequests)
 
 	e.GET("/ping", controllers.Ping)
 

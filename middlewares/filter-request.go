@@ -70,11 +70,12 @@ func FilterRequestsStrict(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
-func FilterRequestsWithToken(next echo.HandlerFunc) echo.HandlerFunc {
+func FilterIteratedRequests(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		hash := c.Request().Header.Get("X-Request-Hash")
 		token := c.Request().Header.Get("X-Access-Token")
-		cacheKey := hashString(config.Config.Redis.CachePrefix, "token-filter", token, hash)
+		ip := c.RealIP()
+		cacheKey := hashString(config.Config.Redis.CachePrefix, "token-filter", ip, token, hash)
 		_, err := common.Cache.Get(cacheKey).Result()
 
 		if err != nil && err != redis.Nil {
@@ -84,11 +85,11 @@ func FilterRequestsWithToken(next echo.HandlerFunc) echo.HandlerFunc {
 		if err != redis.Nil {
 			return controllers.Status(c, codes.RepeatRequestWithToken, err)
 		}
-		common.Cache.Set(cacheKey, "", 60*time.Second)
+		common.Cache.Set(cacheKey, "", 2*time.Second)
 		if err := next(c); err != nil {
 			c.Error(err)
 		}
-		common.Cache.Del(cacheKey)
+		// common.Cache.Del(cacheKey)
 		return nil
 	}
 }
