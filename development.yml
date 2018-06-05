@@ -39,4 +39,6 @@ bisale_user_service:
   host: 52.196.219.81
   port: 10011
 
-
+bisale_withdraw_service:
+  host: 52.196.219.81
+  port: 10011
