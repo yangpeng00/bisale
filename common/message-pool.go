@@ -45,7 +45,7 @@ func closeMessageServiceClient(c *thriftPool.IdleClient) error {
 	return nil
 }
 
-func GetMessageServiceClient() (c *message.MessageClient) {
+func GetMessageServiceClient() (s *message.MessageClient, c *thriftPool.IdleClient) {
 
 	client, err := MessageServicePool.Get()
 
@@ -58,14 +58,14 @@ func GetMessageServiceClient() (c *message.MessageClient) {
 		Log.Error(fmt.Printf("Account client has closed"))
 	}
 
-	err = MessageServicePool.Put(client)
-
-	if err != nil {
-		Log.Error(fmt.Printf("Put message client to pool error: %s", err.Error()))
-		return
-	}
+	//err = MessageServicePool.Put(client)
+	//
+	//if err != nil {
+	//	Log.Error(fmt.Printf("Put message client to pool error: %s", err.Error()))
+	//	return
+	//}
 
 	Log.Info("Get message client from pool success")
 
-	return client.Client.(*message.MessageClient)
+	return client.Client.(*message.MessageClient), client
 }

@@ -44,7 +44,7 @@ func closeBisaleBusinessServiceClient(c *thriftPool.IdleClient) error {
 	return nil
 }
 
-func GetBisaleBusinessServiceClient() (c *business.TReformationActivityServiceClient) {
+func GetBisaleBusinessServiceClient() (s *business.TReformationActivityServiceClient, c *thriftPool.IdleClient) {
 
 	client, err := BisaleBusinessServicePool.Get()
 
@@ -57,14 +57,14 @@ func GetBisaleBusinessServiceClient() (c *business.TReformationActivityServiceCl
 		Log.Error(fmt.Printf("Bisale business client has closed"))
 	}
 
-	err = BisaleBusinessServicePool.Put(client)
-
-	if err != nil {
-		Log.Error(fmt.Printf("Put bisale business client to pool error: %s", err.Error()))
-		return
-	}
-
+	//err = BisaleBusinessServicePool.Put(client)
+	//
+	//if err != nil {
+	//	Log.Error(fmt.Printf("Put bisale business client to pool error: %s", err.Error()))
+	//	return
+	//}
+	//
 	Log.Info("Get bisale business client from pool success")
 
-	return client.Client.(*business.TReformationActivityServiceClient)
+	return client.Client.(*business.TReformationActivityServiceClient), client
 }

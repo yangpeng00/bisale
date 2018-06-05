@@ -45,7 +45,7 @@ func closeAccountServiceClient(c *thriftPool.IdleClient) error {
 	return nil
 }
 
-func GetAccountServiceClient() (c *account.AccountClient) {
+func GetAccountServiceClient() (s *account.AccountClient, c *thriftPool.IdleClient) {
 
 	client, err := AccountServicePool.Get()
 
@@ -58,14 +58,14 @@ func GetAccountServiceClient() (c *account.AccountClient) {
 		Log.Error(fmt.Printf("Account client has closed"))
 	}
 
-	err = AccountServicePool.Put(client)
-
-	if err != nil {
-		Log.Error(fmt.Printf("Put account client to pool error: %s", err.Error()))
-		return
-	}
-
+	//err = AccountServicePool.Put(client)
+	//
+	//if err != nil {
+	//	Log.Error(fmt.Printf("Put account client to pool error: %s", err.Error()))
+	//	return
+	//}
+	//
 	Log.Info("Get account client from pool success")
 
-	return client.Client.(*account.AccountClient)
+	return client.Client.(*account.AccountClient), client
 }

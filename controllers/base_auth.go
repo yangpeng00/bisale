@@ -12,8 +12,8 @@ import (
 
 type LoginForm struct {
 	Username string `json:"username" validate:"required"`
-	Code   string `json:"code" validate:"required"`
-	Key  string `json:"key"`
+	Code     string `json:"code" validate:"required"`
+	Key      string `json:"key"`
 }
 
 func GetLoginCodeIdentify(mobile string) string {
@@ -23,8 +23,10 @@ func GetLoginCodeIdentify(mobile string) string {
 func PostLoginSMSCode(c echo.Context) error {
 	log, traceId := common.GetLoggerWithTraceId(c)
 
-	messageService := common.GetMessageServiceClient()
-	captchaService := common.GetCaptchaServiceClient()
+	messageService, messageClient := common.GetMessageServiceClient()
+	defer common.MessageServicePool.Put(messageClient)
+	captchaService, captchaClient := common.GetCaptchaServiceClient()
+	defer common.CaptchaServicePool.Put(captchaClient)
 
 	ctx := context.Background()
 	mobile := c.Param("mobile")
@@ -80,7 +82,8 @@ func PostLogin(c echo.Context) error {
 	log, traceId := common.GetLoggerWithTraceId(c)
 	ctx := context.Background()
 
-	captchaService := common.GetCaptchaServiceClient()
+	captchaService, captchaClient := common.GetCaptchaServiceClient()
+	defer common.CaptchaServicePool.Put(captchaClient)
 
 	correct, err := captchaService.ValidateNumberCode(ctx, traceId, loginForm.Username, loginForm.Code, loginForm.Key)
 
@@ -93,7 +96,9 @@ func PostLogin(c echo.Context) error {
 		return Status(c, codes.SMSCodeError, err)
 	}
 
-	accountService := common.GetAccountServiceClient()
+	accountService,accountClient := common.GetAccountServiceClient()
+	defer common.AccountServicePool.Put(accountClient)
+
 	token, err := accountService.GenerateJWTToken(ctx, traceId, &accountInputs.JWTInput{MemberId: "123"}, config.Config.JWTToken, 12)
 
 	if err != nil {

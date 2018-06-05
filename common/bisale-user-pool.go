@@ -46,7 +46,7 @@ func closeBisaleUserServiceClient(c *thriftPool.IdleClient) error {
 	return nil
 }
 
-func GetBisaleUserServiceClient() (c *user.TUserKycServiceClient) {
+func GetBisaleUserServiceClient() (s *user.TUserKycServiceClient, c *thriftPool.IdleClient) {
 
 	client, err := BisaleUserServicePool.Get()
 
@@ -59,14 +59,14 @@ func GetBisaleUserServiceClient() (c *user.TUserKycServiceClient) {
 		Log.Error(fmt.Printf("Bisale user client has closed"))
 	}
 
-	err = BisaleUserServicePool.Put(client)
-
-	if err != nil {
-		Log.Error(fmt.Printf("Put bisale user client to pool error: %s", err.Error()))
-		return
-	}
-
+	//err = BisaleUserServicePool.Put(client)
+	//
+	//if err != nil {
+	//	Log.Error(fmt.Printf("Put bisale user client to pool error: %s", err.Error()))
+	//	return
+	//}
+	//
 	Log.Info("Get bisale user client from pool success")
 
-	return client.Client.(*user.TUserKycServiceClient)
+	return client.Client.(*user.TUserKycServiceClient), client
 }
