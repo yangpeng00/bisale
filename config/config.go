@@ -4,6 +4,7 @@ import (
 	foundationConfig "bisale/foundation/config"
 )
 
+
 var Config = struct {
 	Version    string
 	Host       string
@@ -60,6 +61,18 @@ var Config = struct {
 		ConnTimeout uint32 `yaml:"conn_timeout" default:"1"`
 		IdleTimeout uint32 `yaml:"idle_timeout" default:"1"`
 	} `yaml:"bisale_business_service"`
+
+	KycSuccessMail struct{
+		AppId      string `yaml:"app_id" default:"bisale-admin"`
+		TemplateId string `yaml:"app_id" default:"template::mail::kyc-success"`
+		DataFormat string
+	}
+
+	KycFailedMail struct{
+		AppId      string `yaml:"app_id" default:"bisale-admin"`
+		TemplateId string `yaml:"app_id" default:"template::mail::kyc-failed"`
+		DataFormat string
+	}
 }{}
 
 func init() {

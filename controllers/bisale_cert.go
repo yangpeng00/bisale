@@ -9,6 +9,7 @@ import (
 	"bisale/bisale-console-api/config"
 	"bisale/bisale-console-api/domain"
 	"strings"
+	"github.com/sirupsen/logrus"
 )
 
 func GetCertList(c echo.Context) error {
@@ -97,21 +98,50 @@ func PostCertResult(c echo.Context) error {
 		return Status(c, codes.ServiceError, nil)
 	}
 
-	log, _ := common.GetLoggerWithTraceId(c)
+	log, traceId := common.GetLoggerWithTraceId(c)
 	userService := common.GetBisaleUserServiceClient()
 	businessService := common.GetBisaleBusinessServiceClient()
-	// resp, err := userService.AuditUserKyc(context.Background(), "", req.Id, req.Status, req.Mark, req.UserId)
-	_, err := userService.AuditUserKyc(context.Background(), "", req.Id, req.Status, req.Mark, req.UserId)
-	// messageService := common.GetMessageServiceClient()
-	// ctx := context.Background()
+	resp, err := userService.AuditUserKyc(context.Background(), "", req.Id, req.Status, req.Mark, req.UserId)
+	messageService := common.GetMessageServiceClient()
+	ctx := context.Background()
 	if req.Status == "2" {
 		err := businessService.EnableParticipant(context.Background(), "", req.UserId)
 		if err != nil {
 			log.Error(err)
 		}
-		// messageService.SendMail(ctx, traceId, "bisale-admin", resp.Email, "template::mail::kyc-success", "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
+		if resp != nil {
+			err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
+			if err != nil {
+				log.WithFields(logrus.Fields{
+					"user-id": req.UserId,
+				}).Error("KYC邮件发送失败", err)
+			} else {
+				log.WithFields(logrus.Fields{
+					"user-id": req.UserId,
+				}).Error("KYC邮件发送成功")
+			}
+		} else {
+			log.WithFields(logrus.Fields{
+				"user-id": req.UserId,
+			}).Error("KYC审核服务返回数据错误，邮件未发送")
+		}
 	} else {
-		// messageService.SendMail(ctx, traceId, "bisale-admin", resp.Email, "template::mail::kyc-failed", "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
+		if resp != nil {
+			err := messageService.SendMail(ctx, traceId, config.Config.KycFailedMail.AppId, resp.Email, config.Config.KycFailedMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
+			if err != nil {
+				log.WithFields(logrus.Fields{
+					"user-id": req.UserId,
+				}).Error("KYC邮件发送失败", err)
+			} else {
+				log.WithFields(logrus.Fields{
+					"user-id": req.UserId,
+				}).Error("KYC邮件发送成功")
+			}
+		} else {
+			log.WithFields(logrus.Fields{
+				"user-id": req.UserId,
+			}).Error("KYC审核服务返回数据错误，邮件未发送")
+		}
 	}
 	if err != nil {
 		log.Error(err)
