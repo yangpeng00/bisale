@@ -28,7 +28,7 @@ func RequestHash(next echo.HandlerFunc) echo.HandlerFunc {
 		common.Log.WithFields(logrus.Fields{
 			"url":  url,
 			"hash": hash,
-		})
+		}).Info("Generate request hash")
 		if err := next(c); err != nil {
 			c.Error(err)
 		}
