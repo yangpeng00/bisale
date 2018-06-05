@@ -8,7 +8,6 @@ import (
 	"bisale/bisale-console-api/config"
 	"bisale/bisale-console-api/thrift/message"
 	accountInputs "bisale/bisale-console-api/thrift/inputs"
-	"fmt"
 )
 
 type LoginForm struct {
@@ -36,7 +35,6 @@ func PostLoginSMSCode(c echo.Context) error {
 	if err := c.Validate(mobileForm); err != nil {
 		return Status(c, codes.ValidateError, err)
 	}
-
 
 	messageService, messageClient := common.GetMessageServiceClient()
 	defer common.MessageServicePool.Put(messageClient)
