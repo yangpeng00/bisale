@@ -16,9 +16,10 @@ var InvitationServicePool *thriftPool.ThriftPool
 var MessageServicePool *thriftPool.ThriftPool
 var CaptchaServicePool *thriftPool.ThriftPool
 var StorageServicePool *thriftPool.ThriftPool
-var BisaleUserServicePool *thriftPool.ThriftPool
+var BisaleUserKycServicePool *thriftPool.ThriftPool
 var BisaleWithdrawServicePool *thriftPool.ThriftPool
 var BisaleBusinessServicePool *thriftPool.ThriftPool
+var BisaleUserServicePool *thriftPool.ThriftPool
 
 var Cache *redis.Client
 
@@ -93,23 +94,33 @@ func init() {
 	)
 
 	// 配置 Bisale OSS 服务连接池
+	BisaleUserKycServicePool = thriftPool.NewThriftPool(
+		config.Config.BisaleOmsService.Host,
+		config.Config.BisaleOmsService.Port,
+		config.Config.BisaleOmsService.MaxConn,
+		config.Config.BisaleOmsService.ConnTimeout,
+		config.Config.BisaleOmsService.IdleTimeout,
+		openBisaleUserKycServiceClient,
+		closeBisaleUserKycServiceClient,
+	)
+
 	BisaleUserServicePool = thriftPool.NewThriftPool(
-		config.Config.BisaleUserService.Host,
-		config.Config.BisaleUserService.Port,
-		config.Config.BisaleUserService.MaxConn,
-		config.Config.BisaleUserService.ConnTimeout,
-		config.Config.BisaleUserService.IdleTimeout,
+		config.Config.BisaleOmsService.Host,
+		config.Config.BisaleOmsService.Port,
+		config.Config.BisaleOmsService.MaxConn,
+		config.Config.BisaleOmsService.ConnTimeout,
+		config.Config.BisaleOmsService.IdleTimeout,
 		openBisaleUserServiceClient,
 		closeBisaleUserServiceClient,
 	)
 
 	// 配置 Bisale Withdraw 服务连接池
 	BisaleWithdrawServicePool = thriftPool.NewThriftPool(
-		config.Config.BisaleWithdrawService.Host,
-		config.Config.BisaleWithdrawService.Port,
-		config.Config.BisaleWithdrawService.MaxConn,
-		config.Config.BisaleWithdrawService.ConnTimeout,
-		config.Config.BisaleWithdrawService.IdleTimeout,
+		config.Config.BisaleOmsService.Host,
+		config.Config.BisaleOmsService.Port,
+		config.Config.BisaleOmsService.MaxConn,
+		config.Config.BisaleOmsService.ConnTimeout,
+		config.Config.BisaleOmsService.IdleTimeout,
 		openBisaleWithdrawServiceClient,
 		closeBisaleWithdrawServiceClient,
 	)

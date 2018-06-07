@@ -1,12 +1,12 @@
 package common
 
 import (
+	"bisale/foundation/thrift/pool"
 	"net"
 	"fmt"
 	"time"
-	"bisale/foundation/thrift/pool"
-	"bisale/bisale-console-api/thrift/user"
 	"git.apache.org/thrift.git/lib/go/thrift"
+	"bisale/bisale-console-api/thrift/user"
 )
 
 func openBisaleUserServiceClient(host, port string, ConnTimeout time.Duration) (*thriftPool.IdleClient, error) {
@@ -19,7 +19,7 @@ func openBisaleUserServiceClient(host, port string, ConnTimeout time.Duration) (
 
 	protocol := thrift.NewTBinaryProtocolTransport(transport)
 
-	mp := thrift.NewTMultiplexedProtocol(protocol, "userKyc")
+	mp := thrift.NewTMultiplexedProtocol(protocol, "user")
 
 	if err := transport.Open(); err != nil {
 		Log.Error(fmt.Printf("Open bisale user service connection error: %s", err.Error()))
@@ -28,7 +28,7 @@ func openBisaleUserServiceClient(host, port string, ConnTimeout time.Duration) (
 
 	standardClient := thrift.NewTStandardClient(mp, mp)
 
-	client := user.NewTUserKycServiceClient(standardClient)
+	client := user.NewTUserServiceClient(standardClient)
 
 	return &thriftPool.IdleClient{
 		Client: client,
@@ -46,7 +46,7 @@ func closeBisaleUserServiceClient(c *thriftPool.IdleClient) error {
 	return nil
 }
 
-func GetBisaleUserServiceClient() (s *user.TUserKycServiceClient, c *thriftPool.IdleClient) {
+func GetBisaleUserServiceClient() (s *user.TUserServiceClient, c *thriftPool.IdleClient) {
 
 	client, err := BisaleUserServicePool.Get()
 
@@ -68,5 +68,5 @@ func GetBisaleUserServiceClient() (s *user.TUserKycServiceClient, c *thriftPool.
 	//
 	Log.Info("Get bisale user client from pool success")
 
-	return client.Client.(*user.TUserKycServiceClient), client
+	return client.Client.(*user.TUserServiceClient), client
 }

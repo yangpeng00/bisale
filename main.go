@@ -52,5 +52,8 @@ func main() {
 	bisale.GET("/withdraw/list", controllers.GetWithdrawList)
 	bisale.GET("/withdraw/list/count", controllers.GetWithdrawListCount)
 
+	bisale.GET("/user/list", controllers.GetUserList)
+	bisale.GET("/user/list/count", controllers.GetUserListCount)
+
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }
