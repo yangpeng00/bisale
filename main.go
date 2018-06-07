@@ -49,5 +49,8 @@ func main() {
 	bisale.GET("/cert/detail", controllers.GetCertDetailById)
 	bisale.POST("/cert/result", controllers.PostCertResult, middlewares.FilterRequestsStrict)
 
+	bisale.GET("/withdraw/list", controllers.GetWithdrawList)
+	bisale.GET("/withdraw/list/count", controllers.GetWithdrawListCount)
+
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }

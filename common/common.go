@@ -17,6 +17,7 @@ var MessageServicePool *thriftPool.ThriftPool
 var CaptchaServicePool *thriftPool.ThriftPool
 var StorageServicePool *thriftPool.ThriftPool
 var BisaleUserServicePool *thriftPool.ThriftPool
+var BisaleWithdrawServicePool *thriftPool.ThriftPool
 var BisaleBusinessServicePool *thriftPool.ThriftPool
 
 var Cache *redis.Client
@@ -100,6 +101,17 @@ func init() {
 		config.Config.BisaleUserService.IdleTimeout,
 		openBisaleUserServiceClient,
 		closeBisaleUserServiceClient,
+	)
+
+	// 配置 Bisale Withdraw 服务连接池
+	BisaleWithdrawServicePool = thriftPool.NewThriftPool(
+		config.Config.BisaleWithdrawService.Host,
+		config.Config.BisaleWithdrawService.Port,
+		config.Config.BisaleWithdrawService.MaxConn,
+		config.Config.BisaleWithdrawService.ConnTimeout,
+		config.Config.BisaleWithdrawService.IdleTimeout,
+		openBisaleWithdrawServiceClient,
+		closeBisaleWithdrawServiceClient,
 	)
 
 	// 配置 Bisale Business 服务连接池
