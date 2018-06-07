@@ -120,6 +120,7 @@ func PostCertResult(c echo.Context) error {
 		err := businessService.EnableParticipant(context.Background(), "", req.UserId)
 		if err != nil {
 			log.Error(err)
+			return Status(c, codes.ServiceError, err)
 		}
 		if resp != nil {
 			err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
