@@ -18,19 +18,20 @@ func GetWithdrawList(c echo.Context) error {
 	}
 
 	log, _ := common.GetLoggerWithTraceId(c)
-	withdrawService := common.GetBisaleWithdrawServiceClient()
+	withdrawService, withdrawClient := common.GetBisaleWithdrawServiceClient()
+	defer common.BisaleWithdrawServicePool.Put(withdrawClient)
+
+	//userService, userClient := common.GetBisaleUserServiceClient()
+	//defer common.BisaleUserServicePool.Put(userClient)
 
 	withdrawParams := new(finance.TDepositWithdrawParams)
 
 	withdrawParams.UserName = c.QueryParam("keyword")
 	withdrawParams.Status = c.QueryParam("status")
-	withdrawParams.StartTime = c.QueryParam("startTime")
-	withdrawParams.EndTime = c.QueryParam("endTime")
+	withdrawParams.StartTime = c.QueryParam("startedAt")
+	withdrawParams.EndTime = c.QueryParam("endedAt")
 	withdrawParams.PageSize = int32(size)
 	withdrawParams.StartPage = int32(page)
-
-	log.Info("==gogogo==")
-	log.Info(withdrawParams.StartTime, withdrawParams.EndTime, withdrawParams.PageSize, withdrawParams.StartPage)
 
 	res, err := withdrawService.SelectDepositWithdrawByConditions(context.Background(), withdrawParams)
 
@@ -41,4 +42,28 @@ func GetWithdrawList(c echo.Context) error {
 		return Status(c, codes.ServiceError, nil)
 	}
 	return Status(c, codes.Success, res)
+}
+
+func GetWithdrawListCount(c echo.Context) error {
+	log, _ := common.GetLoggerWithTraceId(c)
+	withdrawService, withdrawClient := common.GetBisaleWithdrawServiceClient()
+	defer common.BisaleWithdrawServicePool.Put(withdrawClient)
+
+	withdrawParams := new(finance.TDepositWithdrawParams)
+
+	withdrawParams.UserName = c.QueryParam("keyword")
+	withdrawParams.Status = c.QueryParam("status")
+	withdrawParams.StartTime = c.QueryParam("startedAt")
+	withdrawParams.EndTime = c.QueryParam("endedAt")
+
+	res, err := withdrawService.SelectDepositWithdrawCountByConditions(context.Background(), withdrawParams)
+
+	log.Info(res)
+
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, nil)
+	}
+	return Status(c, codes.Success, res)
+
 }

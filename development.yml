@@ -35,10 +35,11 @@ storage_service:
   port: 10005
 
 bisale_user_service:
-  #host: 47.75.183.114
+#  host: 47.75.183.114
   host: 52.196.219.81
   port: 10011
 
 bisale_withdraw_service:
+#  host: 47.75.183.114
   host: 52.196.219.81
   port: 10011
