@@ -139,7 +139,7 @@ func PostCertResult(c echo.Context) error {
 		}
 	} else {
 		if resp != nil {
-			err := messageService.SendMail(ctx, traceId, config.Config.KycFailedMail.AppId, resp.Email, config.Config.KycFailedMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
+			err := messageService.SendMail(ctx, traceId, config.Config.KycFailedMail.AppId, resp.Email, config.Config.KycFailedMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\",\"reason\":\""+req.Mark+"\"}", "zh-CN", 0)
 			if err != nil {
 				log.WithFields(logrus.Fields{
 					"user-id": req.UserId,
