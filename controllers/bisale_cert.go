@@ -10,6 +10,7 @@ import (
 	"bisale/bisale-console-api/domain"
 	"strings"
 	"github.com/sirupsen/logrus"
+	"fmt"
 )
 
 func GetCertList(c echo.Context) error {
@@ -114,12 +115,20 @@ func PostCertResult(c echo.Context) error {
 	defer common.MessageServicePool.Put(messageClient)
 
 	ctx := context.Background()
+	log.Info(fmt.Sprintf("The request status is %s", req.Status))
 	if req.Status == "2" {
 		err := businessService.EnableParticipant(context.Background(), "", req.UserId)
 		if err != nil {
 			log.Error(err)
+			log.WithFields(logrus.Fields{
+				"user_id": req.UserId,
+				"err":     err.Error(),
+			}).Error("邀请糖果发送失败")
 			return Status(c, codes.ServiceError, err)
 		}
+		log.WithFields(logrus.Fields{
+			"user_id": req.UserId,
+		}).Info("邀请糖果发送成功")
 		if resp != nil {
 			err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
 			if err != nil {
