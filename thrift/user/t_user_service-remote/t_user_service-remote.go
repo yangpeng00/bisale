@@ -28,6 +28,9 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "  TUserInfo selectUserBaseInfoByUserId(string traceId, i32 userId)")
   fmt.Fprintln(os.Stderr, "  bool resetGoogleCode(string traceId, i32 userId)")
   fmt.Fprintln(os.Stderr, "  TUser selectUserById(string traceId, i32 userId)")
+  fmt.Fprintln(os.Stderr, "  TGoogleStatusResult selectUserGoogleStatus(string traceId, i32 userId)")
+  fmt.Fprintln(os.Stderr, "  i32 selectSlaveAllUserCount(string traceId)")
+  fmt.Fprintln(os.Stderr, "   selectSlaveRegisterCountDay(string traceId, i32 days)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -130,19 +133,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectUserByConditions requires 1 args")
       flag.Usage()
     }
-    arg15 := flag.Arg(1)
-    mbTrans16 := thrift.NewTMemoryBufferLen(len(arg15))
-    defer mbTrans16.Close()
-    _, err17 := mbTrans16.WriteString(arg15)
-    if err17 != nil {
+    arg22 := flag.Arg(1)
+    mbTrans23 := thrift.NewTMemoryBufferLen(len(arg22))
+    defer mbTrans23.Close()
+    _, err24 := mbTrans23.WriteString(arg22)
+    if err24 != nil {
       Usage()
       return
     }
-    factory18 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt19 := factory18.GetProtocol(mbTrans16)
+    factory25 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt26 := factory25.GetProtocol(mbTrans23)
     argvalue0 := user.NewTUserParams()
-    err20 := argvalue0.Read(jsProt19)
-    if err20 != nil {
+    err27 := argvalue0.Read(jsProt26)
+    if err27 != nil {
       Usage()
       return
     }
@@ -155,19 +158,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectUserCountByConditions requires 1 args")
       flag.Usage()
     }
-    arg21 := flag.Arg(1)
-    mbTrans22 := thrift.NewTMemoryBufferLen(len(arg21))
-    defer mbTrans22.Close()
-    _, err23 := mbTrans22.WriteString(arg21)
-    if err23 != nil {
+    arg28 := flag.Arg(1)
+    mbTrans29 := thrift.NewTMemoryBufferLen(len(arg28))
+    defer mbTrans29.Close()
+    _, err30 := mbTrans29.WriteString(arg28)
+    if err30 != nil {
       Usage()
       return
     }
-    factory24 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt25 := factory24.GetProtocol(mbTrans22)
+    factory31 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt32 := factory31.GetProtocol(mbTrans29)
     argvalue0 := user.NewTUserParams()
-    err26 := argvalue0.Read(jsProt25)
-    if err26 != nil {
+    err33 := argvalue0.Read(jsProt32)
+    if err33 != nil {
       Usage()
       return
     }
@@ -182,8 +185,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err28 := (strconv.Atoi(flag.Arg(2)))
-    if err28 != nil {
+    tmp1, err35 := (strconv.Atoi(flag.Arg(2)))
+    if err35 != nil {
       Usage()
       return
     }
@@ -199,8 +202,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err30 := (strconv.Atoi(flag.Arg(2)))
-    if err30 != nil {
+    tmp1, err37 := (strconv.Atoi(flag.Arg(2)))
+    if err37 != nil {
       Usage()
       return
     }
@@ -216,8 +219,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err32 := (strconv.Atoi(flag.Arg(2)))
-    if err32 != nil {
+    tmp1, err39 := (strconv.Atoi(flag.Arg(2)))
+    if err39 != nil {
       Usage()
       return
     }
@@ -233,14 +236,58 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err34 := (strconv.Atoi(flag.Arg(2)))
-    if err34 != nil {
+    tmp1, err41 := (strconv.Atoi(flag.Arg(2)))
+    if err41 != nil {
       Usage()
       return
     }
     argvalue1 := int32(tmp1)
     value1 := argvalue1
     fmt.Print(client.SelectUserById(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "selectUserGoogleStatus":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectUserGoogleStatus requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err43 := (strconv.Atoi(flag.Arg(2)))
+    if err43 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.SelectUserGoogleStatus(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "selectSlaveAllUserCount":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "SelectSlaveAllUserCount requires 1 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    fmt.Print(client.SelectSlaveAllUserCount(context.Background(), value0))
+    fmt.Print("\n")
+    break
+  case "selectSlaveRegisterCountDay":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectSlaveRegisterCountDay requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err46 := (strconv.Atoi(flag.Arg(2)))
+    if err46 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.SelectSlaveRegisterCountDay(context.Background(), value0, value1))
     fmt.Print("\n")
     break
   case "":

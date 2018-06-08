@@ -1937,6 +1937,296 @@ func (p *TUserInfo) String() string {
   return fmt.Sprintf("TUserInfo(%+v)", *p)
 }
 
+// Attributes:
+//  - RegisterCount
+//  - RegisterDate
+type TRegisterCountDay struct {
+  RegisterCount int32 `thrift:"registerCount,1" db:"registerCount" json:"registerCount"`
+  RegisterDate string `thrift:"registerDate,2" db:"registerDate" json:"registerDate"`
+}
+
+func NewTRegisterCountDay() *TRegisterCountDay {
+  return &TRegisterCountDay{}
+}
+
+
+func (p *TRegisterCountDay) GetRegisterCount() int32 {
+  return p.RegisterCount
+}
+
+func (p *TRegisterCountDay) GetRegisterDate() string {
+  return p.RegisterDate
+}
+func (p *TRegisterCountDay) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TRegisterCountDay)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.RegisterCount = v
+}
+  return nil
+}
+
+func (p *TRegisterCountDay)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.RegisterDate = v
+}
+  return nil
+}
+
+func (p *TRegisterCountDay) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("TRegisterCountDay"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TRegisterCountDay) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("registerCount", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:registerCount: ", p), err) }
+  if err := oprot.WriteI32(int32(p.RegisterCount)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.registerCount (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:registerCount: ", p), err) }
+  return err
+}
+
+func (p *TRegisterCountDay) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("registerDate", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:registerDate: ", p), err) }
+  if err := oprot.WriteString(string(p.RegisterDate)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.registerDate (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:registerDate: ", p), err) }
+  return err
+}
+
+func (p *TRegisterCountDay) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TRegisterCountDay(%+v)", *p)
+}
+
+// Attributes:
+//  - GoogleStatus
+//  - GoogleLoginStatus
+//  - GoogleWithdrawStatus
+type TGoogleStatusResult_ struct {
+  GoogleStatus int32 `thrift:"googleStatus,1" db:"googleStatus" json:"googleStatus"`
+  GoogleLoginStatus int32 `thrift:"googleLoginStatus,2" db:"googleLoginStatus" json:"googleLoginStatus"`
+  GoogleWithdrawStatus int32 `thrift:"googleWithdrawStatus,3" db:"googleWithdrawStatus" json:"googleWithdrawStatus"`
+}
+
+func NewTGoogleStatusResult_() *TGoogleStatusResult_ {
+  return &TGoogleStatusResult_{}
+}
+
+
+func (p *TGoogleStatusResult_) GetGoogleStatus() int32 {
+  return p.GoogleStatus
+}
+
+func (p *TGoogleStatusResult_) GetGoogleLoginStatus() int32 {
+  return p.GoogleLoginStatus
+}
+
+func (p *TGoogleStatusResult_) GetGoogleWithdrawStatus() int32 {
+  return p.GoogleWithdrawStatus
+}
+func (p *TGoogleStatusResult_) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 3:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField3(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TGoogleStatusResult_)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.GoogleStatus = v
+}
+  return nil
+}
+
+func (p *TGoogleStatusResult_)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.GoogleLoginStatus = v
+}
+  return nil
+}
+
+func (p *TGoogleStatusResult_)  ReadField3(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 3: ", err)
+} else {
+  p.GoogleWithdrawStatus = v
+}
+  return nil
+}
+
+func (p *TGoogleStatusResult_) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("TGoogleStatusResult"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+    if err := p.writeField3(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TGoogleStatusResult_) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("googleStatus", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:googleStatus: ", p), err) }
+  if err := oprot.WriteI32(int32(p.GoogleStatus)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.googleStatus (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:googleStatus: ", p), err) }
+  return err
+}
+
+func (p *TGoogleStatusResult_) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("googleLoginStatus", thrift.I32, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:googleLoginStatus: ", p), err) }
+  if err := oprot.WriteI32(int32(p.GoogleLoginStatus)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.googleLoginStatus (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:googleLoginStatus: ", p), err) }
+  return err
+}
+
+func (p *TGoogleStatusResult_) writeField3(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("googleWithdrawStatus", thrift.I32, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:googleWithdrawStatus: ", p), err) }
+  if err := oprot.WriteI32(int32(p.GoogleWithdrawStatus)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.googleWithdrawStatus (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:googleWithdrawStatus: ", p), err) }
+  return err
+}
+
+func (p *TGoogleStatusResult_) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TGoogleStatusResult_(%+v)", *p)
+}
+
 type TUserService interface {
   // Parameters:
   //  - Params
@@ -1960,6 +2250,17 @@ type TUserService interface {
   //  - TraceId
   //  - UserId
   SelectUserById(ctx context.Context, traceId string, userId int32) (r *TUser, err error)
+  // Parameters:
+  //  - TraceId
+  //  - UserId
+  SelectUserGoogleStatus(ctx context.Context, traceId string, userId int32) (r *TGoogleStatusResult_, err error)
+  // Parameters:
+  //  - TraceId
+  SelectSlaveAllUserCount(ctx context.Context, traceId string) (r int32, err error)
+  // Parameters:
+  //  - TraceId
+  //  - Days
+  SelectSlaveRegisterCountDay(ctx context.Context, traceId string, days int32) (r []*TRegisterCountDay, err error)
 }
 
 type TUserServiceClient struct {
@@ -2066,6 +2367,46 @@ func (p *TUserServiceClient) SelectUserById(ctx context.Context, traceId string,
   return _result11.GetSuccess(), nil
 }
 
+// Parameters:
+//  - TraceId
+//  - UserId
+func (p *TUserServiceClient) SelectUserGoogleStatus(ctx context.Context, traceId string, userId int32) (r *TGoogleStatusResult_, err error) {
+  var _args12 TUserServiceSelectUserGoogleStatusArgs
+  _args12.TraceId = traceId
+  _args12.UserId = userId
+  var _result13 TUserServiceSelectUserGoogleStatusResult
+  if err = p.c.Call(ctx, "selectUserGoogleStatus", &_args12, &_result13); err != nil {
+    return
+  }
+  return _result13.GetSuccess(), nil
+}
+
+// Parameters:
+//  - TraceId
+func (p *TUserServiceClient) SelectSlaveAllUserCount(ctx context.Context, traceId string) (r int32, err error) {
+  var _args14 TUserServiceSelectSlaveAllUserCountArgs
+  _args14.TraceId = traceId
+  var _result15 TUserServiceSelectSlaveAllUserCountResult
+  if err = p.c.Call(ctx, "selectSlaveAllUserCount", &_args14, &_result15); err != nil {
+    return
+  }
+  return _result15.GetSuccess(), nil
+}
+
+// Parameters:
+//  - TraceId
+//  - Days
+func (p *TUserServiceClient) SelectSlaveRegisterCountDay(ctx context.Context, traceId string, days int32) (r []*TRegisterCountDay, err error) {
+  var _args16 TUserServiceSelectSlaveRegisterCountDayArgs
+  _args16.TraceId = traceId
+  _args16.Days = days
+  var _result17 TUserServiceSelectSlaveRegisterCountDayResult
+  if err = p.c.Call(ctx, "selectSlaveRegisterCountDay", &_args16, &_result17); err != nil {
+    return
+  }
+  return _result17.GetSuccess(), nil
+}
+
 type TUserServiceProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
   handler TUserService
@@ -2086,14 +2427,17 @@ func (p *TUserServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFunct
 
 func NewTUserServiceProcessor(handler TUserService) *TUserServiceProcessor {
 
-  self12 := &TUserServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self12.processorMap["selectUserByConditions"] = &tUserServiceProcessorSelectUserByConditions{handler:handler}
-  self12.processorMap["selectUserCountByConditions"] = &tUserServiceProcessorSelectUserCountByConditions{handler:handler}
-  self12.processorMap["updateUserStatusByUserId"] = &tUserServiceProcessorUpdateUserStatusByUserId{handler:handler}
-  self12.processorMap["selectUserBaseInfoByUserId"] = &tUserServiceProcessorSelectUserBaseInfoByUserId{handler:handler}
-  self12.processorMap["resetGoogleCode"] = &tUserServiceProcessorResetGoogleCode{handler:handler}
-  self12.processorMap["selectUserById"] = &tUserServiceProcessorSelectUserById{handler:handler}
-return self12
+  self18 := &TUserServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self18.processorMap["selectUserByConditions"] = &tUserServiceProcessorSelectUserByConditions{handler:handler}
+  self18.processorMap["selectUserCountByConditions"] = &tUserServiceProcessorSelectUserCountByConditions{handler:handler}
+  self18.processorMap["updateUserStatusByUserId"] = &tUserServiceProcessorUpdateUserStatusByUserId{handler:handler}
+  self18.processorMap["selectUserBaseInfoByUserId"] = &tUserServiceProcessorSelectUserBaseInfoByUserId{handler:handler}
+  self18.processorMap["resetGoogleCode"] = &tUserServiceProcessorResetGoogleCode{handler:handler}
+  self18.processorMap["selectUserById"] = &tUserServiceProcessorSelectUserById{handler:handler}
+  self18.processorMap["selectUserGoogleStatus"] = &tUserServiceProcessorSelectUserGoogleStatus{handler:handler}
+  self18.processorMap["selectSlaveAllUserCount"] = &tUserServiceProcessorSelectSlaveAllUserCount{handler:handler}
+  self18.processorMap["selectSlaveRegisterCountDay"] = &tUserServiceProcessorSelectSlaveRegisterCountDay{handler:handler}
+return self18
 }
 
 func (p *TUserServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -2104,12 +2448,12 @@ func (p *TUserServiceProcessor) Process(ctx context.Context, iprot, oprot thrift
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x13 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x19 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x13.Write(oprot)
+  x19.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush(ctx)
-  return false, x13
+  return false, x19
 
 }
 
@@ -2401,6 +2745,150 @@ var retval *TUser
   return true, err
 }
 
+type tUserServiceProcessorSelectUserGoogleStatus struct {
+  handler TUserService
+}
+
+func (p *tUserServiceProcessorSelectUserGoogleStatus) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TUserServiceSelectUserGoogleStatusArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectUserGoogleStatus", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TUserServiceSelectUserGoogleStatusResult{}
+var retval *TGoogleStatusResult_
+  var err2 error
+  if retval, err2 = p.handler.SelectUserGoogleStatus(ctx, args.TraceId, args.UserId); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectUserGoogleStatus: " + err2.Error())
+    oprot.WriteMessageBegin("selectUserGoogleStatus", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = retval
+}
+  if err2 = oprot.WriteMessageBegin("selectUserGoogleStatus", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tUserServiceProcessorSelectSlaveAllUserCount struct {
+  handler TUserService
+}
+
+func (p *tUserServiceProcessorSelectSlaveAllUserCount) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TUserServiceSelectSlaveAllUserCountArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectSlaveAllUserCount", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TUserServiceSelectSlaveAllUserCountResult{}
+var retval int32
+  var err2 error
+  if retval, err2 = p.handler.SelectSlaveAllUserCount(ctx, args.TraceId); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectSlaveAllUserCount: " + err2.Error())
+    oprot.WriteMessageBegin("selectSlaveAllUserCount", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = &retval
+}
+  if err2 = oprot.WriteMessageBegin("selectSlaveAllUserCount", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tUserServiceProcessorSelectSlaveRegisterCountDay struct {
+  handler TUserService
+}
+
+func (p *tUserServiceProcessorSelectSlaveRegisterCountDay) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TUserServiceSelectSlaveRegisterCountDayArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectSlaveRegisterCountDay", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TUserServiceSelectSlaveRegisterCountDayResult{}
+var retval []*TRegisterCountDay
+  var err2 error
+  if retval, err2 = p.handler.SelectSlaveRegisterCountDay(ctx, args.TraceId, args.Days); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectSlaveRegisterCountDay: " + err2.Error())
+    oprot.WriteMessageBegin("selectSlaveRegisterCountDay", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = retval
+}
+  if err2 = oprot.WriteMessageBegin("selectSlaveRegisterCountDay", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
 
 // HELPER FUNCTIONS AND STRUCTURES
 
@@ -2567,11 +3055,11 @@ func (p *TUserServiceSelectUserByConditionsResult)  ReadField0(iprot thrift.TPro
   tSlice := make([]*TUserResults, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-    _elem14 := &TUserResults{}
-    if err := _elem14.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem14), err)
+    _elem20 := &TUserResults{}
+    if err := _elem20.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem20), err)
     }
-    p.Success = append(p.Success, _elem14)
+    p.Success = append(p.Success, _elem20)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -3724,6 +4212,669 @@ func (p *TUserServiceSelectUserByIdResult) String() string {
     return "<nil>"
   }
   return fmt.Sprintf("TUserServiceSelectUserByIdResult(%+v)", *p)
+}
+
+// Attributes:
+//  - TraceId
+//  - UserId
+type TUserServiceSelectUserGoogleStatusArgs struct {
+  TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
+  UserId int32 `thrift:"userId,2" db:"userId" json:"userId"`
+}
+
+func NewTUserServiceSelectUserGoogleStatusArgs() *TUserServiceSelectUserGoogleStatusArgs {
+  return &TUserServiceSelectUserGoogleStatusArgs{}
+}
+
+
+func (p *TUserServiceSelectUserGoogleStatusArgs) GetTraceId() string {
+  return p.TraceId
+}
+
+func (p *TUserServiceSelectUserGoogleStatusArgs) GetUserId() int32 {
+  return p.UserId
+}
+func (p *TUserServiceSelectUserGoogleStatusArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectUserGoogleStatusArgs)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.TraceId = v
+}
+  return nil
+}
+
+func (p *TUserServiceSelectUserGoogleStatusArgs)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.UserId = v
+}
+  return nil
+}
+
+func (p *TUserServiceSelectUserGoogleStatusArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectUserGoogleStatus_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserServiceSelectUserGoogleStatusArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("traceId", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:traceId: ", p), err) }
+  if err := oprot.WriteString(string(p.TraceId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.traceId (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:traceId: ", p), err) }
+  return err
+}
+
+func (p *TUserServiceSelectUserGoogleStatusArgs) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("userId", thrift.I32, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:userId: ", p), err) }
+  if err := oprot.WriteI32(int32(p.UserId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.userId (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:userId: ", p), err) }
+  return err
+}
+
+func (p *TUserServiceSelectUserGoogleStatusArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserServiceSelectUserGoogleStatusArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TUserServiceSelectUserGoogleStatusResult struct {
+  Success *TGoogleStatusResult_ `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTUserServiceSelectUserGoogleStatusResult() *TUserServiceSelectUserGoogleStatusResult {
+  return &TUserServiceSelectUserGoogleStatusResult{}
+}
+
+var TUserServiceSelectUserGoogleStatusResult_Success_DEFAULT *TGoogleStatusResult_
+func (p *TUserServiceSelectUserGoogleStatusResult) GetSuccess() *TGoogleStatusResult_ {
+  if !p.IsSetSuccess() {
+    return TUserServiceSelectUserGoogleStatusResult_Success_DEFAULT
+  }
+return p.Success
+}
+func (p *TUserServiceSelectUserGoogleStatusResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TUserServiceSelectUserGoogleStatusResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.STRUCT {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectUserGoogleStatusResult)  ReadField0(iprot thrift.TProtocol) error {
+  p.Success = &TGoogleStatusResult_{}
+  if err := p.Success.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Success), err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectUserGoogleStatusResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectUserGoogleStatus_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserServiceSelectUserGoogleStatusResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := p.Success.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Success), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TUserServiceSelectUserGoogleStatusResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserServiceSelectUserGoogleStatusResult(%+v)", *p)
+}
+
+// Attributes:
+//  - TraceId
+type TUserServiceSelectSlaveAllUserCountArgs struct {
+  TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
+}
+
+func NewTUserServiceSelectSlaveAllUserCountArgs() *TUserServiceSelectSlaveAllUserCountArgs {
+  return &TUserServiceSelectSlaveAllUserCountArgs{}
+}
+
+
+func (p *TUserServiceSelectSlaveAllUserCountArgs) GetTraceId() string {
+  return p.TraceId
+}
+func (p *TUserServiceSelectSlaveAllUserCountArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveAllUserCountArgs)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.TraceId = v
+}
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveAllUserCountArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveAllUserCount_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveAllUserCountArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("traceId", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:traceId: ", p), err) }
+  if err := oprot.WriteString(string(p.TraceId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.traceId (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:traceId: ", p), err) }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveAllUserCountArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserServiceSelectSlaveAllUserCountArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TUserServiceSelectSlaveAllUserCountResult struct {
+  Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTUserServiceSelectSlaveAllUserCountResult() *TUserServiceSelectSlaveAllUserCountResult {
+  return &TUserServiceSelectSlaveAllUserCountResult{}
+}
+
+var TUserServiceSelectSlaveAllUserCountResult_Success_DEFAULT int32
+func (p *TUserServiceSelectSlaveAllUserCountResult) GetSuccess() int32 {
+  if !p.IsSetSuccess() {
+    return TUserServiceSelectSlaveAllUserCountResult_Success_DEFAULT
+  }
+return *p.Success
+}
+func (p *TUserServiceSelectSlaveAllUserCountResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TUserServiceSelectSlaveAllUserCountResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveAllUserCountResult)  ReadField0(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 0: ", err)
+} else {
+  p.Success = &v
+}
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveAllUserCountResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveAllUserCount_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveAllUserCountResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteI32(int32(*p.Success)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.success (0) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveAllUserCountResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserServiceSelectSlaveAllUserCountResult(%+v)", *p)
+}
+
+// Attributes:
+//  - TraceId
+//  - Days
+type TUserServiceSelectSlaveRegisterCountDayArgs struct {
+  TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
+  Days int32 `thrift:"days,2" db:"days" json:"days"`
+}
+
+func NewTUserServiceSelectSlaveRegisterCountDayArgs() *TUserServiceSelectSlaveRegisterCountDayArgs {
+  return &TUserServiceSelectSlaveRegisterCountDayArgs{}
+}
+
+
+func (p *TUserServiceSelectSlaveRegisterCountDayArgs) GetTraceId() string {
+  return p.TraceId
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayArgs) GetDays() int32 {
+  return p.Days
+}
+func (p *TUserServiceSelectSlaveRegisterCountDayArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayArgs)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.TraceId = v
+}
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayArgs)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.Days = v
+}
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveRegisterCountDay_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("traceId", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:traceId: ", p), err) }
+  if err := oprot.WriteString(string(p.TraceId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.traceId (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:traceId: ", p), err) }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayArgs) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("days", thrift.I32, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:days: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Days)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.days (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:days: ", p), err) }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserServiceSelectSlaveRegisterCountDayArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TUserServiceSelectSlaveRegisterCountDayResult struct {
+  Success []*TRegisterCountDay `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTUserServiceSelectSlaveRegisterCountDayResult() *TUserServiceSelectSlaveRegisterCountDayResult {
+  return &TUserServiceSelectSlaveRegisterCountDayResult{}
+}
+
+var TUserServiceSelectSlaveRegisterCountDayResult_Success_DEFAULT []*TRegisterCountDay
+
+func (p *TUserServiceSelectSlaveRegisterCountDayResult) GetSuccess() []*TRegisterCountDay {
+  return p.Success
+}
+func (p *TUserServiceSelectSlaveRegisterCountDayResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.LIST {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayResult)  ReadField0(iprot thrift.TProtocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]*TRegisterCountDay, 0, size)
+  p.Success =  tSlice
+  for i := 0; i < size; i ++ {
+    _elem21 := &TRegisterCountDay{}
+    if err := _elem21.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem21), err)
+    }
+    p.Success = append(p.Success, _elem21)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveRegisterCountDay_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Success)); err != nil {
+      return thrift.PrependError("error writing list begin: ", err)
+    }
+    for _, v := range p.Success {
+      if err := v.Write(oprot); err != nil {
+        return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+      }
+    }
+    if err := oprot.WriteListEnd(); err != nil {
+      return thrift.PrependError("error writing list end: ", err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveRegisterCountDayResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserServiceSelectSlaveRegisterCountDayResult(%+v)", *p)
 }
 
 

@@ -172,14 +172,14 @@ func PostCertResult(c echo.Context) error {
 }
 
 func GetCertListCount(c echo.Context) error {
-	log, _ := common.GetLoggerWithTraceId(c)
+	log, traceId := common.GetLoggerWithTraceId(c)
 	keyword := c.QueryParam("keyword")
 	status := c.QueryParam("status")
 
 	userService, userClient := common.GetBisaleUserKycServiceClient()
 	defer common.BisaleUserKycServicePool.Put(userClient)
 
-	res, err := userService.SelectUserKycCountByConditions(context.Background(), "", keyword, status)
+	res, err := userService.SelectUserKycCountByConditions(context.Background(), traceId, keyword, status)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)

@@ -34,6 +34,6 @@ storage_service:
   port: 10005
 
 oms_service:
-#  host: 47.75.183.114
-  host: 52.196.219.81
+  host: 47.75.183.114
+#  host: 52.196.219.81
   port: 10011

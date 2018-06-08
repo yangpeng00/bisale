@@ -9,6 +9,13 @@ import (
 	"bisale/bisale-console-api/thrift/finance"
 )
 
+type PostWithdrawResultRequest struct {
+	Id int32 `json:"id"`
+	UserId int32 `json:"userId"`
+	Status string `json:"status"`
+	Mark string `json:"mark"`
+}
+
 func GetWithdrawList(c echo.Context) error {
 	page, _ := strconv.ParseInt(c.QueryParam("page"), 10, 32)
 	size, _ := strconv.ParseInt(c.QueryParam("size"), 10, 32)
@@ -67,3 +74,27 @@ func GetWithdrawListCount(c echo.Context) error {
 	return Status(c, codes.Success, res)
 
 }
+
+func PostWithdrawResult(c echo.Context) error {
+	log, traceId := common.GetLoggerWithTraceId(c)
+	userService, userClient := common.GetBisaleWithdrawServiceClient()
+	defer common.BisaleWithdrawServicePool.Put(userClient)
+
+	req := new(PostWithdrawResultRequest)
+
+	err := c.Bind(req)
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	res, err :=userService.AuditDepositWithdraw(context.Background(), traceId, req.Status, req.Mark, req.Id)
+	if err != nil || res == false {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	return Status(c, codes.Success, res)
+
+}
+

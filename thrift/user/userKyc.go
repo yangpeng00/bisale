@@ -1414,6 +1414,133 @@ func (p *TAuditUserKycResult_) String() string {
   return fmt.Sprintf("TAuditUserKycResult_(%+v)", *p)
 }
 
+// Attributes:
+//  - UserKycCount
+//  - UserKycDate
+type TUserKycCountDay struct {
+  UserKycCount int32 `thrift:"userKycCount,1" db:"userKycCount" json:"userKycCount"`
+  UserKycDate string `thrift:"userKycDate,2" db:"userKycDate" json:"userKycDate"`
+}
+
+func NewTUserKycCountDay() *TUserKycCountDay {
+  return &TUserKycCountDay{}
+}
+
+
+func (p *TUserKycCountDay) GetUserKycCount() int32 {
+  return p.UserKycCount
+}
+
+func (p *TUserKycCountDay) GetUserKycDate() string {
+  return p.UserKycDate
+}
+func (p *TUserKycCountDay) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserKycCountDay)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.UserKycCount = v
+}
+  return nil
+}
+
+func (p *TUserKycCountDay)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.UserKycDate = v
+}
+  return nil
+}
+
+func (p *TUserKycCountDay) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("TUserKycCountDay"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserKycCountDay) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("userKycCount", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:userKycCount: ", p), err) }
+  if err := oprot.WriteI32(int32(p.UserKycCount)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.userKycCount (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:userKycCount: ", p), err) }
+  return err
+}
+
+func (p *TUserKycCountDay) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("userKycDate", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:userKycDate: ", p), err) }
+  if err := oprot.WriteString(string(p.UserKycDate)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.userKycDate (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:userKycDate: ", p), err) }
+  return err
+}
+
+func (p *TUserKycCountDay) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserKycCountDay(%+v)", *p)
+}
+
 type TUserKycService interface {
   // Parameters:
   //  - TraceId
@@ -1438,6 +1565,10 @@ type TUserKycService interface {
   //  - Mark
   //  - UserId
   AuditUserKyc(ctx context.Context, traceId string, id int32, status string, mark string, userId int32) (r *TAuditUserKycResult_, err error)
+  SelectAllUserKycCount(ctx context.Context) (r int32, err error)
+  // Parameters:
+  //  - Days
+  SelectUserKycCountDay(ctx context.Context, days int32) (r []*TUserKycCountDay, err error)
 }
 
 type TUserKycServiceClient struct {
@@ -1534,6 +1665,27 @@ func (p *TUserKycServiceClient) AuditUserKyc(ctx context.Context, traceId string
   return _result7.GetSuccess(), nil
 }
 
+func (p *TUserKycServiceClient) SelectAllUserKycCount(ctx context.Context) (r int32, err error) {
+  var _args8 TUserKycServiceSelectAllUserKycCountArgs
+  var _result9 TUserKycServiceSelectAllUserKycCountResult
+  if err = p.c.Call(ctx, "selectAllUserKycCount", &_args8, &_result9); err != nil {
+    return
+  }
+  return _result9.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Days
+func (p *TUserKycServiceClient) SelectUserKycCountDay(ctx context.Context, days int32) (r []*TUserKycCountDay, err error) {
+  var _args10 TUserKycServiceSelectUserKycCountDayArgs
+  _args10.Days = days
+  var _result11 TUserKycServiceSelectUserKycCountDayResult
+  if err = p.c.Call(ctx, "selectUserKycCountDay", &_args10, &_result11); err != nil {
+    return
+  }
+  return _result11.GetSuccess(), nil
+}
+
 type TUserKycServiceProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
   handler TUserKycService
@@ -1554,12 +1706,14 @@ func (p *TUserKycServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFu
 
 func NewTUserKycServiceProcessor(handler TUserKycService) *TUserKycServiceProcessor {
 
-  self8 := &TUserKycServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self8.processorMap["selectUserKycByConditions"] = &tUserKycServiceProcessorSelectUserKycByConditions{handler:handler}
-  self8.processorMap["selectUserKycCountByConditions"] = &tUserKycServiceProcessorSelectUserKycCountByConditions{handler:handler}
-  self8.processorMap["selectUserKycById"] = &tUserKycServiceProcessorSelectUserKycById{handler:handler}
-  self8.processorMap["auditUserKyc"] = &tUserKycServiceProcessorAuditUserKyc{handler:handler}
-return self8
+  self12 := &TUserKycServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self12.processorMap["selectUserKycByConditions"] = &tUserKycServiceProcessorSelectUserKycByConditions{handler:handler}
+  self12.processorMap["selectUserKycCountByConditions"] = &tUserKycServiceProcessorSelectUserKycCountByConditions{handler:handler}
+  self12.processorMap["selectUserKycById"] = &tUserKycServiceProcessorSelectUserKycById{handler:handler}
+  self12.processorMap["auditUserKyc"] = &tUserKycServiceProcessorAuditUserKyc{handler:handler}
+  self12.processorMap["selectAllUserKycCount"] = &tUserKycServiceProcessorSelectAllUserKycCount{handler:handler}
+  self12.processorMap["selectUserKycCountDay"] = &tUserKycServiceProcessorSelectUserKycCountDay{handler:handler}
+return self12
 }
 
 func (p *TUserKycServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -1570,12 +1724,12 @@ func (p *TUserKycServiceProcessor) Process(ctx context.Context, iprot, oprot thr
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x9 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x13 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x9.Write(oprot)
+  x13.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush(ctx)
-  return false, x9
+  return false, x13
 
 }
 
@@ -1754,6 +1908,102 @@ var retval *TAuditUserKycResult_
     result.Success = retval
 }
   if err2 = oprot.WriteMessageBegin("auditUserKyc", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tUserKycServiceProcessorSelectAllUserKycCount struct {
+  handler TUserKycService
+}
+
+func (p *tUserKycServiceProcessorSelectAllUserKycCount) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TUserKycServiceSelectAllUserKycCountArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectAllUserKycCount", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TUserKycServiceSelectAllUserKycCountResult{}
+var retval int32
+  var err2 error
+  if retval, err2 = p.handler.SelectAllUserKycCount(ctx); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectAllUserKycCount: " + err2.Error())
+    oprot.WriteMessageBegin("selectAllUserKycCount", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = &retval
+}
+  if err2 = oprot.WriteMessageBegin("selectAllUserKycCount", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tUserKycServiceProcessorSelectUserKycCountDay struct {
+  handler TUserKycService
+}
+
+func (p *tUserKycServiceProcessorSelectUserKycCountDay) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TUserKycServiceSelectUserKycCountDayArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectUserKycCountDay", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TUserKycServiceSelectUserKycCountDayResult{}
+var retval []*TUserKycCountDay
+  var err2 error
+  if retval, err2 = p.handler.SelectUserKycCountDay(ctx, args.Days); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectUserKycCountDay: " + err2.Error())
+    oprot.WriteMessageBegin("selectUserKycCountDay", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = retval
+}
+  if err2 = oprot.WriteMessageBegin("selectUserKycCountDay", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
   if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -2074,11 +2324,11 @@ func (p *TUserKycServiceSelectUserKycByConditionsResult)  ReadField0(iprot thrif
   tSlice := make([]*TUserKycResult_, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-    _elem10 := &TUserKycResult_{}
-    if err := _elem10.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem10), err)
+    _elem14 := &TUserKycResult_{}
+    if err := _elem14.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem14), err)
     }
-    p.Success = append(p.Success, _elem10)
+    p.Success = append(p.Success, _elem14)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -2950,6 +3200,366 @@ func (p *TUserKycServiceAuditUserKycResult) String() string {
     return "<nil>"
   }
   return fmt.Sprintf("TUserKycServiceAuditUserKycResult(%+v)", *p)
+}
+
+type TUserKycServiceSelectAllUserKycCountArgs struct {
+}
+
+func NewTUserKycServiceSelectAllUserKycCountArgs() *TUserKycServiceSelectAllUserKycCountArgs {
+  return &TUserKycServiceSelectAllUserKycCountArgs{}
+}
+
+func (p *TUserKycServiceSelectAllUserKycCountArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserKycServiceSelectAllUserKycCountArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectAllUserKycCount_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserKycServiceSelectAllUserKycCountArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserKycServiceSelectAllUserKycCountArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TUserKycServiceSelectAllUserKycCountResult struct {
+  Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTUserKycServiceSelectAllUserKycCountResult() *TUserKycServiceSelectAllUserKycCountResult {
+  return &TUserKycServiceSelectAllUserKycCountResult{}
+}
+
+var TUserKycServiceSelectAllUserKycCountResult_Success_DEFAULT int32
+func (p *TUserKycServiceSelectAllUserKycCountResult) GetSuccess() int32 {
+  if !p.IsSetSuccess() {
+    return TUserKycServiceSelectAllUserKycCountResult_Success_DEFAULT
+  }
+return *p.Success
+}
+func (p *TUserKycServiceSelectAllUserKycCountResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TUserKycServiceSelectAllUserKycCountResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserKycServiceSelectAllUserKycCountResult)  ReadField0(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 0: ", err)
+} else {
+  p.Success = &v
+}
+  return nil
+}
+
+func (p *TUserKycServiceSelectAllUserKycCountResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectAllUserKycCount_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserKycServiceSelectAllUserKycCountResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteI32(int32(*p.Success)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.success (0) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TUserKycServiceSelectAllUserKycCountResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserKycServiceSelectAllUserKycCountResult(%+v)", *p)
+}
+
+// Attributes:
+//  - Days
+type TUserKycServiceSelectUserKycCountDayArgs struct {
+  Days int32 `thrift:"days,1" db:"days" json:"days"`
+}
+
+func NewTUserKycServiceSelectUserKycCountDayArgs() *TUserKycServiceSelectUserKycCountDayArgs {
+  return &TUserKycServiceSelectUserKycCountDayArgs{}
+}
+
+
+func (p *TUserKycServiceSelectUserKycCountDayArgs) GetDays() int32 {
+  return p.Days
+}
+func (p *TUserKycServiceSelectUserKycCountDayArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserKycServiceSelectUserKycCountDayArgs)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.Days = v
+}
+  return nil
+}
+
+func (p *TUserKycServiceSelectUserKycCountDayArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectUserKycCountDay_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserKycServiceSelectUserKycCountDayArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("days", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:days: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Days)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.days (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:days: ", p), err) }
+  return err
+}
+
+func (p *TUserKycServiceSelectUserKycCountDayArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserKycServiceSelectUserKycCountDayArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TUserKycServiceSelectUserKycCountDayResult struct {
+  Success []*TUserKycCountDay `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTUserKycServiceSelectUserKycCountDayResult() *TUserKycServiceSelectUserKycCountDayResult {
+  return &TUserKycServiceSelectUserKycCountDayResult{}
+}
+
+var TUserKycServiceSelectUserKycCountDayResult_Success_DEFAULT []*TUserKycCountDay
+
+func (p *TUserKycServiceSelectUserKycCountDayResult) GetSuccess() []*TUserKycCountDay {
+  return p.Success
+}
+func (p *TUserKycServiceSelectUserKycCountDayResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TUserKycServiceSelectUserKycCountDayResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.LIST {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserKycServiceSelectUserKycCountDayResult)  ReadField0(iprot thrift.TProtocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]*TUserKycCountDay, 0, size)
+  p.Success =  tSlice
+  for i := 0; i < size; i ++ {
+    _elem15 := &TUserKycCountDay{}
+    if err := _elem15.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem15), err)
+    }
+    p.Success = append(p.Success, _elem15)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *TUserKycServiceSelectUserKycCountDayResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectUserKycCountDay_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserKycServiceSelectUserKycCountDayResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Success)); err != nil {
+      return thrift.PrependError("error writing list begin: ", err)
+    }
+    for _, v := range p.Success {
+      if err := v.Write(oprot); err != nil {
+        return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+      }
+    }
+    if err := oprot.WriteListEnd(); err != nil {
+      return thrift.PrependError("error writing list end: ", err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TUserKycServiceSelectUserKycCountDayResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserKycServiceSelectUserKycCountDayResult(%+v)", *p)
 }
 
 
