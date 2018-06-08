@@ -17,4 +17,5 @@ const (
 	MemberEmailExisted     int32 = 20002
 	SMSCodeError           int32 = 20010
 	CertError              int32 = 30001
+	UserNotExist           int32 = 30002
 )

@@ -43,6 +43,17 @@ func GetCertDetailById(c echo.Context) error {
 	id, _ := strconv.ParseInt(c.QueryParam("id"), 10, 32)
 
 	log, traceId := common.GetLoggerWithTraceId(c)
+
+	log.Info("hello world, i'm already here")
+
+	log.Info("hello world, i'm already here")
+
+	log.Info("hello world, i'm already here")
+
+	log.Info("hello world, i'm already here")
+
+	log.Info("hello world, i'm already here")
+
 	userService, userClient := common.GetBisaleUserKycServiceClient()
 	defer common.BisaleUserKycServicePool.Put(userClient)
 
@@ -55,7 +66,9 @@ func GetCertDetailById(c echo.Context) error {
 
 	storageService, storageClient := common.GetStorageServiceClient()
 	defer common.StorageServicePool.Put(storageClient)
-
+	if res == nil{
+		return Status(c,codes.UserNotExist,"")
+	}
 	if strings.HasPrefix(res.IdPicFront, "U/") ||
 		strings.HasPrefix(res.IdPicBack, "U/") ||
 		strings.HasPrefix(res.IdPicHold, "U/") ||
