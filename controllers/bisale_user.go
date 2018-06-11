@@ -154,7 +154,7 @@ func PostCaptchaCountChange(c echo.Context) error {
 	captchaService, captchaClient := common.GetCaptchaServiceClient()
 	defer common.CaptchaServicePool.Put(captchaClient)
 
-	err := captchaService.ClearCount(context.Background(), traceId, req.Email)
+	err := captchaService.ClearCount(context.Background(), traceId, req.Email + "login")
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
