@@ -59,6 +59,7 @@ func main() {
 	bisale.GET("/user/detail", controllers.GetUserDetailById)
 	bisale.POST("/user/google", controllers.PostGoogleCodeChange)
 	bisale.POST("/user/status", controllers.PostUserStatusChange)
+	bisale.POST("/user/captcha", controllers.PostCaptchaCountChange)
 
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }

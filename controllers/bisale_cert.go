@@ -44,16 +44,6 @@ func GetCertDetailById(c echo.Context) error {
 
 	log, traceId := common.GetLoggerWithTraceId(c)
 
-	log.Info("hello world, i'm already here")
-
-	log.Info("hello world, i'm already here")
-
-	log.Info("hello world, i'm already here")
-
-	log.Info("hello world, i'm already here")
-
-	log.Info("hello world, i'm already here")
-
 	userService, userClient := common.GetBisaleUserKycServiceClient()
 	defer common.BisaleUserKycServicePool.Put(userClient)
 

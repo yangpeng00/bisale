@@ -13,6 +13,10 @@ type UserIdRequest struct {
 	Id int32 `json:"id"`
 }
 
+type EmailRequest struct {
+	Email string `json:"email"`
+}
+
 func GetUserList(c echo.Context) error {
 	page, _ := strconv.ParseInt(c.QueryParam("page"), 10, 32)
 	size, _ := strconv.ParseInt(c.QueryParam("size"), 10, 32)
@@ -131,6 +135,26 @@ func PostGoogleCodeChange(c echo.Context) error {
 
 	_, err := userService.ResetGoogleCode(context.Background(), traceId, req.Id)
 
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	return Status(c, codes.Success, nil)
+
+}
+
+func PostCaptchaCountChange(c echo.Context) error {
+	req := new(EmailRequest)
+	if err := c.Bind(req); err != nil {
+		return Status(c, codes.ServiceError, err)
+	}
+
+	log, traceId := common.GetLoggerWithTraceId(c)
+	captchaService, captchaClient := common.GetCaptchaServiceClient()
+	defer common.CaptchaServicePool.Put(captchaClient)
+
+	err := captchaService.ClearCount(context.Background(), traceId, req.Email)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
