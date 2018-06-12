@@ -2227,6 +2227,224 @@ func (p *TGoogleStatusResult_) String() string {
   return fmt.Sprintf("TGoogleStatusResult_(%+v)", *p)
 }
 
+// Attributes:
+//  - Username
+//  - TotalAward
+type TInviteFriendsAwardTop struct {
+  Username string `thrift:"username,1" db:"username" json:"username"`
+  TotalAward int32 `thrift:"totalAward,2" db:"totalAward" json:"totalAward"`
+}
+
+func NewTInviteFriendsAwardTop() *TInviteFriendsAwardTop {
+  return &TInviteFriendsAwardTop{}
+}
+
+
+func (p *TInviteFriendsAwardTop) GetUsername() string {
+  return p.Username
+}
+
+func (p *TInviteFriendsAwardTop) GetTotalAward() int32 {
+  return p.TotalAward
+}
+func (p *TInviteFriendsAwardTop) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TInviteFriendsAwardTop)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.Username = v
+}
+  return nil
+}
+
+func (p *TInviteFriendsAwardTop)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.TotalAward = v
+}
+  return nil
+}
+
+func (p *TInviteFriendsAwardTop) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("TInviteFriendsAwardTop"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TInviteFriendsAwardTop) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("username", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:username: ", p), err) }
+  if err := oprot.WriteString(string(p.Username)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.username (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:username: ", p), err) }
+  return err
+}
+
+func (p *TInviteFriendsAwardTop) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("totalAward", thrift.I32, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:totalAward: ", p), err) }
+  if err := oprot.WriteI32(int32(p.TotalAward)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.totalAward (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:totalAward: ", p), err) }
+  return err
+}
+
+func (p *TInviteFriendsAwardTop) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TInviteFriendsAwardTop(%+v)", *p)
+}
+
+// Attributes:
+//  - InvitedUserId
+type TInviteUserRelation struct {
+  InvitedUserId int32 `thrift:"invitedUserId,1" db:"invitedUserId" json:"invitedUserId"`
+}
+
+func NewTInviteUserRelation() *TInviteUserRelation {
+  return &TInviteUserRelation{}
+}
+
+
+func (p *TInviteUserRelation) GetInvitedUserId() int32 {
+  return p.InvitedUserId
+}
+func (p *TInviteUserRelation) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TInviteUserRelation)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.InvitedUserId = v
+}
+  return nil
+}
+
+func (p *TInviteUserRelation) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("TInviteUserRelation"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TInviteUserRelation) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("invitedUserId", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:invitedUserId: ", p), err) }
+  if err := oprot.WriteI32(int32(p.InvitedUserId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.invitedUserId (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:invitedUserId: ", p), err) }
+  return err
+}
+
+func (p *TInviteUserRelation) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TInviteUserRelation(%+v)", *p)
+}
+
 type TUserService interface {
   // Parameters:
   //  - Params
@@ -2261,6 +2479,15 @@ type TUserService interface {
   //  - TraceId
   //  - Days
   SelectSlaveRegisterCountDay(ctx context.Context, traceId string, days int32) (r []*TRegisterCountDay, err error)
+  // Parameters:
+  //  - TraceId
+  //  - Top
+  SelectSlaveInviteFriendsAwardTop(ctx context.Context, traceId string, top int32) (r []*TInviteFriendsAwardTop, err error)
+  // Parameters:
+  //  - TraceId
+  //  - UserId
+  //  - Level
+  SelectSlaveInviteUserRelation(ctx context.Context, traceId string, userId int32, level int32) (r []*TInviteUserRelation, err error)
 }
 
 type TUserServiceClient struct {
@@ -2407,6 +2634,36 @@ func (p *TUserServiceClient) SelectSlaveRegisterCountDay(ctx context.Context, tr
   return _result17.GetSuccess(), nil
 }
 
+// Parameters:
+//  - TraceId
+//  - Top
+func (p *TUserServiceClient) SelectSlaveInviteFriendsAwardTop(ctx context.Context, traceId string, top int32) (r []*TInviteFriendsAwardTop, err error) {
+  var _args18 TUserServiceSelectSlaveInviteFriendsAwardTopArgs
+  _args18.TraceId = traceId
+  _args18.Top = top
+  var _result19 TUserServiceSelectSlaveInviteFriendsAwardTopResult
+  if err = p.c.Call(ctx, "selectSlaveInviteFriendsAwardTop", &_args18, &_result19); err != nil {
+    return
+  }
+  return _result19.GetSuccess(), nil
+}
+
+// Parameters:
+//  - TraceId
+//  - UserId
+//  - Level
+func (p *TUserServiceClient) SelectSlaveInviteUserRelation(ctx context.Context, traceId string, userId int32, level int32) (r []*TInviteUserRelation, err error) {
+  var _args20 TUserServiceSelectSlaveInviteUserRelationArgs
+  _args20.TraceId = traceId
+  _args20.UserId = userId
+  _args20.Level = level
+  var _result21 TUserServiceSelectSlaveInviteUserRelationResult
+  if err = p.c.Call(ctx, "selectSlaveInviteUserRelation", &_args20, &_result21); err != nil {
+    return
+  }
+  return _result21.GetSuccess(), nil
+}
+
 type TUserServiceProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
   handler TUserService
@@ -2427,17 +2684,19 @@ func (p *TUserServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFunct
 
 func NewTUserServiceProcessor(handler TUserService) *TUserServiceProcessor {
 
-  self18 := &TUserServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self18.processorMap["selectUserByConditions"] = &tUserServiceProcessorSelectUserByConditions{handler:handler}
-  self18.processorMap["selectUserCountByConditions"] = &tUserServiceProcessorSelectUserCountByConditions{handler:handler}
-  self18.processorMap["updateUserStatusByUserId"] = &tUserServiceProcessorUpdateUserStatusByUserId{handler:handler}
-  self18.processorMap["selectUserBaseInfoByUserId"] = &tUserServiceProcessorSelectUserBaseInfoByUserId{handler:handler}
-  self18.processorMap["resetGoogleCode"] = &tUserServiceProcessorResetGoogleCode{handler:handler}
-  self18.processorMap["selectUserById"] = &tUserServiceProcessorSelectUserById{handler:handler}
-  self18.processorMap["selectUserGoogleStatus"] = &tUserServiceProcessorSelectUserGoogleStatus{handler:handler}
-  self18.processorMap["selectSlaveAllUserCount"] = &tUserServiceProcessorSelectSlaveAllUserCount{handler:handler}
-  self18.processorMap["selectSlaveRegisterCountDay"] = &tUserServiceProcessorSelectSlaveRegisterCountDay{handler:handler}
-return self18
+  self22 := &TUserServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self22.processorMap["selectUserByConditions"] = &tUserServiceProcessorSelectUserByConditions{handler:handler}
+  self22.processorMap["selectUserCountByConditions"] = &tUserServiceProcessorSelectUserCountByConditions{handler:handler}
+  self22.processorMap["updateUserStatusByUserId"] = &tUserServiceProcessorUpdateUserStatusByUserId{handler:handler}
+  self22.processorMap["selectUserBaseInfoByUserId"] = &tUserServiceProcessorSelectUserBaseInfoByUserId{handler:handler}
+  self22.processorMap["resetGoogleCode"] = &tUserServiceProcessorResetGoogleCode{handler:handler}
+  self22.processorMap["selectUserById"] = &tUserServiceProcessorSelectUserById{handler:handler}
+  self22.processorMap["selectUserGoogleStatus"] = &tUserServiceProcessorSelectUserGoogleStatus{handler:handler}
+  self22.processorMap["selectSlaveAllUserCount"] = &tUserServiceProcessorSelectSlaveAllUserCount{handler:handler}
+  self22.processorMap["selectSlaveRegisterCountDay"] = &tUserServiceProcessorSelectSlaveRegisterCountDay{handler:handler}
+  self22.processorMap["selectSlaveInviteFriendsAwardTop"] = &tUserServiceProcessorSelectSlaveInviteFriendsAwardTop{handler:handler}
+  self22.processorMap["selectSlaveInviteUserRelation"] = &tUserServiceProcessorSelectSlaveInviteUserRelation{handler:handler}
+return self22
 }
 
 func (p *TUserServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -2448,12 +2707,12 @@ func (p *TUserServiceProcessor) Process(ctx context.Context, iprot, oprot thrift
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x19 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x23 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x19.Write(oprot)
+  x23.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush(ctx)
-  return false, x19
+  return false, x23
 
 }
 
@@ -2889,6 +3148,102 @@ var retval []*TRegisterCountDay
   return true, err
 }
 
+type tUserServiceProcessorSelectSlaveInviteFriendsAwardTop struct {
+  handler TUserService
+}
+
+func (p *tUserServiceProcessorSelectSlaveInviteFriendsAwardTop) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TUserServiceSelectSlaveInviteFriendsAwardTopArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectSlaveInviteFriendsAwardTop", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TUserServiceSelectSlaveInviteFriendsAwardTopResult{}
+var retval []*TInviteFriendsAwardTop
+  var err2 error
+  if retval, err2 = p.handler.SelectSlaveInviteFriendsAwardTop(ctx, args.TraceId, args.Top); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectSlaveInviteFriendsAwardTop: " + err2.Error())
+    oprot.WriteMessageBegin("selectSlaveInviteFriendsAwardTop", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = retval
+}
+  if err2 = oprot.WriteMessageBegin("selectSlaveInviteFriendsAwardTop", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tUserServiceProcessorSelectSlaveInviteUserRelation struct {
+  handler TUserService
+}
+
+func (p *tUserServiceProcessorSelectSlaveInviteUserRelation) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TUserServiceSelectSlaveInviteUserRelationArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectSlaveInviteUserRelation", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TUserServiceSelectSlaveInviteUserRelationResult{}
+var retval []*TInviteUserRelation
+  var err2 error
+  if retval, err2 = p.handler.SelectSlaveInviteUserRelation(ctx, args.TraceId, args.UserId, args.Level); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectSlaveInviteUserRelation: " + err2.Error())
+    oprot.WriteMessageBegin("selectSlaveInviteUserRelation", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = retval
+}
+  if err2 = oprot.WriteMessageBegin("selectSlaveInviteUserRelation", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
 
 // HELPER FUNCTIONS AND STRUCTURES
 
@@ -3055,11 +3410,11 @@ func (p *TUserServiceSelectUserByConditionsResult)  ReadField0(iprot thrift.TPro
   tSlice := make([]*TUserResults, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-    _elem20 := &TUserResults{}
-    if err := _elem20.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem20), err)
+    _elem24 := &TUserResults{}
+    if err := _elem24.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem24), err)
     }
-    p.Success = append(p.Success, _elem20)
+    p.Success = append(p.Success, _elem24)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -4824,11 +5179,11 @@ func (p *TUserServiceSelectSlaveRegisterCountDayResult)  ReadField0(iprot thrift
   tSlice := make([]*TRegisterCountDay, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-    _elem21 := &TRegisterCountDay{}
-    if err := _elem21.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem21), err)
+    _elem25 := &TRegisterCountDay{}
+    if err := _elem25.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem25), err)
     }
-    p.Success = append(p.Success, _elem21)
+    p.Success = append(p.Success, _elem25)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -4875,6 +5230,532 @@ func (p *TUserServiceSelectSlaveRegisterCountDayResult) String() string {
     return "<nil>"
   }
   return fmt.Sprintf("TUserServiceSelectSlaveRegisterCountDayResult(%+v)", *p)
+}
+
+// Attributes:
+//  - TraceId
+//  - Top
+type TUserServiceSelectSlaveInviteFriendsAwardTopArgs struct {
+  TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
+  Top int32 `thrift:"top,2" db:"top" json:"top"`
+}
+
+func NewTUserServiceSelectSlaveInviteFriendsAwardTopArgs() *TUserServiceSelectSlaveInviteFriendsAwardTopArgs {
+  return &TUserServiceSelectSlaveInviteFriendsAwardTopArgs{}
+}
+
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopArgs) GetTraceId() string {
+  return p.TraceId
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopArgs) GetTop() int32 {
+  return p.Top
+}
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopArgs)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.TraceId = v
+}
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopArgs)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.Top = v
+}
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveInviteFriendsAwardTop_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("traceId", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:traceId: ", p), err) }
+  if err := oprot.WriteString(string(p.TraceId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.traceId (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:traceId: ", p), err) }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopArgs) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("top", thrift.I32, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:top: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Top)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.top (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:top: ", p), err) }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserServiceSelectSlaveInviteFriendsAwardTopArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TUserServiceSelectSlaveInviteFriendsAwardTopResult struct {
+  Success []*TInviteFriendsAwardTop `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTUserServiceSelectSlaveInviteFriendsAwardTopResult() *TUserServiceSelectSlaveInviteFriendsAwardTopResult {
+  return &TUserServiceSelectSlaveInviteFriendsAwardTopResult{}
+}
+
+var TUserServiceSelectSlaveInviteFriendsAwardTopResult_Success_DEFAULT []*TInviteFriendsAwardTop
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopResult) GetSuccess() []*TInviteFriendsAwardTop {
+  return p.Success
+}
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.LIST {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopResult)  ReadField0(iprot thrift.TProtocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]*TInviteFriendsAwardTop, 0, size)
+  p.Success =  tSlice
+  for i := 0; i < size; i ++ {
+    _elem26 := &TInviteFriendsAwardTop{}
+    if err := _elem26.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem26), err)
+    }
+    p.Success = append(p.Success, _elem26)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveInviteFriendsAwardTop_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Success)); err != nil {
+      return thrift.PrependError("error writing list begin: ", err)
+    }
+    for _, v := range p.Success {
+      if err := v.Write(oprot); err != nil {
+        return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+      }
+    }
+    if err := oprot.WriteListEnd(); err != nil {
+      return thrift.PrependError("error writing list end: ", err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveInviteFriendsAwardTopResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserServiceSelectSlaveInviteFriendsAwardTopResult(%+v)", *p)
+}
+
+// Attributes:
+//  - TraceId
+//  - UserId
+//  - Level
+type TUserServiceSelectSlaveInviteUserRelationArgs struct {
+  TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
+  UserId int32 `thrift:"userId,2" db:"userId" json:"userId"`
+  Level int32 `thrift:"level,3" db:"level" json:"level"`
+}
+
+func NewTUserServiceSelectSlaveInviteUserRelationArgs() *TUserServiceSelectSlaveInviteUserRelationArgs {
+  return &TUserServiceSelectSlaveInviteUserRelationArgs{}
+}
+
+
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs) GetTraceId() string {
+  return p.TraceId
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs) GetUserId() int32 {
+  return p.UserId
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs) GetLevel() int32 {
+  return p.Level
+}
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 3:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField3(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.TraceId = v
+}
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.UserId = v
+}
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs)  ReadField3(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 3: ", err)
+} else {
+  p.Level = v
+}
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveInviteUserRelation_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+    if err := p.writeField3(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("traceId", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:traceId: ", p), err) }
+  if err := oprot.WriteString(string(p.TraceId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.traceId (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:traceId: ", p), err) }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("userId", thrift.I32, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:userId: ", p), err) }
+  if err := oprot.WriteI32(int32(p.UserId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.userId (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:userId: ", p), err) }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs) writeField3(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("level", thrift.I32, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:level: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Level)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.level (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:level: ", p), err) }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserServiceSelectSlaveInviteUserRelationArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TUserServiceSelectSlaveInviteUserRelationResult struct {
+  Success []*TInviteUserRelation `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTUserServiceSelectSlaveInviteUserRelationResult() *TUserServiceSelectSlaveInviteUserRelationResult {
+  return &TUserServiceSelectSlaveInviteUserRelationResult{}
+}
+
+var TUserServiceSelectSlaveInviteUserRelationResult_Success_DEFAULT []*TInviteUserRelation
+
+func (p *TUserServiceSelectSlaveInviteUserRelationResult) GetSuccess() []*TInviteUserRelation {
+  return p.Success
+}
+func (p *TUserServiceSelectSlaveInviteUserRelationResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.LIST {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationResult)  ReadField0(iprot thrift.TProtocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]*TInviteUserRelation, 0, size)
+  p.Success =  tSlice
+  for i := 0; i < size; i ++ {
+    _elem27 := &TInviteUserRelation{}
+    if err := _elem27.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem27), err)
+    }
+    p.Success = append(p.Success, _elem27)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveInviteUserRelation_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Success)); err != nil {
+      return thrift.PrependError("error writing list begin: ", err)
+    }
+    for _, v := range p.Success {
+      if err := v.Write(oprot); err != nil {
+        return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+      }
+    }
+    if err := oprot.WriteListEnd(); err != nil {
+      return thrift.PrependError("error writing list end: ", err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TUserServiceSelectSlaveInviteUserRelationResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserServiceSelectSlaveInviteUserRelationResult(%+v)", *p)
 }
 
 

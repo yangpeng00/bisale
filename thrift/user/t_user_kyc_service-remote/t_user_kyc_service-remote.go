@@ -26,8 +26,8 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "  i32 selectUserKycCountByConditions(string traceId, string userName, string status)")
   fmt.Fprintln(os.Stderr, "  TUserKyc selectUserKycById(string traceId, i32 id)")
   fmt.Fprintln(os.Stderr, "  TAuditUserKycResult auditUserKyc(string traceId, i32 id, string status, string mark, i32 userId)")
-  fmt.Fprintln(os.Stderr, "  i32 selectAllUserKycCount()")
-  fmt.Fprintln(os.Stderr, "   selectUserKycCountDay(i32 days)")
+  fmt.Fprintln(os.Stderr, "  i32 selectSlaveAllUserKycCount(string traceId)")
+  fmt.Fprintln(os.Stderr, "   selectSlaveUserKycCountDay(string traceId, i32 days)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -212,27 +212,31 @@ func main() {
     fmt.Print(client.AuditUserKyc(context.Background(), value0, value1, value2, value3, value4))
     fmt.Print("\n")
     break
-  case "selectAllUserKycCount":
-    if flag.NArg() - 1 != 0 {
-      fmt.Fprintln(os.Stderr, "SelectAllUserKycCount requires 0 args")
+  case "selectSlaveAllUserKycCount":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "SelectSlaveAllUserKycCount requires 1 args")
       flag.Usage()
     }
-    fmt.Print(client.SelectAllUserKycCount(context.Background()))
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    fmt.Print(client.SelectSlaveAllUserKycCount(context.Background(), value0))
     fmt.Print("\n")
     break
-  case "selectUserKycCountDay":
-    if flag.NArg() - 1 != 1 {
-      fmt.Fprintln(os.Stderr, "SelectUserKycCountDay requires 1 args")
+  case "selectSlaveUserKycCountDay":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectSlaveUserKycCountDay requires 2 args")
       flag.Usage()
     }
-    tmp0, err31 := (strconv.Atoi(flag.Arg(1)))
-    if err31 != nil {
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err33 := (strconv.Atoi(flag.Arg(2)))
+    if err33 != nil {
       Usage()
       return
     }
-    argvalue0 := int32(tmp0)
-    value0 := argvalue0
-    fmt.Print(client.SelectUserKycCountDay(context.Background(), value0))
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.SelectSlaveUserKycCountDay(context.Background(), value0, value1))
     fmt.Print("\n")
     break
   case "":
