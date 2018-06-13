@@ -51,6 +51,17 @@ func main() {
 
 	bisale.GET("/withdraw/list", controllers.GetWithdrawList)
 	bisale.GET("/withdraw/list/count", controllers.GetWithdrawListCount)
+	bisale.POST("/withdraw/result", controllers.PostWithdrawResult)
+
+	bisale.GET("/user/list", controllers.GetUserList)
+	bisale.GET("/user/list/count", controllers.GetUserListCount)
+	bisale.GET("/user/google", controllers.GetGoogleStatusById)
+	bisale.GET("/user/detail", controllers.GetUserDetailById)
+	bisale.POST("/user/google", controllers.PostGoogleCodeChange)
+	bisale.POST("/user/status", controllers.PostUserStatusChange)
+	bisale.POST("/user/captcha", controllers.PostCaptchaCountChange)
+
+	bisale.GET("/static/base", controllers.GetStatic)
 
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }

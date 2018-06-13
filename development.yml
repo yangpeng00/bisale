@@ -8,7 +8,6 @@ redis:
   port: 6379
   password: ""
 
-
 bisale_business_service:
   #host: 47.75.183.114
   host: 52.196.219.81
@@ -34,12 +33,7 @@ storage_service:
   host: 52.196.219.81
   port: 10005
 
-bisale_user_service:
-#  host: 47.75.183.114
-  host: 52.196.219.81
-  port: 10011
-
-bisale_withdraw_service:
-#  host: 47.75.183.114
-  host: 52.196.219.81
+oms_service:
+  host: 47.75.183.114
+#  host: 52.196.219.81
   port: 10011

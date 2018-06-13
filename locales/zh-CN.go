@@ -14,4 +14,5 @@ var zhCN = map[int32]string{
 	codes.FormIsEmpty:            "提交数据不能为空",
 	codes.ValidateError:          "数据校验错误",
 	codes.SMSCodeError:           "验证码错误",
+	codes.UserNotExist:           "用户不存在",
 }
