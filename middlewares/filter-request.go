@@ -94,9 +94,9 @@ func FilterIteratedRequests(next echo.HandlerFunc) echo.HandlerFunc {
 				return controllers.Status(c, codes.RepeatRequestWithToken, err)
 			}
 			common.Cache.Set(cacheKey, "", 2*time.Second)
-			if err := next(c); err != nil {
-				c.Error(err)
-			}
+		}
+		if err := next(c); err != nil {
+			c.Error(err)
 		}
 		// common.Cache.Del(cacheKey)
 		return nil
