@@ -56,8 +56,8 @@ func GetCertDetailById(c echo.Context) error {
 
 	storageService, storageClient := common.GetStorageServiceClient()
 	defer common.StorageServicePool.Put(storageClient)
-	if res == nil{
-		return Status(c,codes.UserNotExist,"")
+	if res == nil {
+		return Status(c, codes.MemberNotExist, "")
 	}
 	if strings.HasPrefix(res.IdPicFront, "U/") ||
 		strings.HasPrefix(res.IdPicBack, "U/") ||

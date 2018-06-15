@@ -17,18 +17,23 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 		if accessToken == "" {
 			return controllers.Status(c, codes.AccessTokenIsEmpty, "")
 		}
-		// traceId := c.Request().Header.Get("X-Trace-Id")
-		accountService,accountClient := common.GetAccountServiceClient()
+
+		traceId := c.Request().Header.Get("X-Trace-Id")
+		accountService, accountClient := common.GetAccountServiceClient()
 		defer common.AccountServicePool.Put(accountClient)
 
-		jwtOutput, err := accountService.ValidateJWT(context.Background(), "", accessToken, config.Config.JWTToken)
+		jwtOutput, err := accountService.ValidateJWT(context.Background(), traceId, accessToken, config.Config.JWTToken)
+
 		if err != nil {
 			return err
 		}
+
 		if !jwtOutput.Valid {
 			return controllers.Status(c, codes.AccessTokenIsInvalid, "")
 		}
+
 		c.Set("member_id", jwtOutput.MemberId)
+
 		if err := next(c); err != nil {
 			c.Error(err)
 		}

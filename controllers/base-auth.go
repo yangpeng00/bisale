@@ -7,6 +7,7 @@ import (
 	"bisale/bisale-console-api/common"
 	"bisale/bisale-console-api/config"
 	"bisale/bisale-console-api/thrift/message"
+	"bisale/bisale-console-api/thrift/account"
 	accountInputs "bisale/bisale-console-api/thrift/inputs"
 )
 
@@ -105,14 +106,24 @@ func PostLogin(c echo.Context) error {
 		return Status(c, codes.ServiceError, err)
 	}
 
-	if !correct && loginForm.Code != "Bisale2018!" {
+	if !correct {
 		return Status(c, codes.SMSCodeError, err)
 	}
 
 	accountService, accountClient := common.GetAccountServiceClient()
 	defer common.AccountServicePool.Put(accountClient)
 
-	token, err := accountService.GenerateJWTToken(ctx, traceId, &accountInputs.JWTInput{MemberId: "123"}, config.Config.JWTToken, 12)
+	member, err := accountService.GetMemberByMobile(ctx, traceId, loginForm.Username)
+	if err != nil {
+
+		if status, ok := err.(*account.Status); ok {
+			if status.Code == 20010 {
+				return Status(c, codes.MemberNotExist, err)
+			}
+		}
+	}
+
+	token, err := accountService.GenerateJWTToken(ctx, traceId, &accountInputs.JWTInput{MemberId: member.MemberId}, config.Config.JWTToken, 12)
 
 	if err != nil {
 		log.Error(err)

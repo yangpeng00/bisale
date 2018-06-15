@@ -22,6 +22,7 @@ func (s Result) String() string {
 }
 
 func Status(context echo.Context, code int32, data interface{}) error {
+
 	return Response(context, Result{
 		Code: code,
 		Data: data,
@@ -43,6 +44,10 @@ func Response(c echo.Context, r Result) error {
 	if r.Data == nil || r.Data == "" {
 		r.Data = struct{}{}
 	}
+
+	resultJson, _ := json.Marshal(r)
+
+	c.Set("result-json", string(resultJson))
 
 	if r.Code != 200 {
 		if err, ok := r.Data.(error); ok {

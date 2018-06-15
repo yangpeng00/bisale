@@ -15,7 +15,8 @@ bisale_business_service:
 
 account_service:
   #host: 47.75.183.114
-  host: 52.196.219.81
+  #host: 52.196.219.81
+  host: localhost
   port: 10002
 
 captcha_service:
