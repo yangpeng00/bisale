@@ -62,6 +62,22 @@ func main() {
 	bisale.POST("/user/captcha", controllers.PostCaptchaCountChange)
 
 	bisale.GET("/static/base", controllers.GetStatic)
+	bisale.GET("/content/image/meta", controllers.GetImageMeta)
+	bisale.GET("/content/image/url", controllers.GetImageUrl)
+
+	bisale.GET("/content/banner", controllers.GetBanner)
+	bisale.GET("/content/banner/list", controllers.GetBannerList)
+	bisale.GET("/content/banner/list/count", controllers.GetBannerListCount)
+	bisale.POST("/content/banner", controllers.PostBanner)
+	bisale.PUT("/content/banner", controllers.PutBanner)
+	bisale.PATCH("/content/banner/status", controllers.PatchBannerStatus)
+
+	bisale.GET("/content/notice", controllers.GetNotice)
+	bisale.GET("/content/notice/list", controllers.GetNoticeList)
+	bisale.GET("/content/notice/list/count", controllers.GetNoticeListCount)
+	bisale.POST("/content/notice", controllers.PostNotice)
+	bisale.PUT("/content/notice", controllers.PutNotice)
+	bisale.PATCH("/content/notice/status", controllers.PatchNoticeStatus)
 
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }

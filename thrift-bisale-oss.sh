@@ -14,5 +14,6 @@ fi
 thrift -out ./thrift -r --gen go $Dir/thrift/finance/depositWithdraw.thrift
 thrift -out ./thrift -r --gen go $Dir/thrift/user/userKyc.thrift
 thrift -out ./thrift -r --gen go $Dir/thrift/user/user.thrift
+thrift -out ./thrift -r --gen go $Dir/thrift/content/content.thrift
 
 sed -i '' 's/oprot.Flush()/oprot.Flush(ctx)/g' ./thrift/**/*.go

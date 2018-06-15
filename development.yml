@@ -2,6 +2,8 @@ host: 0.0.0.0
 port: 1025
 log_level: info
 version: 1.0.0
+banner_bucket: bisale-test-low
+banner_size: 5242880
 
 redis:
   host: 127.0.0.1

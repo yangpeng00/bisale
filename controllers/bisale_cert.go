@@ -34,7 +34,7 @@ func GetCertList(c echo.Context) error {
 	log.Info(res)
 	if err != nil {
 		log.Error(err)
-		return Status(c, codes.ServiceError, nil)
+		return Status(c, codes.ServiceError, err)
 	}
 	return Status(c, codes.Success, res)
 }
@@ -51,7 +51,7 @@ func GetCertDetailById(c echo.Context) error {
 	res, err := userService.SelectUserKycById(ctx, "", int32(id))
 	if err != nil {
 		log.Error(err)
-		return Status(c, codes.ServiceError, nil)
+		return Status(c, codes.ServiceError, err)
 	}
 
 	storageService, storageClient := common.GetStorageServiceClient()
@@ -77,7 +77,7 @@ func GetCertDetailById(c echo.Context) error {
 
 		if err != nil {
 			log.Error(err)
-			return Status(c, codes.ServiceError, nil)
+			return Status(c, codes.ServiceError, err)
 		}
 
 		res.IdPicFront = images["IdPicFront"]
@@ -102,7 +102,7 @@ func GetCertDetailById(c echo.Context) error {
 func PostCertResult(c echo.Context) error {
 	req := new(domain.PostCertRequest)
 	if err := c.Bind(req); err != nil {
-		return Status(c, codes.ServiceError, nil)
+		return Status(c, codes.ServiceError, err)
 	}
 
 	log, traceId := common.GetLoggerWithTraceId(c)
@@ -168,7 +168,7 @@ func PostCertResult(c echo.Context) error {
 	}
 	if err != nil {
 		log.Error(err)
-		return Status(c, codes.CertError, nil)
+		return Status(c, codes.CertError, err)
 	}
 	return Status(c, codes.Success, nil)
 
