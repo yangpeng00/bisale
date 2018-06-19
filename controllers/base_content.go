@@ -303,13 +303,13 @@ func PostNotice(c echo.Context) error {
 
 	tn := new(content.TSystemNotice)
 	tn.LinkUrl = notice.LinkUrl
+	tn.Title = notice.Title
 	tn.Sort = notice.Sort
 	tn.Status = notice.Status
 	tn.Lang = notice.Lang
 	tn.UpTime = notice.UpTime
 	tn.DownTime = notice.DownTime
 
-	log.Info("==================================")
 	log.Info(tn)
 
 	res, err := contentService.InsertSystemNotice(context.Background(), traceId, tn)
@@ -336,6 +336,7 @@ func PutNotice(c echo.Context) error {
 	tn.ID = notice.Id
 	tn.LinkUrl = notice.LinkUrl
 	tn.Sort = notice.Sort
+	tn.Title = notice.Title
 	tn.Status = notice.Status
 	tn.Lang = notice.Lang
 	tn.UpTime = notice.UpTime
