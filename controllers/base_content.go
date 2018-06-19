@@ -304,6 +304,7 @@ func PostNotice(c echo.Context) error {
 	tn := new(content.TSystemNotice)
 	tn.LinkUrl = notice.LinkUrl
 	tn.Title = notice.Title
+	tn.Channel = notice.Channel
 	tn.Sort = notice.Sort
 	tn.Status = notice.Status
 	tn.Lang = notice.Lang
@@ -337,6 +338,7 @@ func PutNotice(c echo.Context) error {
 	tn.LinkUrl = notice.LinkUrl
 	tn.Sort = notice.Sort
 	tn.Title = notice.Title
+	tn.Channel = notice.Channel
 	tn.Status = notice.Status
 	tn.Lang = notice.Lang
 	tn.UpTime = notice.UpTime
