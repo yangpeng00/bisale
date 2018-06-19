@@ -12,6 +12,7 @@ var Config = struct {
 	JWTToken   string `yaml:"jwt_token" default:"123456"`
 	KYCBucket  string `yaml:"kyc_bucket" default:"bisale-test-huadong"`
 	BannerBucket string `yaml:"banner_bucket" default:"bisale-test-low"`
+	BannerExpired int32 `yaml:"banner_expired" default: 31536000`
 	BannerSize string `yaml:"banner_size" default: "5242880"`
 	OldKYCHost string `yaml:"old_kyc_bucket" default:"http://bi-sale.oss-cn-hongkong.aliyuncs.com/"`
 	Redis struct {

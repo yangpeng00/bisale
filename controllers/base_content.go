@@ -52,7 +52,7 @@ func GetImageMeta(c echo.Context) error {
 	dir, _ := uuid.NewV4()
 	file, _ := uuid.NewV4()
 
-	token, err := storageService.GeneratePolicyToken(context.Background(), traceId, config.Config.BannerBucket, dir.String(), int32(size), 60)
+	token, err := storageService.GeneratePolicyToken(context.Background(), traceId, config.Config.BannerBucket, dir.String(), int32(size), config.Config.BannerExpired)
 
 	if err != nil {
 		log.Error(err)
