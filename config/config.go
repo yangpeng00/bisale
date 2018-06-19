@@ -9,7 +9,7 @@ var Config = struct {
 	Host       string
 	Port       string `env:"port"`
 	LogLevel   string `yaml:"log_level" default:"debug"`
-	JWTToken   string `yaml:"jwt_token" default:"123456"`
+	JWTToken   string `yaml:"jwt_token" default:"uuOhxYIw"`
 	KYCBucket  string `yaml:"kyc_bucket" default:"bisale-test-huadong"`
 	OldKYCHost string `yaml:"old_kyc_bucket" default:"http://bi-sale.oss-cn-hongkong.aliyuncs.com/"`
 	Redis struct {

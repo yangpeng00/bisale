@@ -117,7 +117,7 @@ func PostLogin(c echo.Context) error {
 	member, err := accountService.GetMemberByMobile(ctx, traceId, loginForm.Username)
 	if err != nil {
 		if status, ok := err.(*account.Status); ok {
-			if status.Code == 20010 {
+			if status.Code == 20011 {
 				return Status(c, codes.MemberNotExist, err)
 			}
 		}
