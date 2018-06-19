@@ -89,6 +89,7 @@ func PostLogin(c echo.Context) error {
 	if err := c.Bind(loginForm); err != nil {
 		return Status(c, codes.FormIsEmpty, err)
 	}
+
 	if err := c.Validate(loginForm); err != nil {
 		return Status(c, codes.ValidateError, err)
 	}
@@ -115,12 +116,12 @@ func PostLogin(c echo.Context) error {
 
 	member, err := accountService.GetMemberByMobile(ctx, traceId, loginForm.Username)
 	if err != nil {
-
 		if status, ok := err.(*account.Status); ok {
 			if status.Code == 20010 {
 				return Status(c, codes.MemberNotExist, err)
 			}
 		}
+		return Status(c, codes.ServiceError, err)
 	}
 
 	token, err := accountService.GenerateJWTToken(ctx, traceId, &accountInputs.JWTInput{MemberId: member.MemberId}, config.Config.JWTToken, 12)

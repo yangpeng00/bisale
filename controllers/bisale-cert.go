@@ -136,16 +136,16 @@ func PostCertResult(c echo.Context) error {
 			err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
 			if err != nil {
 				log.WithFields(logrus.Fields{
-					"user-id": req.UserId,
+					"user_id": req.UserId,
 				}).Error("KYC邮件发送失败", err)
 			} else {
 				log.WithFields(logrus.Fields{
-					"user-id": req.UserId,
-				}).Error("KYC邮件发送成功")
+					"user_id": req.UserId,
+				}).Info("KYC邮件发送成功")
 			}
 		} else {
 			log.WithFields(logrus.Fields{
-				"user-id": req.UserId,
+				"user_id": req.UserId,
 			}).Error("KYC审核服务返回数据错误，邮件未发送")
 		}
 	} else {
@@ -153,16 +153,16 @@ func PostCertResult(c echo.Context) error {
 			err := messageService.SendMail(ctx, traceId, config.Config.KycFailedMail.AppId, resp.Email, config.Config.KycFailedMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\",\"reason\":\""+req.Mark+"\"}", "zh-CN", 0)
 			if err != nil {
 				log.WithFields(logrus.Fields{
-					"user-id": req.UserId,
+					"user_id": req.UserId,
 				}).Error("KYC邮件发送失败", err)
 			} else {
 				log.WithFields(logrus.Fields{
-					"user-id": req.UserId,
-				}).Error("KYC邮件发送成功")
+					"user_id": req.UserId,
+				}).Info("KYC邮件发送成功")
 			}
 		} else {
 			log.WithFields(logrus.Fields{
-				"user-id": req.UserId,
+				"user_id": req.UserId,
 			}).Error("KYC审核服务返回数据错误，邮件未发送")
 		}
 	}
