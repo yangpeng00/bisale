@@ -309,6 +309,9 @@ func PostNotice(c echo.Context) error {
 	tn.UpTime = notice.UpTime
 	tn.DownTime = notice.DownTime
 
+	log.Info("==================================")
+	log.Info(tn)
+
 	res, err := contentService.InsertSystemNotice(context.Background(), traceId, tn)
 	if err != nil {
 		log.Error(err)
