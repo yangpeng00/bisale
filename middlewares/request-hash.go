@@ -12,9 +12,12 @@ import (
 
 func RequestHash(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
+
 		var data string
+
 		req := c.Request()
 		url := c.Request().URL.String()
+
 		if req.ContentLength != 0 {
 			body, _ := ioutil.ReadAll(req.Body)
 			req.Body = ioutil.NopCloser(bytes.NewBuffer(body))
@@ -24,11 +27,14 @@ func RequestHash(next echo.HandlerFunc) echo.HandlerFunc {
 		hasher := md5.New()
 		hasher.Write([]byte(url + data))
 		hash := hex.EncodeToString(hasher.Sum(nil))
+
 		c.Request().Header.Set("X-Request-Hash", hash)
+
 		common.Log.WithFields(logrus.Fields{
 			"url":  url,
 			"hash": hash,
 		}).Info("Generate request hash")
+
 		if err := next(c); err != nil {
 			c.Error(err)
 		}

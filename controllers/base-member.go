@@ -1,12 +1,12 @@
 package controllers
 
 import (
+	"fmt"
 	"context"
 	"github.com/labstack/echo"
 	"bisale/bisale-console-api/codes"
 	"bisale/bisale-console-api/common"
 	accountInputs "bisale/bisale-console-api/thrift/inputs"
-	"fmt"
 )
 
 type CreateMemberForm struct {

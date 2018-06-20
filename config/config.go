@@ -9,7 +9,7 @@ var Config = struct {
 	Host       string
 	Port       string `env:"port"`
 	LogLevel   string `yaml:"log_level" default:"debug"`
-	JWTToken   string `yaml:"jwt_token" default:"123456"`
+	JWTToken   string `yaml:"jwt_token" default:"uuOhxYIw"`
 	KYCBucket  string `yaml:"kyc_bucket" default:"bisale-test-huadong"`
 	BannerBucket string `yaml:"banner_bucket" default:"bisale-test-public"`
 	BannerExpired int32 `yaml:"banner_expired" default: 86400`
