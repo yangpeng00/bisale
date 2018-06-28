@@ -24,7 +24,7 @@ func GetWithdrawList(c echo.Context) error {
 		size = 10
 	}
 
-	log, _ := common.GetLoggerWithTraceId(c)
+	log, traceId := common.GetLoggerWithTraceId(c)
 	withdrawService, withdrawClient := common.GetBisaleWithdrawServiceClient()
 	defer common.BisaleWithdrawServicePool.Put(withdrawClient)
 
@@ -33,6 +33,7 @@ func GetWithdrawList(c echo.Context) error {
 
 	withdrawParams := new(finance.TDepositWithdrawParams)
 
+	withdrawParams.TraceId = traceId
 	withdrawParams.UserName = c.QueryParam("keyword")
 	withdrawParams.Status = c.QueryParam("status")
 	withdrawParams.StartTime = c.QueryParam("startedAt")
@@ -52,12 +53,13 @@ func GetWithdrawList(c echo.Context) error {
 }
 
 func GetWithdrawListCount(c echo.Context) error {
-	log, _ := common.GetLoggerWithTraceId(c)
+	log, traceId := common.GetLoggerWithTraceId(c)
 	withdrawService, withdrawClient := common.GetBisaleWithdrawServiceClient()
 	defer common.BisaleWithdrawServicePool.Put(withdrawClient)
 
 	withdrawParams := new(finance.TDepositWithdrawParams)
 
+	withdrawParams.TraceId = traceId
 	withdrawParams.UserName = c.QueryParam("keyword")
 	withdrawParams.Status = c.QueryParam("status")
 	withdrawParams.StartTime = c.QueryParam("startedAt")

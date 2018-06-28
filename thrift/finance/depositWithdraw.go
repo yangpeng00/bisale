@@ -729,27 +729,37 @@ func (p *TDepositWithdraw) String() string {
 }
 
 // Attributes:
+//  - TraceId
 //  - UserName
 //  - Status
 //  - StartTime
 //  - EndTime
+//  - UserId
+//  - Email
+//  - Currency
 //  - StartPage
 //  - PageSize
-//  - TraceId
 type TDepositWithdrawParams struct {
-  UserName string `thrift:"userName,1" db:"userName" json:"userName"`
-  Status string `thrift:"status,2" db:"status" json:"status"`
-  StartTime string `thrift:"startTime,3" db:"startTime" json:"startTime"`
-  EndTime string `thrift:"endTime,4" db:"endTime" json:"endTime"`
-  StartPage int32 `thrift:"startPage,5" db:"startPage" json:"startPage"`
-  PageSize int32 `thrift:"pageSize,6" db:"pageSize" json:"pageSize"`
-  TraceId string `thrift:"traceId,7" db:"traceId" json:"traceId"`
+  TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
+  UserName string `thrift:"userName,2" db:"userName" json:"userName"`
+  Status string `thrift:"status,3" db:"status" json:"status"`
+  StartTime string `thrift:"startTime,4" db:"startTime" json:"startTime"`
+  EndTime string `thrift:"endTime,5" db:"endTime" json:"endTime"`
+  UserId int32 `thrift:"userId,6" db:"userId" json:"userId"`
+  Email string `thrift:"email,7" db:"email" json:"email"`
+  Currency string `thrift:"currency,8" db:"currency" json:"currency"`
+  StartPage int32 `thrift:"startPage,9" db:"startPage" json:"startPage"`
+  PageSize int32 `thrift:"pageSize,10" db:"pageSize" json:"pageSize"`
 }
 
 func NewTDepositWithdrawParams() *TDepositWithdrawParams {
   return &TDepositWithdrawParams{}
 }
 
+
+func (p *TDepositWithdrawParams) GetTraceId() string {
+  return p.TraceId
+}
 
 func (p *TDepositWithdrawParams) GetUserName() string {
   return p.UserName
@@ -767,16 +777,24 @@ func (p *TDepositWithdrawParams) GetEndTime() string {
   return p.EndTime
 }
 
+func (p *TDepositWithdrawParams) GetUserId() int32 {
+  return p.UserId
+}
+
+func (p *TDepositWithdrawParams) GetEmail() string {
+  return p.Email
+}
+
+func (p *TDepositWithdrawParams) GetCurrency() string {
+  return p.Currency
+}
+
 func (p *TDepositWithdrawParams) GetStartPage() int32 {
   return p.StartPage
 }
 
 func (p *TDepositWithdrawParams) GetPageSize() int32 {
   return p.PageSize
-}
-
-func (p *TDepositWithdrawParams) GetTraceId() string {
-  return p.TraceId
 }
 func (p *TDepositWithdrawParams) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -832,7 +850,7 @@ func (p *TDepositWithdrawParams) Read(iprot thrift.TProtocol) error {
         }
       }
     case 5:
-      if fieldTypeId == thrift.I32 {
+      if fieldTypeId == thrift.STRING {
         if err := p.ReadField5(iprot); err != nil {
           return err
         }
@@ -861,6 +879,36 @@ func (p *TDepositWithdrawParams) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 8:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField8(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 9:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField9(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 10:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField10(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -880,7 +928,7 @@ func (p *TDepositWithdrawParams)  ReadField1(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
-  p.UserName = v
+  p.TraceId = v
 }
   return nil
 }
@@ -889,7 +937,7 @@ func (p *TDepositWithdrawParams)  ReadField2(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
-  p.Status = v
+  p.UserName = v
 }
   return nil
 }
@@ -898,7 +946,7 @@ func (p *TDepositWithdrawParams)  ReadField3(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 3: ", err)
 } else {
-  p.StartTime = v
+  p.Status = v
 }
   return nil
 }
@@ -907,16 +955,16 @@ func (p *TDepositWithdrawParams)  ReadField4(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 4: ", err)
 } else {
-  p.EndTime = v
+  p.StartTime = v
 }
   return nil
 }
 
 func (p *TDepositWithdrawParams)  ReadField5(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadI32(); err != nil {
+  if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 5: ", err)
 } else {
-  p.StartPage = v
+  p.EndTime = v
 }
   return nil
 }
@@ -925,7 +973,7 @@ func (p *TDepositWithdrawParams)  ReadField6(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadI32(); err != nil {
   return thrift.PrependError("error reading field 6: ", err)
 } else {
-  p.PageSize = v
+  p.UserId = v
 }
   return nil
 }
@@ -934,7 +982,34 @@ func (p *TDepositWithdrawParams)  ReadField7(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 7: ", err)
 } else {
-  p.TraceId = v
+  p.Email = v
+}
+  return nil
+}
+
+func (p *TDepositWithdrawParams)  ReadField8(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 8: ", err)
+} else {
+  p.Currency = v
+}
+  return nil
+}
+
+func (p *TDepositWithdrawParams)  ReadField9(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 9: ", err)
+} else {
+  p.StartPage = v
+}
+  return nil
+}
+
+func (p *TDepositWithdrawParams)  ReadField10(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 10: ", err)
+} else {
+  p.PageSize = v
 }
   return nil
 }
@@ -950,6 +1025,9 @@ func (p *TDepositWithdrawParams) Write(oprot thrift.TProtocol) error {
     if err := p.writeField5(oprot); err != nil { return err }
     if err := p.writeField6(oprot); err != nil { return err }
     if err := p.writeField7(oprot); err != nil { return err }
+    if err := p.writeField8(oprot); err != nil { return err }
+    if err := p.writeField9(oprot); err != nil { return err }
+    if err := p.writeField10(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -959,72 +1037,102 @@ func (p *TDepositWithdrawParams) Write(oprot thrift.TProtocol) error {
 }
 
 func (p *TDepositWithdrawParams) writeField1(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("userName", thrift.STRING, 1); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:userName: ", p), err) }
-  if err := oprot.WriteString(string(p.UserName)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.userName (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("traceId", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:traceId: ", p), err) }
+  if err := oprot.WriteString(string(p.TraceId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.traceId (1) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:userName: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:traceId: ", p), err) }
   return err
 }
 
 func (p *TDepositWithdrawParams) writeField2(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("status", thrift.STRING, 2); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:status: ", p), err) }
-  if err := oprot.WriteString(string(p.Status)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.status (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("userName", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:userName: ", p), err) }
+  if err := oprot.WriteString(string(p.UserName)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.userName (2) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:status: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:userName: ", p), err) }
   return err
 }
 
 func (p *TDepositWithdrawParams) writeField3(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("startTime", thrift.STRING, 3); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:startTime: ", p), err) }
-  if err := oprot.WriteString(string(p.StartTime)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.startTime (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("status", thrift.STRING, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:status: ", p), err) }
+  if err := oprot.WriteString(string(p.Status)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.status (3) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:startTime: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:status: ", p), err) }
   return err
 }
 
 func (p *TDepositWithdrawParams) writeField4(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("endTime", thrift.STRING, 4); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:endTime: ", p), err) }
-  if err := oprot.WriteString(string(p.EndTime)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.endTime (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("startTime", thrift.STRING, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:startTime: ", p), err) }
+  if err := oprot.WriteString(string(p.StartTime)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.startTime (4) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:endTime: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:startTime: ", p), err) }
   return err
 }
 
 func (p *TDepositWithdrawParams) writeField5(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("startPage", thrift.I32, 5); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:startPage: ", p), err) }
-  if err := oprot.WriteI32(int32(p.StartPage)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.startPage (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("endTime", thrift.STRING, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:endTime: ", p), err) }
+  if err := oprot.WriteString(string(p.EndTime)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.endTime (5) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:startPage: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:endTime: ", p), err) }
   return err
 }
 
 func (p *TDepositWithdrawParams) writeField6(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("pageSize", thrift.I32, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:pageSize: ", p), err) }
-  if err := oprot.WriteI32(int32(p.PageSize)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.pageSize (6) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("userId", thrift.I32, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:userId: ", p), err) }
+  if err := oprot.WriteI32(int32(p.UserId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.userId (6) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:pageSize: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:userId: ", p), err) }
   return err
 }
 
 func (p *TDepositWithdrawParams) writeField7(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("traceId", thrift.STRING, 7); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:traceId: ", p), err) }
-  if err := oprot.WriteString(string(p.TraceId)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.traceId (7) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("email", thrift.STRING, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:email: ", p), err) }
+  if err := oprot.WriteString(string(p.Email)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.email (7) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:traceId: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:email: ", p), err) }
+  return err
+}
+
+func (p *TDepositWithdrawParams) writeField8(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("currency", thrift.STRING, 8); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:currency: ", p), err) }
+  if err := oprot.WriteString(string(p.Currency)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.currency (8) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 8:currency: ", p), err) }
+  return err
+}
+
+func (p *TDepositWithdrawParams) writeField9(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("startPage", thrift.I32, 9); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:startPage: ", p), err) }
+  if err := oprot.WriteI32(int32(p.StartPage)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.startPage (9) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 9:startPage: ", p), err) }
+  return err
+}
+
+func (p *TDepositWithdrawParams) writeField10(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("pageSize", thrift.I32, 10); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 10:pageSize: ", p), err) }
+  if err := oprot.WriteI32(int32(p.PageSize)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.pageSize (10) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 10:pageSize: ", p), err) }
   return err
 }
 
@@ -1045,6 +1153,11 @@ func (p *TDepositWithdrawParams) String() string {
 //  - CreatedAt
 //  - Status
 //  - Mark
+//  - TxId
+//  - Empty
+//  - TotalAmount
+//  - NetworkFee
+//  - Fee
 type TDepositWithdrawResult_ struct {
   ID int32 `thrift:"id,1" db:"id" json:"id"`
   UserId int32 `thrift:"userId,2" db:"userId" json:"userId"`
@@ -1055,6 +1168,11 @@ type TDepositWithdrawResult_ struct {
   CreatedAt string `thrift:"createdAt,7" db:"createdAt" json:"createdAt"`
   Status string `thrift:"status,8" db:"status" json:"status"`
   Mark string `thrift:"mark,9" db:"mark" json:"mark"`
+  TxId string `thrift:"txId,10" db:"txId" json:"txId"`
+  Empty bool `thrift:"empty,11" db:"empty" json:"empty,omitempty"`
+  TotalAmount string `thrift:"totalAmount,12" db:"totalAmount" json:"totalAmount"`
+  NetworkFee string `thrift:"networkFee,13" db:"networkFee" json:"networkFee"`
+  Fee string `thrift:"fee,14" db:"fee" json:"fee"`
 }
 
 func NewTDepositWithdrawResult_() *TDepositWithdrawResult_ {
@@ -1097,6 +1215,31 @@ func (p *TDepositWithdrawResult_) GetStatus() string {
 func (p *TDepositWithdrawResult_) GetMark() string {
   return p.Mark
 }
+
+func (p *TDepositWithdrawResult_) GetTxId() string {
+  return p.TxId
+}
+var TDepositWithdrawResult__Empty_DEFAULT bool = false
+
+func (p *TDepositWithdrawResult_) GetEmpty() bool {
+  return p.Empty
+}
+
+func (p *TDepositWithdrawResult_) GetTotalAmount() string {
+  return p.TotalAmount
+}
+
+func (p *TDepositWithdrawResult_) GetNetworkFee() string {
+  return p.NetworkFee
+}
+
+func (p *TDepositWithdrawResult_) GetFee() string {
+  return p.Fee
+}
+func (p *TDepositWithdrawResult_) IsSetEmpty() bool {
+  return p.Empty != TDepositWithdrawResult__Empty_DEFAULT
+}
+
 func (p *TDepositWithdrawResult_) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1200,6 +1343,56 @@ func (p *TDepositWithdrawResult_) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 10:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField10(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 11:
+      if fieldTypeId == thrift.BOOL {
+        if err := p.ReadField11(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 12:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField12(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 13:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField13(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 14:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField14(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -1296,6 +1489,51 @@ func (p *TDepositWithdrawResult_)  ReadField9(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TDepositWithdrawResult_)  ReadField10(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 10: ", err)
+} else {
+  p.TxId = v
+}
+  return nil
+}
+
+func (p *TDepositWithdrawResult_)  ReadField11(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+  return thrift.PrependError("error reading field 11: ", err)
+} else {
+  p.Empty = v
+}
+  return nil
+}
+
+func (p *TDepositWithdrawResult_)  ReadField12(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 12: ", err)
+} else {
+  p.TotalAmount = v
+}
+  return nil
+}
+
+func (p *TDepositWithdrawResult_)  ReadField13(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 13: ", err)
+} else {
+  p.NetworkFee = v
+}
+  return nil
+}
+
+func (p *TDepositWithdrawResult_)  ReadField14(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 14: ", err)
+} else {
+  p.Fee = v
+}
+  return nil
+}
+
 func (p *TDepositWithdrawResult_) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TDepositWithdrawResult"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1309,6 +1547,11 @@ func (p *TDepositWithdrawResult_) Write(oprot thrift.TProtocol) error {
     if err := p.writeField7(oprot); err != nil { return err }
     if err := p.writeField8(oprot); err != nil { return err }
     if err := p.writeField9(oprot); err != nil { return err }
+    if err := p.writeField10(oprot); err != nil { return err }
+    if err := p.writeField11(oprot); err != nil { return err }
+    if err := p.writeField12(oprot); err != nil { return err }
+    if err := p.writeField13(oprot); err != nil { return err }
+    if err := p.writeField14(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -1407,6 +1650,58 @@ func (p *TDepositWithdrawResult_) writeField9(oprot thrift.TProtocol) (err error
   return err
 }
 
+func (p *TDepositWithdrawResult_) writeField10(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("txId", thrift.STRING, 10); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 10:txId: ", p), err) }
+  if err := oprot.WriteString(string(p.TxId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.txId (10) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 10:txId: ", p), err) }
+  return err
+}
+
+func (p *TDepositWithdrawResult_) writeField11(oprot thrift.TProtocol) (err error) {
+  if p.IsSetEmpty() {
+    if err := oprot.WriteFieldBegin("empty", thrift.BOOL, 11); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 11:empty: ", p), err) }
+    if err := oprot.WriteBool(bool(p.Empty)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.empty (11) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 11:empty: ", p), err) }
+  }
+  return err
+}
+
+func (p *TDepositWithdrawResult_) writeField12(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("totalAmount", thrift.STRING, 12); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 12:totalAmount: ", p), err) }
+  if err := oprot.WriteString(string(p.TotalAmount)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.totalAmount (12) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 12:totalAmount: ", p), err) }
+  return err
+}
+
+func (p *TDepositWithdrawResult_) writeField13(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("networkFee", thrift.STRING, 13); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 13:networkFee: ", p), err) }
+  if err := oprot.WriteString(string(p.NetworkFee)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.networkFee (13) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 13:networkFee: ", p), err) }
+  return err
+}
+
+func (p *TDepositWithdrawResult_) writeField14(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("fee", thrift.STRING, 14); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 14:fee: ", p), err) }
+  if err := oprot.WriteString(string(p.Fee)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.fee (14) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 14:fee: ", p), err) }
+  return err
+}
+
 func (p *TDepositWithdrawResult_) String() string {
   if p == nil {
     return "<nil>"
@@ -1431,6 +1726,18 @@ type TDepositWithdrawService interface {
   // Parameters:
   //  - Params
   SelectDepositWithdrawCountByConditions(ctx context.Context, params *TDepositWithdrawParams) (r int32, err error)
+  // Parameters:
+  //  - Params
+  SelectSlaveDepositListByConditions(ctx context.Context, params *TDepositWithdrawParams) (r []*TDepositWithdrawResult_, err error)
+  // Parameters:
+  //  - Params
+  SelectSlaveDepositCountByConditions(ctx context.Context, params *TDepositWithdrawParams) (r int32, err error)
+  // Parameters:
+  //  - Params
+  SelectSlaveWithdrawListByConditions(ctx context.Context, params *TDepositWithdrawParams) (r []*TDepositWithdrawResult_, err error)
+  // Parameters:
+  //  - Params
+  SelectSlaveWithdrawLCountByConditions(ctx context.Context, params *TDepositWithdrawParams) (r int32, err error)
 }
 
 type TDepositWithdrawServiceClient struct {
@@ -1513,6 +1820,54 @@ func (p *TDepositWithdrawServiceClient) SelectDepositWithdrawCountByConditions(c
   return _result7.GetSuccess(), nil
 }
 
+// Parameters:
+//  - Params
+func (p *TDepositWithdrawServiceClient) SelectSlaveDepositListByConditions(ctx context.Context, params *TDepositWithdrawParams) (r []*TDepositWithdrawResult_, err error) {
+  var _args8 TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs
+  _args8.Params = params
+  var _result9 TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult
+  if err = p.c.Call(ctx, "selectSlaveDepositListByConditions", &_args8, &_result9); err != nil {
+    return
+  }
+  return _result9.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Params
+func (p *TDepositWithdrawServiceClient) SelectSlaveDepositCountByConditions(ctx context.Context, params *TDepositWithdrawParams) (r int32, err error) {
+  var _args10 TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs
+  _args10.Params = params
+  var _result11 TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult
+  if err = p.c.Call(ctx, "selectSlaveDepositCountByConditions", &_args10, &_result11); err != nil {
+    return
+  }
+  return _result11.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Params
+func (p *TDepositWithdrawServiceClient) SelectSlaveWithdrawListByConditions(ctx context.Context, params *TDepositWithdrawParams) (r []*TDepositWithdrawResult_, err error) {
+  var _args12 TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs
+  _args12.Params = params
+  var _result13 TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult
+  if err = p.c.Call(ctx, "selectSlaveWithdrawListByConditions", &_args12, &_result13); err != nil {
+    return
+  }
+  return _result13.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Params
+func (p *TDepositWithdrawServiceClient) SelectSlaveWithdrawLCountByConditions(ctx context.Context, params *TDepositWithdrawParams) (r int32, err error) {
+  var _args14 TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs
+  _args14.Params = params
+  var _result15 TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult
+  if err = p.c.Call(ctx, "selectSlaveWithdrawLCountByConditions", &_args14, &_result15); err != nil {
+    return
+  }
+  return _result15.GetSuccess(), nil
+}
+
 type TDepositWithdrawServiceProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
   handler TDepositWithdrawService
@@ -1533,12 +1888,16 @@ func (p *TDepositWithdrawServiceProcessor) ProcessorMap() map[string]thrift.TPro
 
 func NewTDepositWithdrawServiceProcessor(handler TDepositWithdrawService) *TDepositWithdrawServiceProcessor {
 
-  self8 := &TDepositWithdrawServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self8.processorMap["selectDepositWithdrawByPrimaryKey"] = &tDepositWithdrawServiceProcessorSelectDepositWithdrawByPrimaryKey{handler:handler}
-  self8.processorMap["auditDepositWithdraw"] = &tDepositWithdrawServiceProcessorAuditDepositWithdraw{handler:handler}
-  self8.processorMap["selectDepositWithdrawByConditions"] = &tDepositWithdrawServiceProcessorSelectDepositWithdrawByConditions{handler:handler}
-  self8.processorMap["selectDepositWithdrawCountByConditions"] = &tDepositWithdrawServiceProcessorSelectDepositWithdrawCountByConditions{handler:handler}
-return self8
+  self16 := &TDepositWithdrawServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self16.processorMap["selectDepositWithdrawByPrimaryKey"] = &tDepositWithdrawServiceProcessorSelectDepositWithdrawByPrimaryKey{handler:handler}
+  self16.processorMap["auditDepositWithdraw"] = &tDepositWithdrawServiceProcessorAuditDepositWithdraw{handler:handler}
+  self16.processorMap["selectDepositWithdrawByConditions"] = &tDepositWithdrawServiceProcessorSelectDepositWithdrawByConditions{handler:handler}
+  self16.processorMap["selectDepositWithdrawCountByConditions"] = &tDepositWithdrawServiceProcessorSelectDepositWithdrawCountByConditions{handler:handler}
+  self16.processorMap["selectSlaveDepositListByConditions"] = &tDepositWithdrawServiceProcessorSelectSlaveDepositListByConditions{handler:handler}
+  self16.processorMap["selectSlaveDepositCountByConditions"] = &tDepositWithdrawServiceProcessorSelectSlaveDepositCountByConditions{handler:handler}
+  self16.processorMap["selectSlaveWithdrawListByConditions"] = &tDepositWithdrawServiceProcessorSelectSlaveWithdrawListByConditions{handler:handler}
+  self16.processorMap["selectSlaveWithdrawLCountByConditions"] = &tDepositWithdrawServiceProcessorSelectSlaveWithdrawLCountByConditions{handler:handler}
+return self16
 }
 
 func (p *TDepositWithdrawServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -1549,12 +1908,12 @@ func (p *TDepositWithdrawServiceProcessor) Process(ctx context.Context, iprot, o
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x9 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x17 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x9.Write(oprot)
+  x17.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush(ctx)
-  return false, x9
+  return false, x17
 
 }
 
@@ -1733,6 +2092,198 @@ var retval int32
     result.Success = &retval
 }
   if err2 = oprot.WriteMessageBegin("selectDepositWithdrawCountByConditions", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tDepositWithdrawServiceProcessorSelectSlaveDepositListByConditions struct {
+  handler TDepositWithdrawService
+}
+
+func (p *tDepositWithdrawServiceProcessorSelectSlaveDepositListByConditions) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectSlaveDepositListByConditions", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult{}
+var retval []*TDepositWithdrawResult_
+  var err2 error
+  if retval, err2 = p.handler.SelectSlaveDepositListByConditions(ctx, args.Params); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectSlaveDepositListByConditions: " + err2.Error())
+    oprot.WriteMessageBegin("selectSlaveDepositListByConditions", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = retval
+}
+  if err2 = oprot.WriteMessageBegin("selectSlaveDepositListByConditions", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tDepositWithdrawServiceProcessorSelectSlaveDepositCountByConditions struct {
+  handler TDepositWithdrawService
+}
+
+func (p *tDepositWithdrawServiceProcessorSelectSlaveDepositCountByConditions) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectSlaveDepositCountByConditions", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult{}
+var retval int32
+  var err2 error
+  if retval, err2 = p.handler.SelectSlaveDepositCountByConditions(ctx, args.Params); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectSlaveDepositCountByConditions: " + err2.Error())
+    oprot.WriteMessageBegin("selectSlaveDepositCountByConditions", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = &retval
+}
+  if err2 = oprot.WriteMessageBegin("selectSlaveDepositCountByConditions", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tDepositWithdrawServiceProcessorSelectSlaveWithdrawListByConditions struct {
+  handler TDepositWithdrawService
+}
+
+func (p *tDepositWithdrawServiceProcessorSelectSlaveWithdrawListByConditions) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectSlaveWithdrawListByConditions", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult{}
+var retval []*TDepositWithdrawResult_
+  var err2 error
+  if retval, err2 = p.handler.SelectSlaveWithdrawListByConditions(ctx, args.Params); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectSlaveWithdrawListByConditions: " + err2.Error())
+    oprot.WriteMessageBegin("selectSlaveWithdrawListByConditions", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = retval
+}
+  if err2 = oprot.WriteMessageBegin("selectSlaveWithdrawListByConditions", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tDepositWithdrawServiceProcessorSelectSlaveWithdrawLCountByConditions struct {
+  handler TDepositWithdrawService
+}
+
+func (p *tDepositWithdrawServiceProcessorSelectSlaveWithdrawLCountByConditions) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectSlaveWithdrawLCountByConditions", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult{}
+var retval int32
+  var err2 error
+  if retval, err2 = p.handler.SelectSlaveWithdrawLCountByConditions(ctx, args.Params); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectSlaveWithdrawLCountByConditions: " + err2.Error())
+    oprot.WriteMessageBegin("selectSlaveWithdrawLCountByConditions", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = &retval
+}
+  if err2 = oprot.WriteMessageBegin("selectSlaveWithdrawLCountByConditions", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
   if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -2442,11 +2993,11 @@ func (p *TDepositWithdrawServiceSelectDepositWithdrawByConditionsResult)  ReadFi
   tSlice := make([]*TDepositWithdrawResult_, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-    _elem10 := &TDepositWithdrawResult_{}
-    if err := _elem10.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem10), err)
+    _elem18 := &TDepositWithdrawResult_{}
+    if err := _elem18.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem18), err)
     }
-    p.Success = append(p.Success, _elem10)
+    p.Success = append(p.Success, _elem18)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -2691,6 +3242,834 @@ func (p *TDepositWithdrawServiceSelectDepositWithdrawCountByConditionsResult) St
     return "<nil>"
   }
   return fmt.Sprintf("TDepositWithdrawServiceSelectDepositWithdrawCountByConditionsResult(%+v)", *p)
+}
+
+// Attributes:
+//  - Params
+type TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs struct {
+  Params *TDepositWithdrawParams `thrift:"params,1" db:"params" json:"params"`
+}
+
+func NewTDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs() *TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs {
+  return &TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs{}
+}
+
+var TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs_Params_DEFAULT *TDepositWithdrawParams
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs) GetParams() *TDepositWithdrawParams {
+  if !p.IsSetParams() {
+    return TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs_Params_DEFAULT
+  }
+return p.Params
+}
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs) IsSetParams() bool {
+  return p.Params != nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRUCT {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs)  ReadField1(iprot thrift.TProtocol) error {
+  p.Params = &TDepositWithdrawParams{}
+  if err := p.Params.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Params), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveDepositListByConditions_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("params", thrift.STRUCT, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:params: ", p), err) }
+  if err := p.Params.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Params), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:params: ", p), err) }
+  return err
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TDepositWithdrawServiceSelectSlaveDepositListByConditionsArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult struct {
+  Success []*TDepositWithdrawResult_ `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTDepositWithdrawServiceSelectSlaveDepositListByConditionsResult() *TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult {
+  return &TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult{}
+}
+
+var TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult_Success_DEFAULT []*TDepositWithdrawResult_
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult) GetSuccess() []*TDepositWithdrawResult_ {
+  return p.Success
+}
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.LIST {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult)  ReadField0(iprot thrift.TProtocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]*TDepositWithdrawResult_, 0, size)
+  p.Success =  tSlice
+  for i := 0; i < size; i ++ {
+    _elem19 := &TDepositWithdrawResult_{}
+    if err := _elem19.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem19), err)
+    }
+    p.Success = append(p.Success, _elem19)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveDepositListByConditions_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Success)); err != nil {
+      return thrift.PrependError("error writing list begin: ", err)
+    }
+    for _, v := range p.Success {
+      if err := v.Write(oprot); err != nil {
+        return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+      }
+    }
+    if err := oprot.WriteListEnd(); err != nil {
+      return thrift.PrependError("error writing list end: ", err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TDepositWithdrawServiceSelectSlaveDepositListByConditionsResult(%+v)", *p)
+}
+
+// Attributes:
+//  - Params
+type TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs struct {
+  Params *TDepositWithdrawParams `thrift:"params,1" db:"params" json:"params"`
+}
+
+func NewTDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs() *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs {
+  return &TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs{}
+}
+
+var TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs_Params_DEFAULT *TDepositWithdrawParams
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs) GetParams() *TDepositWithdrawParams {
+  if !p.IsSetParams() {
+    return TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs_Params_DEFAULT
+  }
+return p.Params
+}
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs) IsSetParams() bool {
+  return p.Params != nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRUCT {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs)  ReadField1(iprot thrift.TProtocol) error {
+  p.Params = &TDepositWithdrawParams{}
+  if err := p.Params.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Params), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveDepositCountByConditions_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("params", thrift.STRUCT, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:params: ", p), err) }
+  if err := p.Params.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Params), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:params: ", p), err) }
+  return err
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TDepositWithdrawServiceSelectSlaveDepositCountByConditionsArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult struct {
+  Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult() *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult {
+  return &TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult{}
+}
+
+var TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult_Success_DEFAULT int32
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult) GetSuccess() int32 {
+  if !p.IsSetSuccess() {
+    return TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult_Success_DEFAULT
+  }
+return *p.Success
+}
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult)  ReadField0(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 0: ", err)
+} else {
+  p.Success = &v
+}
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveDepositCountByConditions_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteI32(int32(*p.Success)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.success (0) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TDepositWithdrawServiceSelectSlaveDepositCountByConditionsResult(%+v)", *p)
+}
+
+// Attributes:
+//  - Params
+type TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs struct {
+  Params *TDepositWithdrawParams `thrift:"params,1" db:"params" json:"params"`
+}
+
+func NewTDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs() *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs {
+  return &TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs{}
+}
+
+var TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs_Params_DEFAULT *TDepositWithdrawParams
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs) GetParams() *TDepositWithdrawParams {
+  if !p.IsSetParams() {
+    return TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs_Params_DEFAULT
+  }
+return p.Params
+}
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs) IsSetParams() bool {
+  return p.Params != nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRUCT {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs)  ReadField1(iprot thrift.TProtocol) error {
+  p.Params = &TDepositWithdrawParams{}
+  if err := p.Params.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Params), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveWithdrawListByConditions_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("params", thrift.STRUCT, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:params: ", p), err) }
+  if err := p.Params.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Params), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:params: ", p), err) }
+  return err
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult struct {
+  Success []*TDepositWithdrawResult_ `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult() *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult {
+  return &TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult{}
+}
+
+var TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult_Success_DEFAULT []*TDepositWithdrawResult_
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult) GetSuccess() []*TDepositWithdrawResult_ {
+  return p.Success
+}
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.LIST {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult)  ReadField0(iprot thrift.TProtocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]*TDepositWithdrawResult_, 0, size)
+  p.Success =  tSlice
+  for i := 0; i < size; i ++ {
+    _elem20 := &TDepositWithdrawResult_{}
+    if err := _elem20.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem20), err)
+    }
+    p.Success = append(p.Success, _elem20)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveWithdrawListByConditions_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Success)); err != nil {
+      return thrift.PrependError("error writing list begin: ", err)
+    }
+    for _, v := range p.Success {
+      if err := v.Write(oprot); err != nil {
+        return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+      }
+    }
+    if err := oprot.WriteListEnd(); err != nil {
+      return thrift.PrependError("error writing list end: ", err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TDepositWithdrawServiceSelectSlaveWithdrawListByConditionsResult(%+v)", *p)
+}
+
+// Attributes:
+//  - Params
+type TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs struct {
+  Params *TDepositWithdrawParams `thrift:"params,1" db:"params" json:"params"`
+}
+
+func NewTDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs() *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs {
+  return &TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs{}
+}
+
+var TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs_Params_DEFAULT *TDepositWithdrawParams
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs) GetParams() *TDepositWithdrawParams {
+  if !p.IsSetParams() {
+    return TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs_Params_DEFAULT
+  }
+return p.Params
+}
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs) IsSetParams() bool {
+  return p.Params != nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRUCT {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs)  ReadField1(iprot thrift.TProtocol) error {
+  p.Params = &TDepositWithdrawParams{}
+  if err := p.Params.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Params), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveWithdrawLCountByConditions_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("params", thrift.STRUCT, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:params: ", p), err) }
+  if err := p.Params.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Params), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:params: ", p), err) }
+  return err
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult struct {
+  Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult() *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult {
+  return &TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult{}
+}
+
+var TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult_Success_DEFAULT int32
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult) GetSuccess() int32 {
+  if !p.IsSetSuccess() {
+    return TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult_Success_DEFAULT
+  }
+return *p.Success
+}
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult)  ReadField0(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 0: ", err)
+} else {
+  p.Success = &v
+}
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSlaveWithdrawLCountByConditions_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteI32(int32(*p.Success)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.success (0) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TDepositWithdrawServiceSelectSlaveWithdrawLCountByConditionsResult(%+v)", *p)
 }
 
 
