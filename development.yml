@@ -12,28 +12,28 @@ redis:
   password: ""
 
 bisale_business_service:
-  #host: 47.75.183.114
-  host: 52.196.219.81
+  host: 47.75.183.114
+#  host: 52.196.219.81
   port: 10001
 
 account_service:
-  #host: 47.75.183.114
-  host: 52.196.219.81
+  host: 47.75.183.114
+#  host: 52.196.219.81
   port: 10002
 
 captcha_service:
-  #host: 47.75.183.114
-  host: 52.196.219.81
+  host: 47.75.183.114
+#  host: 52.196.219.81
   port: 10003
 
 message_service:
-  #host: 47.75.183.114
-  host: 52.196.219.81
+  host: 47.75.183.114
+#  host: 52.196.219.81
   port: 10004
 
 storage_service:
-  #host: 47.75.183.114
-  host: 52.196.219.81
+  host: 47.75.183.114
+#  host: 52.196.219.81
   port: 10005
 
 oms_service:

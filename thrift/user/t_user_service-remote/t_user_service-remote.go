@@ -29,6 +29,8 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "  bool resetGoogleCode(string traceId, i32 userId)")
   fmt.Fprintln(os.Stderr, "  TUser selectUserById(string traceId, i32 userId)")
   fmt.Fprintln(os.Stderr, "  TGoogleStatusResult selectUserGoogleStatus(string traceId, i32 userId)")
+  fmt.Fprintln(os.Stderr, "   selectEngineAccountListByType(string traceId, i32 type, i32 startPage, i32 pageSize)")
+  fmt.Fprintln(os.Stderr, "  i32 selectEngineAccountCountByType(string traceId, i32 type)")
   fmt.Fprintln(os.Stderr, "  i32 selectSlaveAllUserCount(string traceId)")
   fmt.Fprintln(os.Stderr, "   selectSlaveRegisterCountDay(string traceId, i32 days)")
   fmt.Fprintln(os.Stderr, "   selectSlaveInviteFriendsAwardTop(string traceId, i32 top)")
@@ -135,19 +137,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectUserByConditions requires 1 args")
       flag.Usage()
     }
-    arg28 := flag.Arg(1)
-    mbTrans29 := thrift.NewTMemoryBufferLen(len(arg28))
-    defer mbTrans29.Close()
-    _, err30 := mbTrans29.WriteString(arg28)
-    if err30 != nil {
+    arg33 := flag.Arg(1)
+    mbTrans34 := thrift.NewTMemoryBufferLen(len(arg33))
+    defer mbTrans34.Close()
+    _, err35 := mbTrans34.WriteString(arg33)
+    if err35 != nil {
       Usage()
       return
     }
-    factory31 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt32 := factory31.GetProtocol(mbTrans29)
+    factory36 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt37 := factory36.GetProtocol(mbTrans34)
     argvalue0 := user.NewTUserParams()
-    err33 := argvalue0.Read(jsProt32)
-    if err33 != nil {
+    err38 := argvalue0.Read(jsProt37)
+    if err38 != nil {
       Usage()
       return
     }
@@ -160,19 +162,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectUserCountByConditions requires 1 args")
       flag.Usage()
     }
-    arg34 := flag.Arg(1)
-    mbTrans35 := thrift.NewTMemoryBufferLen(len(arg34))
-    defer mbTrans35.Close()
-    _, err36 := mbTrans35.WriteString(arg34)
-    if err36 != nil {
+    arg39 := flag.Arg(1)
+    mbTrans40 := thrift.NewTMemoryBufferLen(len(arg39))
+    defer mbTrans40.Close()
+    _, err41 := mbTrans40.WriteString(arg39)
+    if err41 != nil {
       Usage()
       return
     }
-    factory37 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt38 := factory37.GetProtocol(mbTrans35)
+    factory42 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt43 := factory42.GetProtocol(mbTrans40)
     argvalue0 := user.NewTUserParams()
-    err39 := argvalue0.Read(jsProt38)
-    if err39 != nil {
+    err44 := argvalue0.Read(jsProt43)
+    if err44 != nil {
       Usage()
       return
     }
@@ -187,8 +189,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err41 := (strconv.Atoi(flag.Arg(2)))
-    if err41 != nil {
+    tmp1, err46 := (strconv.Atoi(flag.Arg(2)))
+    if err46 != nil {
       Usage()
       return
     }
@@ -204,8 +206,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err43 := (strconv.Atoi(flag.Arg(2)))
-    if err43 != nil {
+    tmp1, err48 := (strconv.Atoi(flag.Arg(2)))
+    if err48 != nil {
       Usage()
       return
     }
@@ -221,8 +223,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err45 := (strconv.Atoi(flag.Arg(2)))
-    if err45 != nil {
+    tmp1, err50 := (strconv.Atoi(flag.Arg(2)))
+    if err50 != nil {
       Usage()
       return
     }
@@ -238,8 +240,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err47 := (strconv.Atoi(flag.Arg(2)))
-    if err47 != nil {
+    tmp1, err52 := (strconv.Atoi(flag.Arg(2)))
+    if err52 != nil {
       Usage()
       return
     }
@@ -255,14 +257,62 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err49 := (strconv.Atoi(flag.Arg(2)))
-    if err49 != nil {
+    tmp1, err54 := (strconv.Atoi(flag.Arg(2)))
+    if err54 != nil {
       Usage()
       return
     }
     argvalue1 := int32(tmp1)
     value1 := argvalue1
     fmt.Print(client.SelectUserGoogleStatus(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "selectEngineAccountListByType":
+    if flag.NArg() - 1 != 4 {
+      fmt.Fprintln(os.Stderr, "SelectEngineAccountListByType requires 4 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err56 := (strconv.Atoi(flag.Arg(2)))
+    if err56 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    tmp2, err57 := (strconv.Atoi(flag.Arg(3)))
+    if err57 != nil {
+      Usage()
+      return
+    }
+    argvalue2 := int32(tmp2)
+    value2 := argvalue2
+    tmp3, err58 := (strconv.Atoi(flag.Arg(4)))
+    if err58 != nil {
+      Usage()
+      return
+    }
+    argvalue3 := int32(tmp3)
+    value3 := argvalue3
+    fmt.Print(client.SelectEngineAccountListByType(context.Background(), value0, value1, value2, value3))
+    fmt.Print("\n")
+    break
+  case "selectEngineAccountCountByType":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectEngineAccountCountByType requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err60 := (strconv.Atoi(flag.Arg(2)))
+    if err60 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.SelectEngineAccountCountByType(context.Background(), value0, value1))
     fmt.Print("\n")
     break
   case "selectSlaveAllUserCount":
@@ -282,8 +332,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err52 := (strconv.Atoi(flag.Arg(2)))
-    if err52 != nil {
+    tmp1, err63 := (strconv.Atoi(flag.Arg(2)))
+    if err63 != nil {
       Usage()
       return
     }
@@ -299,8 +349,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err54 := (strconv.Atoi(flag.Arg(2)))
-    if err54 != nil {
+    tmp1, err65 := (strconv.Atoi(flag.Arg(2)))
+    if err65 != nil {
       Usage()
       return
     }
@@ -316,15 +366,15 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err56 := (strconv.Atoi(flag.Arg(2)))
-    if err56 != nil {
+    tmp1, err67 := (strconv.Atoi(flag.Arg(2)))
+    if err67 != nil {
       Usage()
       return
     }
     argvalue1 := int32(tmp1)
     value1 := argvalue1
-    tmp2, err57 := (strconv.Atoi(flag.Arg(3)))
-    if err57 != nil {
+    tmp2, err68 := (strconv.Atoi(flag.Arg(3)))
+    if err68 != nil {
       Usage()
       return
     }

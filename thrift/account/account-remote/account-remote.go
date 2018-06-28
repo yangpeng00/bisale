@@ -30,8 +30,13 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "  string Version()")
   fmt.Fprintln(os.Stderr, "  LoginOutput MobileLogin(string traceId, MobileLoginInput output)")
   fmt.Fprintln(os.Stderr, "  CreateMemberOutput CreateMember(string traceId, CreateMemberInput input)")
+  fmt.Fprintln(os.Stderr, "  GetMemberOutput GetMemberByMobile(string traceId, string mobile)")
+  fmt.Fprintln(os.Stderr, "  GetMemberOutput GetMemberByEmail(string traceId, string mobile)")
+  fmt.Fprintln(os.Stderr, "  GetMemberOutput GetMemberByAccount(string traceId, string mobile)")
   fmt.Fprintln(os.Stderr, "  string GenerateJWTToken(string traceId, JWTInput input, string secretKey, i32 expired)")
   fmt.Fprintln(os.Stderr, "  JWTOutput ValidateJWT(string traceId, string tokenString, string secretKey)")
+  fmt.Fprintln(os.Stderr, "  i32 OperateStart(string traceId, MemberOperationInput input)")
+  fmt.Fprintln(os.Stderr, "  void OperateEnd(i32 id, MemberOperationInput input)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -152,19 +157,19 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    arg15 := flag.Arg(2)
-    mbTrans16 := thrift.NewTMemoryBufferLen(len(arg15))
-    defer mbTrans16.Close()
-    _, err17 := mbTrans16.WriteString(arg15)
-    if err17 != nil {
+    arg25 := flag.Arg(2)
+    mbTrans26 := thrift.NewTMemoryBufferLen(len(arg25))
+    defer mbTrans26.Close()
+    _, err27 := mbTrans26.WriteString(arg25)
+    if err27 != nil {
       Usage()
       return
     }
-    factory18 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt19 := factory18.GetProtocol(mbTrans16)
+    factory28 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt29 := factory28.GetProtocol(mbTrans26)
     argvalue1 := inputs.NewMobileLoginInput()
-    err20 := argvalue1.Read(jsProt19)
-    if err20 != nil {
+    err30 := argvalue1.Read(jsProt29)
+    if err30 != nil {
       Usage()
       return
     }
@@ -179,24 +184,60 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    arg22 := flag.Arg(2)
-    mbTrans23 := thrift.NewTMemoryBufferLen(len(arg22))
-    defer mbTrans23.Close()
-    _, err24 := mbTrans23.WriteString(arg22)
-    if err24 != nil {
+    arg32 := flag.Arg(2)
+    mbTrans33 := thrift.NewTMemoryBufferLen(len(arg32))
+    defer mbTrans33.Close()
+    _, err34 := mbTrans33.WriteString(arg32)
+    if err34 != nil {
       Usage()
       return
     }
-    factory25 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt26 := factory25.GetProtocol(mbTrans23)
+    factory35 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt36 := factory35.GetProtocol(mbTrans33)
     argvalue1 := inputs.NewCreateMemberInput()
-    err27 := argvalue1.Read(jsProt26)
-    if err27 != nil {
+    err37 := argvalue1.Read(jsProt36)
+    if err37 != nil {
       Usage()
       return
     }
     value1 := argvalue1
     fmt.Print(client.CreateMember(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "GetMemberByMobile":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "GetMemberByMobile requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
+    value1 := argvalue1
+    fmt.Print(client.GetMemberByMobile(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "GetMemberByEmail":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "GetMemberByEmail requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
+    value1 := argvalue1
+    fmt.Print(client.GetMemberByEmail(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "GetMemberByAccount":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "GetMemberByAccount requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
+    value1 := argvalue1
+    fmt.Print(client.GetMemberByAccount(context.Background(), value0, value1))
     fmt.Print("\n")
     break
   case "GenerateJWTToken":
@@ -206,27 +247,27 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    arg29 := flag.Arg(2)
-    mbTrans30 := thrift.NewTMemoryBufferLen(len(arg29))
-    defer mbTrans30.Close()
-    _, err31 := mbTrans30.WriteString(arg29)
-    if err31 != nil {
+    arg45 := flag.Arg(2)
+    mbTrans46 := thrift.NewTMemoryBufferLen(len(arg45))
+    defer mbTrans46.Close()
+    _, err47 := mbTrans46.WriteString(arg45)
+    if err47 != nil {
       Usage()
       return
     }
-    factory32 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt33 := factory32.GetProtocol(mbTrans30)
+    factory48 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt49 := factory48.GetProtocol(mbTrans46)
     argvalue1 := inputs.NewJWTInput()
-    err34 := argvalue1.Read(jsProt33)
-    if err34 != nil {
+    err50 := argvalue1.Read(jsProt49)
+    if err50 != nil {
       Usage()
       return
     }
     value1 := argvalue1
     argvalue2 := flag.Arg(3)
     value2 := argvalue2
-    tmp3, err36 := (strconv.Atoi(flag.Arg(4)))
-    if err36 != nil {
+    tmp3, err52 := (strconv.Atoi(flag.Arg(4)))
+    if err52 != nil {
       Usage()
       return
     }
@@ -247,6 +288,65 @@ func main() {
     argvalue2 := flag.Arg(3)
     value2 := argvalue2
     fmt.Print(client.ValidateJWT(context.Background(), value0, value1, value2))
+    fmt.Print("\n")
+    break
+  case "OperateStart":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "OperateStart requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    arg57 := flag.Arg(2)
+    mbTrans58 := thrift.NewTMemoryBufferLen(len(arg57))
+    defer mbTrans58.Close()
+    _, err59 := mbTrans58.WriteString(arg57)
+    if err59 != nil {
+      Usage()
+      return
+    }
+    factory60 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt61 := factory60.GetProtocol(mbTrans58)
+    argvalue1 := inputs.NewMemberOperationInput()
+    err62 := argvalue1.Read(jsProt61)
+    if err62 != nil {
+      Usage()
+      return
+    }
+    value1 := argvalue1
+    fmt.Print(client.OperateStart(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "OperateEnd":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "OperateEnd requires 2 args")
+      flag.Usage()
+    }
+    tmp0, err63 := (strconv.Atoi(flag.Arg(1)))
+    if err63 != nil {
+      Usage()
+      return
+    }
+    argvalue0 := int32(tmp0)
+    value0 := argvalue0
+    arg64 := flag.Arg(2)
+    mbTrans65 := thrift.NewTMemoryBufferLen(len(arg64))
+    defer mbTrans65.Close()
+    _, err66 := mbTrans65.WriteString(arg64)
+    if err66 != nil {
+      Usage()
+      return
+    }
+    factory67 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt68 := factory67.GetProtocol(mbTrans65)
+    argvalue1 := inputs.NewMemberOperationInput()
+    err69 := argvalue1.Read(jsProt68)
+    if err69 != nil {
+      Usage()
+      return
+    }
+    value1 := argvalue1
+    fmt.Print(client.OperateEnd(context.Background(), value0, value1))
     fmt.Print("\n")
     break
   case "":

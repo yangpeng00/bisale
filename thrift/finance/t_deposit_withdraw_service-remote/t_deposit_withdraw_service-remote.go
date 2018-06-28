@@ -26,6 +26,10 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "  bool auditDepositWithdraw(string traceId, string status, string mark, i32 withdrawId)")
   fmt.Fprintln(os.Stderr, "   selectDepositWithdrawByConditions(TDepositWithdrawParams params)")
   fmt.Fprintln(os.Stderr, "  i32 selectDepositWithdrawCountByConditions(TDepositWithdrawParams params)")
+  fmt.Fprintln(os.Stderr, "   selectSlaveDepositListByConditions(TDepositWithdrawParams params)")
+  fmt.Fprintln(os.Stderr, "  i32 selectSlaveDepositCountByConditions(TDepositWithdrawParams params)")
+  fmt.Fprintln(os.Stderr, "   selectSlaveWithdrawListByConditions(TDepositWithdrawParams params)")
+  fmt.Fprintln(os.Stderr, "  i32 selectSlaveWithdrawLCountByConditions(TDepositWithdrawParams params)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -130,8 +134,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err12 := (strconv.Atoi(flag.Arg(2)))
-    if err12 != nil {
+    tmp1, err22 := (strconv.Atoi(flag.Arg(2)))
+    if err22 != nil {
       Usage()
       return
     }
@@ -151,8 +155,8 @@ func main() {
     value1 := argvalue1
     argvalue2 := flag.Arg(3)
     value2 := argvalue2
-    tmp3, err16 := (strconv.Atoi(flag.Arg(4)))
-    if err16 != nil {
+    tmp3, err26 := (strconv.Atoi(flag.Arg(4)))
+    if err26 != nil {
       Usage()
       return
     }
@@ -166,19 +170,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectDepositWithdrawByConditions requires 1 args")
       flag.Usage()
     }
-    arg17 := flag.Arg(1)
-    mbTrans18 := thrift.NewTMemoryBufferLen(len(arg17))
-    defer mbTrans18.Close()
-    _, err19 := mbTrans18.WriteString(arg17)
-    if err19 != nil {
+    arg27 := flag.Arg(1)
+    mbTrans28 := thrift.NewTMemoryBufferLen(len(arg27))
+    defer mbTrans28.Close()
+    _, err29 := mbTrans28.WriteString(arg27)
+    if err29 != nil {
       Usage()
       return
     }
-    factory20 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt21 := factory20.GetProtocol(mbTrans18)
+    factory30 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt31 := factory30.GetProtocol(mbTrans28)
     argvalue0 := finance.NewTDepositWithdrawParams()
-    err22 := argvalue0.Read(jsProt21)
-    if err22 != nil {
+    err32 := argvalue0.Read(jsProt31)
+    if err32 != nil {
       Usage()
       return
     }
@@ -191,24 +195,124 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectDepositWithdrawCountByConditions requires 1 args")
       flag.Usage()
     }
-    arg23 := flag.Arg(1)
-    mbTrans24 := thrift.NewTMemoryBufferLen(len(arg23))
-    defer mbTrans24.Close()
-    _, err25 := mbTrans24.WriteString(arg23)
-    if err25 != nil {
+    arg33 := flag.Arg(1)
+    mbTrans34 := thrift.NewTMemoryBufferLen(len(arg33))
+    defer mbTrans34.Close()
+    _, err35 := mbTrans34.WriteString(arg33)
+    if err35 != nil {
       Usage()
       return
     }
-    factory26 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt27 := factory26.GetProtocol(mbTrans24)
+    factory36 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt37 := factory36.GetProtocol(mbTrans34)
     argvalue0 := finance.NewTDepositWithdrawParams()
-    err28 := argvalue0.Read(jsProt27)
-    if err28 != nil {
+    err38 := argvalue0.Read(jsProt37)
+    if err38 != nil {
       Usage()
       return
     }
     value0 := argvalue0
     fmt.Print(client.SelectDepositWithdrawCountByConditions(context.Background(), value0))
+    fmt.Print("\n")
+    break
+  case "selectSlaveDepositListByConditions":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "SelectSlaveDepositListByConditions requires 1 args")
+      flag.Usage()
+    }
+    arg39 := flag.Arg(1)
+    mbTrans40 := thrift.NewTMemoryBufferLen(len(arg39))
+    defer mbTrans40.Close()
+    _, err41 := mbTrans40.WriteString(arg39)
+    if err41 != nil {
+      Usage()
+      return
+    }
+    factory42 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt43 := factory42.GetProtocol(mbTrans40)
+    argvalue0 := finance.NewTDepositWithdrawParams()
+    err44 := argvalue0.Read(jsProt43)
+    if err44 != nil {
+      Usage()
+      return
+    }
+    value0 := argvalue0
+    fmt.Print(client.SelectSlaveDepositListByConditions(context.Background(), value0))
+    fmt.Print("\n")
+    break
+  case "selectSlaveDepositCountByConditions":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "SelectSlaveDepositCountByConditions requires 1 args")
+      flag.Usage()
+    }
+    arg45 := flag.Arg(1)
+    mbTrans46 := thrift.NewTMemoryBufferLen(len(arg45))
+    defer mbTrans46.Close()
+    _, err47 := mbTrans46.WriteString(arg45)
+    if err47 != nil {
+      Usage()
+      return
+    }
+    factory48 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt49 := factory48.GetProtocol(mbTrans46)
+    argvalue0 := finance.NewTDepositWithdrawParams()
+    err50 := argvalue0.Read(jsProt49)
+    if err50 != nil {
+      Usage()
+      return
+    }
+    value0 := argvalue0
+    fmt.Print(client.SelectSlaveDepositCountByConditions(context.Background(), value0))
+    fmt.Print("\n")
+    break
+  case "selectSlaveWithdrawListByConditions":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "SelectSlaveWithdrawListByConditions requires 1 args")
+      flag.Usage()
+    }
+    arg51 := flag.Arg(1)
+    mbTrans52 := thrift.NewTMemoryBufferLen(len(arg51))
+    defer mbTrans52.Close()
+    _, err53 := mbTrans52.WriteString(arg51)
+    if err53 != nil {
+      Usage()
+      return
+    }
+    factory54 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt55 := factory54.GetProtocol(mbTrans52)
+    argvalue0 := finance.NewTDepositWithdrawParams()
+    err56 := argvalue0.Read(jsProt55)
+    if err56 != nil {
+      Usage()
+      return
+    }
+    value0 := argvalue0
+    fmt.Print(client.SelectSlaveWithdrawListByConditions(context.Background(), value0))
+    fmt.Print("\n")
+    break
+  case "selectSlaveWithdrawLCountByConditions":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "SelectSlaveWithdrawLCountByConditions requires 1 args")
+      flag.Usage()
+    }
+    arg57 := flag.Arg(1)
+    mbTrans58 := thrift.NewTMemoryBufferLen(len(arg57))
+    defer mbTrans58.Close()
+    _, err59 := mbTrans58.WriteString(arg57)
+    if err59 != nil {
+      Usage()
+      return
+    }
+    factory60 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt61 := factory60.GetProtocol(mbTrans58)
+    argvalue0 := finance.NewTDepositWithdrawParams()
+    err62 := argvalue0.Read(jsProt61)
+    if err62 != nil {
+      Usage()
+      return
+    }
+    value0 := argvalue0
+    fmt.Print(client.SelectSlaveWithdrawLCountByConditions(context.Background(), value0))
     fmt.Print("\n")
     break
   case "":

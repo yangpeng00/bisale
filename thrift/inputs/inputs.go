@@ -671,26 +671,62 @@ func (p *CreatePermissionInput) String() string {
 }
 
 // Attributes:
-//  - Username
-//  - Password
-type CreateLogInput struct {
-  Username string `thrift:"Username,1" db:"Username" json:"Username"`
-  Password string `thrift:"Password,2" db:"Password" json:"Password"`
+//  - OpMethod
+//  - OpUrl
+//  - OpIp
+//  - MemberId
+//  - OpAgent
+//  - OpInput
+//  - OpOutput
+//  - OpHttpCode
+type MemberOperationInput struct {
+  OpMethod string `thrift:"OpMethod,1" db:"OpMethod" json:"OpMethod"`
+  OpUrl string `thrift:"OpUrl,2" db:"OpUrl" json:"OpUrl"`
+  OpIp string `thrift:"OpIp,3" db:"OpIp" json:"OpIp"`
+  MemberId string `thrift:"MemberId,4" db:"MemberId" json:"MemberId"`
+  OpAgent string `thrift:"OpAgent,5" db:"OpAgent" json:"OpAgent"`
+  OpInput string `thrift:"OpInput,6" db:"OpInput" json:"OpInput"`
+  OpOutput string `thrift:"OpOutput,7" db:"OpOutput" json:"OpOutput"`
+  OpHttpCode int32 `thrift:"OpHttpCode,8" db:"OpHttpCode" json:"OpHttpCode"`
 }
 
-func NewCreateLogInput() *CreateLogInput {
-  return &CreateLogInput{}
+func NewMemberOperationInput() *MemberOperationInput {
+  return &MemberOperationInput{}
 }
 
 
-func (p *CreateLogInput) GetUsername() string {
-  return p.Username
+func (p *MemberOperationInput) GetOpMethod() string {
+  return p.OpMethod
 }
 
-func (p *CreateLogInput) GetPassword() string {
-  return p.Password
+func (p *MemberOperationInput) GetOpUrl() string {
+  return p.OpUrl
 }
-func (p *CreateLogInput) Read(iprot thrift.TProtocol) error {
+
+func (p *MemberOperationInput) GetOpIp() string {
+  return p.OpIp
+}
+
+func (p *MemberOperationInput) GetMemberId() string {
+  return p.MemberId
+}
+
+func (p *MemberOperationInput) GetOpAgent() string {
+  return p.OpAgent
+}
+
+func (p *MemberOperationInput) GetOpInput() string {
+  return p.OpInput
+}
+
+func (p *MemberOperationInput) GetOpOutput() string {
+  return p.OpOutput
+}
+
+func (p *MemberOperationInput) GetOpHttpCode() int32 {
+  return p.OpHttpCode
+}
+func (p *MemberOperationInput) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -723,6 +759,66 @@ func (p *CreateLogInput) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 3:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField3(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 4:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField4(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 5:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField5(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 6:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField6(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 7:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField7(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 8:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField8(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -738,30 +834,90 @@ func (p *CreateLogInput) Read(iprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *CreateLogInput)  ReadField1(iprot thrift.TProtocol) error {
+func (p *MemberOperationInput)  ReadField1(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 1: ", err)
 } else {
-  p.Username = v
+  p.OpMethod = v
 }
   return nil
 }
 
-func (p *CreateLogInput)  ReadField2(iprot thrift.TProtocol) error {
+func (p *MemberOperationInput)  ReadField2(iprot thrift.TProtocol) error {
   if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
-  p.Password = v
+  p.OpUrl = v
 }
   return nil
 }
 
-func (p *CreateLogInput) Write(oprot thrift.TProtocol) error {
-  if err := oprot.WriteStructBegin("CreateLogInput"); err != nil {
+func (p *MemberOperationInput)  ReadField3(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 3: ", err)
+} else {
+  p.OpIp = v
+}
+  return nil
+}
+
+func (p *MemberOperationInput)  ReadField4(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.MemberId = v
+}
+  return nil
+}
+
+func (p *MemberOperationInput)  ReadField5(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 5: ", err)
+} else {
+  p.OpAgent = v
+}
+  return nil
+}
+
+func (p *MemberOperationInput)  ReadField6(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 6: ", err)
+} else {
+  p.OpInput = v
+}
+  return nil
+}
+
+func (p *MemberOperationInput)  ReadField7(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 7: ", err)
+} else {
+  p.OpOutput = v
+}
+  return nil
+}
+
+func (p *MemberOperationInput)  ReadField8(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 8: ", err)
+} else {
+  p.OpHttpCode = v
+}
+  return nil
+}
+
+func (p *MemberOperationInput) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("MemberOperationInput"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if p != nil {
     if err := p.writeField1(oprot); err != nil { return err }
     if err := p.writeField2(oprot); err != nil { return err }
+    if err := p.writeField3(oprot); err != nil { return err }
+    if err := p.writeField4(oprot); err != nil { return err }
+    if err := p.writeField5(oprot); err != nil { return err }
+    if err := p.writeField6(oprot); err != nil { return err }
+    if err := p.writeField7(oprot); err != nil { return err }
+    if err := p.writeField8(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -770,31 +926,91 @@ func (p *CreateLogInput) Write(oprot thrift.TProtocol) error {
   return nil
 }
 
-func (p *CreateLogInput) writeField1(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("Username", thrift.STRING, 1); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:Username: ", p), err) }
-  if err := oprot.WriteString(string(p.Username)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.Username (1) field write error: ", p), err) }
+func (p *MemberOperationInput) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("OpMethod", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:OpMethod: ", p), err) }
+  if err := oprot.WriteString(string(p.OpMethod)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.OpMethod (1) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:Username: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:OpMethod: ", p), err) }
   return err
 }
 
-func (p *CreateLogInput) writeField2(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("Password", thrift.STRING, 2); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:Password: ", p), err) }
-  if err := oprot.WriteString(string(p.Password)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.Password (2) field write error: ", p), err) }
+func (p *MemberOperationInput) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("OpUrl", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:OpUrl: ", p), err) }
+  if err := oprot.WriteString(string(p.OpUrl)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.OpUrl (2) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:Password: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:OpUrl: ", p), err) }
   return err
 }
 
-func (p *CreateLogInput) String() string {
+func (p *MemberOperationInput) writeField3(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("OpIp", thrift.STRING, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:OpIp: ", p), err) }
+  if err := oprot.WriteString(string(p.OpIp)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.OpIp (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:OpIp: ", p), err) }
+  return err
+}
+
+func (p *MemberOperationInput) writeField4(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("MemberId", thrift.STRING, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:MemberId: ", p), err) }
+  if err := oprot.WriteString(string(p.MemberId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.MemberId (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:MemberId: ", p), err) }
+  return err
+}
+
+func (p *MemberOperationInput) writeField5(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("OpAgent", thrift.STRING, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:OpAgent: ", p), err) }
+  if err := oprot.WriteString(string(p.OpAgent)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.OpAgent (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:OpAgent: ", p), err) }
+  return err
+}
+
+func (p *MemberOperationInput) writeField6(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("OpInput", thrift.STRING, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:OpInput: ", p), err) }
+  if err := oprot.WriteString(string(p.OpInput)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.OpInput (6) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:OpInput: ", p), err) }
+  return err
+}
+
+func (p *MemberOperationInput) writeField7(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("OpOutput", thrift.STRING, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:OpOutput: ", p), err) }
+  if err := oprot.WriteString(string(p.OpOutput)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.OpOutput (7) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:OpOutput: ", p), err) }
+  return err
+}
+
+func (p *MemberOperationInput) writeField8(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("OpHttpCode", thrift.I32, 8); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:OpHttpCode: ", p), err) }
+  if err := oprot.WriteI32(int32(p.OpHttpCode)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.OpHttpCode (8) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 8:OpHttpCode: ", p), err) }
+  return err
+}
+
+func (p *MemberOperationInput) String() string {
   if p == nil {
     return "<nil>"
   }
-  return fmt.Sprintf("CreateLogInput(%+v)", *p)
+  return fmt.Sprintf("MemberOperationInput(%+v)", *p)
 }
 
 // Attributes:

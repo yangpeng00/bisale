@@ -28,9 +28,6 @@ func GetWithdrawList(c echo.Context) error {
 	withdrawService, withdrawClient := common.GetBisaleWithdrawServiceClient()
 	defer common.BisaleWithdrawServicePool.Put(withdrawClient)
 
-	//userService, userClient := common.GetBisaleUserServiceClient()
-	//defer common.BisaleUserServicePool.Put(userClient)
-
 	withdrawParams := new(finance.TDepositWithdrawParams)
 
 	withdrawParams.UserName = c.QueryParam("keyword")

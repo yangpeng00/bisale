@@ -79,5 +79,8 @@ func main() {
 	bisale.PUT("/content/notice", controllers.PutNotice)
 	bisale.PATCH("/content/notice/status", controllers.PatchNoticeStatus)
 
+	bisale.GET("/order/withdraw", controllers.GetWithdrawOrder)
+	bisale.GET("/order/deposit", controllers.GetDepositOrder)
+
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }
