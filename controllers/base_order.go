@@ -6,6 +6,8 @@ import (
 	"context"
 	"bisale/bisale-console-api/codes"
 	"bisale/bisale-console-api/thrift/finance"
+	"bisale/bisale-console-api/thrift/engine"
+	"encoding/json"
 )
 
 type OrderRequest struct {
@@ -19,8 +21,26 @@ type OrderRequest struct {
 	EndTime string `query:"endTime"`
 }
 
+type ExchangeRequest struct {
+	Page int32 `query:"page"`
+	Size int32 `query:"size"`
+	UserId int32 `query:"userId"`
+	Email string `query:"email"`
+	Side string `query:"side"`
+	Status string `query:"status"`
+	Symbol string `query:"symbol"`
+	StartTime string `query:"StartTime"`
+	EndTime string `query:"endTime"`
+}
+
+type ExchangeDetailRequest struct {
+	Page int32 `query:"page"`
+	Size int32 `query:"size"`
+	OrderId string `query:"orderId"`
+}
+
 type OrderResult struct {
-	list []*finance.TDepositWithdrawResult_
+	list string
 	count int32
 }
 
@@ -61,9 +81,9 @@ func GetDepositOrder(c echo.Context) error {
 		return Status(c, codes.ServiceError, err)
 	}
 
-	r := new(OrderResult)
-	r.list = listResult
-	r.count = countResult
+	r := make(map[string]interface{})
+	r["list"] = listResult
+	r["count"] = countResult
 
 	return Status(c, codes.Success, r)
 }
@@ -105,9 +125,128 @@ func GetWithdrawOrder(c echo.Context) error {
 		return Status(c, codes.Success, err)
 	}
 
-	r := new(OrderResult)
-	r.list = listResult
-	r.count = countResult
+	res := make(map[string]interface{})
+	res["list"] = listResult
+	res["count"] = countResult
 
-	return Status(c, codes.Success, r)
+	walletService, walletClient := common.GetWalletServiceClient()
+	defer common.WalletServicePool.Put(walletClient)
+
+	config := make(map[string]interface{})
+	config["lang"] = "zh-CN"
+	configStr, _ := json.Marshal(config)
+
+	currencyInfo, err := walletService.Execute(context.Background(),"Currency", "getConfigs", string(configStr))
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+	res["currencyInfo"] = currencyInfo
+
+	return Status(c, codes.Success, res)
+}
+
+func GetExchangeOrder(c echo.Context) error {
+	log, traceId := common.GetLoggerWithTraceId(c)
+
+	request := new(ExchangeRequest)
+	c.Bind(request)
+
+	orderService, orderClient := common.GetBisaleOrderServiceClient()
+	defer common.BisaleOrderServicePool.Put(orderClient)
+
+	params := new(engine.TOrdersParams)
+	params.TraceId = traceId
+	params.UserId = request.UserId
+	params.PageSize = request.Size
+	params.StartPage = request.Page
+	params.Status = request.Status
+	params.StartTime = request.StartTime
+	params.EndTime = request.EndTime
+	params.Symbol = request.Symbol
+	params.Side = request.Side
+	params.Email = request.Email
+
+	list, err := orderService.SelectEngineOrdersListByConditions(context.Background(), params)
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	count, err := orderService.SelectEngineOrdersCountByConditions(context.Background(), params)
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	res := make(map[string]interface{})
+	res["list"] = list
+	res["count"] = count
+
+	walletService, walletClient := common.GetWalletServiceClient()
+	defer common.WalletServicePool.Put(walletClient)
+
+	config := make(map[string]interface{})
+	config["lang"] = "zh-CN"
+	configStr, _ := json.Marshal(config)
+
+	currencyInfo, err := walletService.Execute(context.Background(),"Currency", "getConfigs", string(configStr))
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+	res["currencyInfo"] = currencyInfo
+
+	return Status(c, codes.Success, res)
+}
+
+func GetExchangeOrderDetail(c echo.Context) error {
+	log, traceId := common.GetLoggerWithTraceId(c)
+
+	request := new(ExchangeDetailRequest)
+	c.Bind(request)
+
+	orderService, orderClient := common.GetBisaleOrderServiceClient()
+	defer common.BisaleOrderServicePool.Put(orderClient)
+
+	params := new(engine.TOrdersDetailParams)
+	params.TraceId = traceId
+	params.StartPage = request.Page
+	params.PageSize = request.Size
+	params.OrderId = request.OrderId
+
+	count, err := orderService.SelectEngineOrdersDetailCountByOrderId(context.Background(), params)
+
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	list, err := orderService.SelectEngineOrdersDetailListByOrderId(context.Background(), params)
+
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	res := make(map[string] interface{})
+	res["list"] = list
+	res["count"] = count
+
+
+	walletService, walletClient := common.GetWalletServiceClient()
+	defer common.WalletServicePool.Put(walletClient)
+
+	config := make(map[string]interface{})
+	config["lang"] = "zh-CN"
+	configStr, _ := json.Marshal(config)
+
+	currencyInfo, err := walletService.Execute(context.Background(),"Currency", "getConfigs", string(configStr))
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+	res["currencyInfo"] = currencyInfo
+
+	return Status(c, codes.Success, res)
 }

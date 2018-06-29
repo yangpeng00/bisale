@@ -9,7 +9,7 @@ var Config = struct {
 	Host       string
 	Port       string `env:"port"`
 	LogLevel   string `yaml:"log_level" default:"debug"`
-	JWTToken   string `yaml:"jwt_token" default:"123456"`
+	JWTToken   string `yaml:"jwt_token" default:"uuOhxYIw"`
 	KYCBucket  string `yaml:"kyc_bucket" default:"bisale-test-huadong"`
 	BannerBucket string `yaml:"banner_bucket" default:"bisale-test-public"`
 	BannerExpired int32 `yaml:"banner_expired" default: 86400`
@@ -68,6 +68,14 @@ var Config = struct {
 		ConnTimeout uint32 `yaml:"conn_timeout" default:"1"`
 		IdleTimeout uint32 `yaml:"idle_timeout" default:"1"`
 	} `yaml:"bisale_business_service"`
+
+	WalletService struct{
+		Host		string
+		Port		string
+		MaxConn     uint32 `yaml:"max_conn" default:"10"`
+		ConnTimeout uint32 `yaml:"conn_timeout" default:"1"`
+		IdleTimeout uint32 `yaml:"idle_timeout" default:"1"`
+	} `yaml:"wallet_service"`
 
 	KycSuccessMail struct {
 		AppId      string `yaml:"app_id" default:"bisale-admin"`

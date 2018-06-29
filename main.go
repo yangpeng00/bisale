@@ -26,6 +26,7 @@ func main() {
 	e.Use(middlewares.LogrusHook())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
+	e.Use(middlewares.TraceId)
 	e.Use(middlewares.RequestHash)
 	e.Use(middlewares.FilterIteratedRequests)
 
@@ -38,11 +39,11 @@ func main() {
 	auth.POST("/role", controllers.PostCreateRole)
 
 	// member 路由
-	member := e.Group("/api/member", middlewares.Auth)
+	member := e.Group("/api/member", middlewares.Auth, middlewares.OperationLog)
 	member.POST("", controllers.PostCreateMember)
 
 	// bisale 业务路由
-	bisale := e.Group("/api/bisale", middlewares.Auth)
+	bisale := e.Group("/api/bisale", middlewares.Auth, middlewares.OperationLog)
 
 	bisale.GET("/cert/list", controllers.GetCertList)
 	bisale.GET("/cert/list/count", controllers.GetCertListCount)
@@ -81,6 +82,8 @@ func main() {
 
 	bisale.GET("/order/withdraw", controllers.GetWithdrawOrder)
 	bisale.GET("/order/deposit", controllers.GetDepositOrder)
+	bisale.GET("/order/exchange", controllers.GetExchangeOrder)
+	bisale.GET("/order/exchange/detail", controllers.GetExchangeOrderDetail)
 
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }

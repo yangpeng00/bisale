@@ -14,7 +14,7 @@ import (
         "strconv"
         "strings"
         "git.apache.org/thrift.git/lib/go/thrift"
-        "account"
+        "bisale/bisale-console-api/thrift/business"
 )
 
 
@@ -22,10 +22,15 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "Usage of ", os.Args[0], " [-h host:port] [-u url] [-f[ramed]] function [arg1 [arg2...]]:")
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
-  fmt.Fprintln(os.Stderr, "  void InsertRelation(string traceId, TParticipantRelation participantRelation)")
-  fmt.Fprintln(os.Stderr, "   SelectTop10Account(string traceId)")
-  fmt.Fprintln(os.Stderr, "   SelectInviteeListByUserId(string traceId, i32 userId)")
-  fmt.Fprintln(os.Stderr, "  void EnableParticipant(string traceId, i32 userId)")
+  fmt.Fprintln(os.Stderr, "  void createGoogleSecretInfo(string user_id, string secret)")
+  fmt.Fprintln(os.Stderr, "  void setGoogleUserConfigInfo(i32 user_id, string key, string value)")
+  fmt.Fprintln(os.Stderr, "  void updateGoogleStatusActivity(string user_id)")
+  fmt.Fprintln(os.Stderr, "  void updateGoogleSecretActivity(string user_id)")
+  fmt.Fprintln(os.Stderr, "  string selectGoogleSecretByUserId(string user_id)")
+  fmt.Fprintln(os.Stderr, "  TGoogleEntity selectGoogleAuth(string traceId, string user_id)")
+  fmt.Fprintln(os.Stderr, "  bool checkPasswordVerify(string traceId, string user_id, string password)")
+  fmt.Fprintln(os.Stderr, "  TUserConfig selectGoogleOpenStatus(string traceId, string user_id)")
+  fmt.Fprintln(os.Stderr, "  void updateGoogleStatus(string traceId, string key, string user_id, string status)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -116,82 +121,126 @@ func main() {
   }
   iprot := protocolFactory.GetProtocol(trans)
   oprot := protocolFactory.GetProtocol(trans)
-  client := account.NewTReformationActivityServiceClient(thrift.NewTStandardClient(iprot, oprot))
+  client := business.NewTGoogleAuthServiceClient(thrift.NewTStandardClient(iprot, oprot))
   if err := trans.Open(); err != nil {
     fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
     os.Exit(1)
   }
   
   switch cmd {
-  case "InsertRelation":
+  case "createGoogleSecretInfo":
     if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "InsertRelation requires 2 args")
+      fmt.Fprintln(os.Stderr, "CreateGoogleSecretInfo requires 2 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    arg13 := flag.Arg(2)
-    mbTrans14 := thrift.NewTMemoryBufferLen(len(arg13))
-    defer mbTrans14.Close()
-    _, err15 := mbTrans14.WriteString(arg13)
-    if err15 != nil {
-      Usage()
-      return
-    }
-    factory16 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt17 := factory16.GetProtocol(mbTrans14)
-    argvalue1 := account.NewTParticipantRelation()
-    err18 := argvalue1.Read(jsProt17)
-    if err18 != nil {
-      Usage()
-      return
-    }
+    argvalue1 := flag.Arg(2)
     value1 := argvalue1
-    fmt.Print(client.InsertRelation(context.Background(), value0, value1))
+    fmt.Print(client.CreateGoogleSecretInfo(context.Background(), value0, value1))
     fmt.Print("\n")
     break
-  case "SelectTop10Account":
+  case "setGoogleUserConfigInfo":
+    if flag.NArg() - 1 != 3 {
+      fmt.Fprintln(os.Stderr, "SetGoogleUserConfigInfo requires 3 args")
+      flag.Usage()
+    }
+    tmp0, err336 := (strconv.Atoi(flag.Arg(1)))
+    if err336 != nil {
+      Usage()
+      return
+    }
+    argvalue0 := int32(tmp0)
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
+    value1 := argvalue1
+    argvalue2 := flag.Arg(3)
+    value2 := argvalue2
+    fmt.Print(client.SetGoogleUserConfigInfo(context.Background(), value0, value1, value2))
+    fmt.Print("\n")
+    break
+  case "updateGoogleStatusActivity":
     if flag.NArg() - 1 != 1 {
-      fmt.Fprintln(os.Stderr, "SelectTop10Account requires 1 args")
+      fmt.Fprintln(os.Stderr, "UpdateGoogleStatusActivity requires 1 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    fmt.Print(client.SelectTop10Account(context.Background(), value0))
+    fmt.Print(client.UpdateGoogleStatusActivity(context.Background(), value0))
     fmt.Print("\n")
     break
-  case "SelectInviteeListByUserId":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "SelectInviteeListByUserId requires 2 args")
+  case "updateGoogleSecretActivity":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "UpdateGoogleSecretActivity requires 1 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err21 := (strconv.Atoi(flag.Arg(2)))
-    if err21 != nil {
-      Usage()
-      return
-    }
-    argvalue1 := int32(tmp1)
-    value1 := argvalue1
-    fmt.Print(client.SelectInviteeListByUserId(context.Background(), value0, value1))
+    fmt.Print(client.UpdateGoogleSecretActivity(context.Background(), value0))
     fmt.Print("\n")
     break
-  case "EnableParticipant":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "EnableParticipant requires 2 args")
+  case "selectGoogleSecretByUserId":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "SelectGoogleSecretByUserId requires 1 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err23 := (strconv.Atoi(flag.Arg(2)))
-    if err23 != nil {
-      Usage()
-      return
+    fmt.Print(client.SelectGoogleSecretByUserId(context.Background(), value0))
+    fmt.Print("\n")
+    break
+  case "selectGoogleAuth":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectGoogleAuth requires 2 args")
+      flag.Usage()
     }
-    argvalue1 := int32(tmp1)
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
     value1 := argvalue1
-    fmt.Print(client.EnableParticipant(context.Background(), value0, value1))
+    fmt.Print(client.SelectGoogleAuth(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "checkPasswordVerify":
+    if flag.NArg() - 1 != 3 {
+      fmt.Fprintln(os.Stderr, "CheckPasswordVerify requires 3 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
+    value1 := argvalue1
+    argvalue2 := flag.Arg(3)
+    value2 := argvalue2
+    fmt.Print(client.CheckPasswordVerify(context.Background(), value0, value1, value2))
+    fmt.Print("\n")
+    break
+  case "selectGoogleOpenStatus":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectGoogleOpenStatus requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
+    value1 := argvalue1
+    fmt.Print(client.SelectGoogleOpenStatus(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "updateGoogleStatus":
+    if flag.NArg() - 1 != 4 {
+      fmt.Fprintln(os.Stderr, "UpdateGoogleStatus requires 4 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
+    value1 := argvalue1
+    argvalue2 := flag.Arg(3)
+    value2 := argvalue2
+    argvalue3 := flag.Arg(4)
+    value3 := argvalue3
+    fmt.Print(client.UpdateGoogleStatus(context.Background(), value0, value1, value2, value3))
     fmt.Print("\n")
     break
   case "":

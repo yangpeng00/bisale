@@ -14,5 +14,6 @@ fi
 
 cd ../../
 thrift -out ./thrift -r --gen go:package_prefix=bisale/bisale-console-api/thrift/ $Dir/thrift/reformationActivity.thrift
+thrift -out ./thrift -r --gen go:package_prefix=bisale/bisale-console-api/thrift/ $Dir/thrift/
 
 sed -i '' 's/oprot.Flush()/oprot.Flush(ctx)/g' ./thrift/**/*.go

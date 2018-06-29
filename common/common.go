@@ -18,9 +18,11 @@ var CaptchaServicePool *thriftPool.ThriftPool
 var StorageServicePool *thriftPool.ThriftPool
 var BisaleContentServicePool *thriftPool.ThriftPool
 var BisaleUserKycServicePool *thriftPool.ThriftPool
+var BisaleOrderServicePool *thriftPool.ThriftPool
 var BisaleWithdrawServicePool *thriftPool.ThriftPool
 var BisaleBusinessServicePool *thriftPool.ThriftPool
 var BisaleUserServicePool *thriftPool.ThriftPool
+var WalletServicePool *thriftPool.ThriftPool
 
 var Cache *redis.Client
 
@@ -125,6 +127,16 @@ func init() {
 		closeBisaleContentServiceClient,
 	)
 
+	BisaleOrderServicePool = thriftPool.NewThriftPool(
+		config.Config.BisaleOmsService.Host,
+		config.Config.BisaleOmsService.Port,
+		config.Config.BisaleOmsService.MaxConn,
+		config.Config.BisaleOmsService.ConnTimeout,
+		config.Config.BisaleOmsService.IdleTimeout,
+		openBisaleOrderServiceClient,
+		closeBisaleOrderServiceClient,
+	)
+
 	// 配置 Bisale Withdraw 服务连接池
 	BisaleWithdrawServicePool = thriftPool.NewThriftPool(
 		config.Config.BisaleOmsService.Host,
@@ -145,6 +157,16 @@ func init() {
 		config.Config.BisaleBusinessService.IdleTimeout,
 		openBisaleBusinessServiceClient,
 		closeBisaleBusinessServiceClient,
+	)
+
+	WalletServicePool = thriftPool.NewThriftPool(
+		config.Config.WalletService.Host,
+		config.Config.WalletService.Port,
+		config.Config.WalletService.MaxConn,
+		config.Config.WalletService.ConnTimeout,
+		config.Config.WalletService.IdleTimeout,
+		openWalletServiceClient,
+		closeWalletServiceClient,
 	)
 }
 

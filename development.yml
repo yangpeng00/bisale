@@ -19,6 +19,7 @@ bisale_business_service:
 account_service:
   host: 47.75.183.114
 #  host: 52.196.219.81
+#  host: localhost
   port: 10002
 
 captcha_service:
@@ -36,7 +37,14 @@ storage_service:
 #  host: 52.196.219.81
   port: 10005
 
+wallet_service:
+#  host: 18.182.55.110
+#  port: 10020
+  host: 192.168.31.23
+  port: 8002
+
 oms_service:
+#  host: 192.168.31.105
   host: 47.75.183.114
 #  host: 52.196.219.81
   port: 10011
