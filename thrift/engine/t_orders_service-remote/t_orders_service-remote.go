@@ -26,6 +26,7 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "  i32 selectEngineOrdersCountByConditions(TOrdersParams params)")
   fmt.Fprintln(os.Stderr, "   selectEngineOrdersDetailListByOrderId(TOrdersDetailParams params)")
   fmt.Fprintln(os.Stderr, "  i32 selectEngineOrdersDetailCountByOrderId(TOrdersDetailParams params)")
+  fmt.Fprintln(os.Stderr, "   selectSymbolsList()")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -128,19 +129,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectEngineOrdersListByConditions requires 1 args")
       flag.Usage()
     }
-    arg12 := flag.Arg(1)
-    mbTrans13 := thrift.NewTMemoryBufferLen(len(arg12))
-    defer mbTrans13.Close()
-    _, err14 := mbTrans13.WriteString(arg12)
-    if err14 != nil {
+    arg15 := flag.Arg(1)
+    mbTrans16 := thrift.NewTMemoryBufferLen(len(arg15))
+    defer mbTrans16.Close()
+    _, err17 := mbTrans16.WriteString(arg15)
+    if err17 != nil {
       Usage()
       return
     }
-    factory15 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt16 := factory15.GetProtocol(mbTrans13)
+    factory18 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt19 := factory18.GetProtocol(mbTrans16)
     argvalue0 := engine.NewTOrdersParams()
-    err17 := argvalue0.Read(jsProt16)
-    if err17 != nil {
+    err20 := argvalue0.Read(jsProt19)
+    if err20 != nil {
       Usage()
       return
     }
@@ -153,19 +154,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectEngineOrdersCountByConditions requires 1 args")
       flag.Usage()
     }
-    arg18 := flag.Arg(1)
-    mbTrans19 := thrift.NewTMemoryBufferLen(len(arg18))
-    defer mbTrans19.Close()
-    _, err20 := mbTrans19.WriteString(arg18)
-    if err20 != nil {
+    arg21 := flag.Arg(1)
+    mbTrans22 := thrift.NewTMemoryBufferLen(len(arg21))
+    defer mbTrans22.Close()
+    _, err23 := mbTrans22.WriteString(arg21)
+    if err23 != nil {
       Usage()
       return
     }
-    factory21 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt22 := factory21.GetProtocol(mbTrans19)
+    factory24 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt25 := factory24.GetProtocol(mbTrans22)
     argvalue0 := engine.NewTOrdersParams()
-    err23 := argvalue0.Read(jsProt22)
-    if err23 != nil {
+    err26 := argvalue0.Read(jsProt25)
+    if err26 != nil {
       Usage()
       return
     }
@@ -178,19 +179,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectEngineOrdersDetailListByOrderId requires 1 args")
       flag.Usage()
     }
-    arg24 := flag.Arg(1)
-    mbTrans25 := thrift.NewTMemoryBufferLen(len(arg24))
-    defer mbTrans25.Close()
-    _, err26 := mbTrans25.WriteString(arg24)
-    if err26 != nil {
+    arg27 := flag.Arg(1)
+    mbTrans28 := thrift.NewTMemoryBufferLen(len(arg27))
+    defer mbTrans28.Close()
+    _, err29 := mbTrans28.WriteString(arg27)
+    if err29 != nil {
       Usage()
       return
     }
-    factory27 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt28 := factory27.GetProtocol(mbTrans25)
+    factory30 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt31 := factory30.GetProtocol(mbTrans28)
     argvalue0 := engine.NewTOrdersDetailParams()
-    err29 := argvalue0.Read(jsProt28)
-    if err29 != nil {
+    err32 := argvalue0.Read(jsProt31)
+    if err32 != nil {
       Usage()
       return
     }
@@ -203,24 +204,32 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectEngineOrdersDetailCountByOrderId requires 1 args")
       flag.Usage()
     }
-    arg30 := flag.Arg(1)
-    mbTrans31 := thrift.NewTMemoryBufferLen(len(arg30))
-    defer mbTrans31.Close()
-    _, err32 := mbTrans31.WriteString(arg30)
-    if err32 != nil {
+    arg33 := flag.Arg(1)
+    mbTrans34 := thrift.NewTMemoryBufferLen(len(arg33))
+    defer mbTrans34.Close()
+    _, err35 := mbTrans34.WriteString(arg33)
+    if err35 != nil {
       Usage()
       return
     }
-    factory33 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt34 := factory33.GetProtocol(mbTrans31)
+    factory36 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt37 := factory36.GetProtocol(mbTrans34)
     argvalue0 := engine.NewTOrdersDetailParams()
-    err35 := argvalue0.Read(jsProt34)
-    if err35 != nil {
+    err38 := argvalue0.Read(jsProt37)
+    if err38 != nil {
       Usage()
       return
     }
     value0 := argvalue0
     fmt.Print(client.SelectEngineOrdersDetailCountByOrderId(context.Background(), value0))
+    fmt.Print("\n")
+    break
+  case "selectSymbolsList":
+    if flag.NArg() - 1 != 0 {
+      fmt.Fprintln(os.Stderr, "SelectSymbolsList requires 0 args")
+      flag.Usage()
+    }
+    fmt.Print(client.SelectSymbolsList(context.Background()))
     fmt.Print("\n")
     break
   case "":

@@ -7,6 +7,8 @@ import (
 	"bisale/bisale-console-api/thrift/user"
 	"context"
 	"strconv"
+	"encoding/json"
+	"fmt"
 )
 
 type UserIdRequest struct {
@@ -101,6 +103,83 @@ func GetGoogleStatusById(c echo.Context) error {
 	}
 
 	return Status(c, codes.Success, googleStatus)
+}
+
+func GetWithdrawStatusById(c echo.Context) error {
+	id, _ := strconv.ParseInt(c.QueryParam("id"), 10, 32)
+	log, _ := common.GetLoggerWithTraceId(c)
+
+	walletService, walletClient := common.GetWalletServiceClient()
+	defer common.WalletServicePool.Put(walletClient)
+
+	config := make(map[string]interface{})
+	config["user_id"] = id
+	config["type"] = 2
+	configStr, _ := json.Marshal(config)
+
+	result, err := walletService.Execute(context.Background(),"BlackList", "get", string(configStr))
+
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	return Status(c, codes.Success, result)
+
+}
+
+func PostWithdrawStatusById(c echo.Context) error {
+	userRequest := new(UserIdRequest)
+	c.Bind(userRequest)
+	log, _ := common.GetLoggerWithTraceId(c)
+
+	walletService, walletClient := common.GetWalletServiceClient()
+	defer common.WalletServicePool.Put(walletClient)
+
+	config := make(map[string]interface{})
+	config["service_id"] = "exchange_dashboard"
+	config["token"] = "h6u3w65nbs!@#5tertjjthsrtq4i68k58pr"
+	config["currencies"] = "*"
+	config["user_id"] = userRequest.Id
+	config["type"] = 2
+	configStr, _ := json.Marshal(config)
+
+	fmt.Println(string(configStr))
+
+	result, err := walletService.Execute(context.Background(),"BlackList", "update", string(configStr))
+
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	return Status(c, codes.Success, result)
+
+}
+
+func DeleteWithdrawStatusById(c echo.Context) error {
+	id, _ := strconv.ParseInt(c.QueryParam("id"), 10, 32)
+	log, _ := common.GetLoggerWithTraceId(c)
+
+	walletService, walletClient := common.GetWalletServiceClient()
+	defer common.WalletServicePool.Put(walletClient)
+
+	config := make(map[string]interface{})
+	config["service_id"] = "exchange_dashboard"
+	config["token"] = "h6u3w65nbs!@#5tertjjthsrtq4i68k58pr"
+	config["currencies"] = "*"
+	config["user_id"] = id
+	config["type"] = 2
+	configStr, _ := json.Marshal(config)
+
+	result, err := walletService.Execute(context.Background(),"BlackList", "remove", string(configStr))
+
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	return Status(c, codes.Success, result)
 }
 
 func PostUserStatusChange(c echo.Context) error {

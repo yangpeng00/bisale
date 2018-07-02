@@ -2294,6 +2294,140 @@ func (p *TOrdersDetailResult_) String() string {
   return fmt.Sprintf("TOrdersDetailResult_(%+v)", *p)
 }
 
+// Attributes:
+//  - Name
+//  - Empty
+type TSymbolsResult_ struct {
+  Name string `thrift:"name,1" db:"name" json:"name"`
+  Empty bool `thrift:"empty,2" db:"empty" json:"empty,omitempty"`
+}
+
+func NewTSymbolsResult_() *TSymbolsResult_ {
+  return &TSymbolsResult_{}
+}
+
+
+func (p *TSymbolsResult_) GetName() string {
+  return p.Name
+}
+var TSymbolsResult__Empty_DEFAULT bool = false
+
+func (p *TSymbolsResult_) GetEmpty() bool {
+  return p.Empty
+}
+func (p *TSymbolsResult_) IsSetEmpty() bool {
+  return p.Empty != TSymbolsResult__Empty_DEFAULT
+}
+
+func (p *TSymbolsResult_) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.BOOL {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TSymbolsResult_)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.Name = v
+}
+  return nil
+}
+
+func (p *TSymbolsResult_)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.Empty = v
+}
+  return nil
+}
+
+func (p *TSymbolsResult_) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("TSymbolsResult"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TSymbolsResult_) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("name", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:name: ", p), err) }
+  if err := oprot.WriteString(string(p.Name)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.name (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:name: ", p), err) }
+  return err
+}
+
+func (p *TSymbolsResult_) writeField2(oprot thrift.TProtocol) (err error) {
+  if p.IsSetEmpty() {
+    if err := oprot.WriteFieldBegin("empty", thrift.BOOL, 2); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:empty: ", p), err) }
+    if err := oprot.WriteBool(bool(p.Empty)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.empty (2) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 2:empty: ", p), err) }
+  }
+  return err
+}
+
+func (p *TSymbolsResult_) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TSymbolsResult_(%+v)", *p)
+}
+
 type TOrdersService interface {
   // Parameters:
   //  - Params
@@ -2307,6 +2441,7 @@ type TOrdersService interface {
   // Parameters:
   //  - Params
   SelectEngineOrdersDetailCountByOrderId(ctx context.Context, params *TOrdersDetailParams) (r int32, err error)
+  SelectSymbolsList(ctx context.Context) (r []*TSymbolsResult_, err error)
 }
 
 type TOrdersServiceClient struct {
@@ -2381,6 +2516,15 @@ func (p *TOrdersServiceClient) SelectEngineOrdersDetailCountByOrderId(ctx contex
   return _result7.GetSuccess(), nil
 }
 
+func (p *TOrdersServiceClient) SelectSymbolsList(ctx context.Context) (r []*TSymbolsResult_, err error) {
+  var _args8 TOrdersServiceSelectSymbolsListArgs
+  var _result9 TOrdersServiceSelectSymbolsListResult
+  if err = p.c.Call(ctx, "selectSymbolsList", &_args8, &_result9); err != nil {
+    return
+  }
+  return _result9.GetSuccess(), nil
+}
+
 type TOrdersServiceProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
   handler TOrdersService
@@ -2401,12 +2545,13 @@ func (p *TOrdersServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFun
 
 func NewTOrdersServiceProcessor(handler TOrdersService) *TOrdersServiceProcessor {
 
-  self8 := &TOrdersServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self8.processorMap["selectEngineOrdersListByConditions"] = &tOrdersServiceProcessorSelectEngineOrdersListByConditions{handler:handler}
-  self8.processorMap["selectEngineOrdersCountByConditions"] = &tOrdersServiceProcessorSelectEngineOrdersCountByConditions{handler:handler}
-  self8.processorMap["selectEngineOrdersDetailListByOrderId"] = &tOrdersServiceProcessorSelectEngineOrdersDetailListByOrderId{handler:handler}
-  self8.processorMap["selectEngineOrdersDetailCountByOrderId"] = &tOrdersServiceProcessorSelectEngineOrdersDetailCountByOrderId{handler:handler}
-return self8
+  self10 := &TOrdersServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self10.processorMap["selectEngineOrdersListByConditions"] = &tOrdersServiceProcessorSelectEngineOrdersListByConditions{handler:handler}
+  self10.processorMap["selectEngineOrdersCountByConditions"] = &tOrdersServiceProcessorSelectEngineOrdersCountByConditions{handler:handler}
+  self10.processorMap["selectEngineOrdersDetailListByOrderId"] = &tOrdersServiceProcessorSelectEngineOrdersDetailListByOrderId{handler:handler}
+  self10.processorMap["selectEngineOrdersDetailCountByOrderId"] = &tOrdersServiceProcessorSelectEngineOrdersDetailCountByOrderId{handler:handler}
+  self10.processorMap["selectSymbolsList"] = &tOrdersServiceProcessorSelectSymbolsList{handler:handler}
+return self10
 }
 
 func (p *TOrdersServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -2417,12 +2562,12 @@ func (p *TOrdersServiceProcessor) Process(ctx context.Context, iprot, oprot thri
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x9 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x11 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x9.Write(oprot)
+  x11.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush(ctx)
-  return false, x9
+  return false, x11
 
 }
 
@@ -2618,6 +2763,54 @@ var retval int32
   return true, err
 }
 
+type tOrdersServiceProcessorSelectSymbolsList struct {
+  handler TOrdersService
+}
+
+func (p *tOrdersServiceProcessorSelectSymbolsList) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TOrdersServiceSelectSymbolsListArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectSymbolsList", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TOrdersServiceSelectSymbolsListResult{}
+var retval []*TSymbolsResult_
+  var err2 error
+  if retval, err2 = p.handler.SelectSymbolsList(ctx); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectSymbolsList: " + err2.Error())
+    oprot.WriteMessageBegin("selectSymbolsList", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = retval
+}
+  if err2 = oprot.WriteMessageBegin("selectSymbolsList", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
 
 // HELPER FUNCTIONS AND STRUCTURES
 
@@ -2784,11 +2977,11 @@ func (p *TOrdersServiceSelectEngineOrdersListByConditionsResult)  ReadField0(ipr
   tSlice := make([]*TOrdersResults, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-    _elem10 := &TOrdersResults{}
-    if err := _elem10.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem10), err)
+    _elem12 := &TOrdersResults{}
+    if err := _elem12.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem12), err)
     }
-    p.Success = append(p.Success, _elem10)
+    p.Success = append(p.Success, _elem12)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -3198,11 +3391,11 @@ func (p *TOrdersServiceSelectEngineOrdersDetailListByOrderIdResult)  ReadField0(
   tSlice := make([]*TOrdersDetailResult_, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-    _elem11 := &TOrdersDetailResult_{}
-    if err := _elem11.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem11), err)
+    _elem13 := &TOrdersDetailResult_{}
+    if err := _elem13.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem13), err)
     }
-    p.Success = append(p.Success, _elem11)
+    p.Success = append(p.Success, _elem13)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -3447,6 +3640,175 @@ func (p *TOrdersServiceSelectEngineOrdersDetailCountByOrderIdResult) String() st
     return "<nil>"
   }
   return fmt.Sprintf("TOrdersServiceSelectEngineOrdersDetailCountByOrderIdResult(%+v)", *p)
+}
+
+type TOrdersServiceSelectSymbolsListArgs struct {
+}
+
+func NewTOrdersServiceSelectSymbolsListArgs() *TOrdersServiceSelectSymbolsListArgs {
+  return &TOrdersServiceSelectSymbolsListArgs{}
+}
+
+func (p *TOrdersServiceSelectSymbolsListArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TOrdersServiceSelectSymbolsListArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSymbolsList_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TOrdersServiceSelectSymbolsListArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TOrdersServiceSelectSymbolsListArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TOrdersServiceSelectSymbolsListResult struct {
+  Success []*TSymbolsResult_ `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTOrdersServiceSelectSymbolsListResult() *TOrdersServiceSelectSymbolsListResult {
+  return &TOrdersServiceSelectSymbolsListResult{}
+}
+
+var TOrdersServiceSelectSymbolsListResult_Success_DEFAULT []*TSymbolsResult_
+
+func (p *TOrdersServiceSelectSymbolsListResult) GetSuccess() []*TSymbolsResult_ {
+  return p.Success
+}
+func (p *TOrdersServiceSelectSymbolsListResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TOrdersServiceSelectSymbolsListResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.LIST {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TOrdersServiceSelectSymbolsListResult)  ReadField0(iprot thrift.TProtocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([]*TSymbolsResult_, 0, size)
+  p.Success =  tSlice
+  for i := 0; i < size; i ++ {
+    _elem14 := &TSymbolsResult_{}
+    if err := _elem14.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem14), err)
+    }
+    p.Success = append(p.Success, _elem14)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *TOrdersServiceSelectSymbolsListResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectSymbolsList_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TOrdersServiceSelectSymbolsListResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.LIST, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Success)); err != nil {
+      return thrift.PrependError("error writing list begin: ", err)
+    }
+    for _, v := range p.Success {
+      if err := v.Write(oprot); err != nil {
+        return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+      }
+    }
+    if err := oprot.WriteListEnd(); err != nil {
+      return thrift.PrependError("error writing list end: ", err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TOrdersServiceSelectSymbolsListResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TOrdersServiceSelectSymbolsListResult(%+v)", *p)
 }
 
 

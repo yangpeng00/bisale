@@ -85,6 +85,20 @@ func GetDepositOrder(c echo.Context) error {
 	r["list"] = listResult
 	r["count"] = countResult
 
+	walletService, walletClient := common.GetWalletServiceClient()
+	defer common.WalletServicePool.Put(walletClient)
+
+	config := make(map[string]interface{})
+	config["lang"] = "zh-CN"
+	configStr, _ := json.Marshal(config)
+
+	currencyInfo, err := walletService.Execute(context.Background(),"Currency", "getConfigs", string(configStr))
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+	r["symbolList"] = currencyInfo
+
 	return Status(c, codes.Success, r)
 }
 
@@ -141,7 +155,7 @@ func GetWithdrawOrder(c echo.Context) error {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
 	}
-	res["currencyInfo"] = currencyInfo
+	res["symbolList"] = currencyInfo
 
 	return Status(c, codes.Success, res)
 }
@@ -179,23 +193,16 @@ func GetExchangeOrder(c echo.Context) error {
 		return Status(c, codes.ServiceError, err)
 	}
 
-	res := make(map[string]interface{})
-	res["list"] = list
-	res["count"] = count
-
-	walletService, walletClient := common.GetWalletServiceClient()
-	defer common.WalletServicePool.Put(walletClient)
-
-	config := make(map[string]interface{})
-	config["lang"] = "zh-CN"
-	configStr, _ := json.Marshal(config)
-
-	currencyInfo, err := walletService.Execute(context.Background(),"Currency", "getConfigs", string(configStr))
+	symbolList, err := orderService.SelectSymbolsList(context.Background())
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
 	}
-	res["currencyInfo"] = currencyInfo
+
+	res := make(map[string]interface{})
+	res["list"] = list
+	res["count"] = count
+	res["symbolList"] = symbolList
 
 	return Status(c, codes.Success, res)
 }
@@ -232,21 +239,6 @@ func GetExchangeOrderDetail(c echo.Context) error {
 	res := make(map[string] interface{})
 	res["list"] = list
 	res["count"] = count
-
-
-	walletService, walletClient := common.GetWalletServiceClient()
-	defer common.WalletServicePool.Put(walletClient)
-
-	config := make(map[string]interface{})
-	config["lang"] = "zh-CN"
-	configStr, _ := json.Marshal(config)
-
-	currencyInfo, err := walletService.Execute(context.Background(),"Currency", "getConfigs", string(configStr))
-	if err != nil {
-		log.Error(err)
-		return Status(c, codes.ServiceError, err)
-	}
-	res["currencyInfo"] = currencyInfo
 
 	return Status(c, codes.Success, res)
 }
