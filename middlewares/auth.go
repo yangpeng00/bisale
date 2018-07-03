@@ -34,11 +34,12 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		c.Set("member_id", jwtOutput.MemberId)
+		common.AccountServicePool.Put(accountClient)
 
 		if err := next(c); err != nil {
 			c.Error(err)
 		}
-		common.AccountServicePool.Put(accountClient)
+
 		return nil
 	}
 }

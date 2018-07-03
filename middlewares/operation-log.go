@@ -59,7 +59,6 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		common.AccountServicePool.Put(accountClient)
-
 		return nil
 	}
 }
