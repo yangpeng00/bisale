@@ -43,7 +43,8 @@ func main() {
 	member.POST("", controllers.PostCreateMember)
 
 	// bisale 业务路由
-	bisale := e.Group("/api/bisale", middlewares.Auth, middlewares.OperationLog)
+	// bisale := e.Group("/api/bisale", middlewares.Auth, middlewares.OperationLog)
+	bisale := e.Group("/api/bisale", middlewares.Auth)
 
 	bisale.GET("/cert/list", controllers.GetCertList)
 	bisale.GET("/cert/list/count", controllers.GetCertListCount)
