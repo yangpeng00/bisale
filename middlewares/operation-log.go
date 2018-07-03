@@ -15,8 +15,6 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 
 		var logId int32
 
-		accountService, accountClient := common.GetAccountServiceClient()
-
 		if memberId := c.Get("member_id"); memberId != nil {
 
 			traceId := c.Request().Header.Get("X-Trace-Id")
@@ -32,6 +30,7 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 
 			var err error
 
+			accountService, accountClient := common.GetAccountServiceClient()
 			logId, err = accountService.OperateStart(context.Background(), traceId, &accountInputs.MemberOperationInput{
 				OpMethod: c.Request().Method,
 				OpUrl:    c.Request().URL.String(),
@@ -40,29 +39,24 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 				OpAgent:  string(agent),
 				OpInput:  input,
 			})
-
+			common.AccountServicePool.Put(accountClient)
 			if err != nil {
-				common.AccountServicePool.Put(accountClient)
 				return err
 			}
 		}
-
-		common.AccountServicePool.Put(accountClient)
 
 		if err := next(c); err != nil {
 			c.Error(err)
 		}
 
-		accountService, accountClient = common.GetAccountServiceClient()
-
 		if memberId := c.Get("member_id"); memberId != nil {
+			accountService, accountClient := common.GetAccountServiceClient()
 			accountService.OperateEnd(context.Background(), logId, &accountInputs.MemberOperationInput{
 				OpHttpCode: int32(c.Response().Status),
 				OpOutput:   c.Get("result-json").(string),
 			})
+			common.AccountServicePool.Put(accountClient)
 		}
-
-		common.AccountServicePool.Put(accountClient)
 
 		return nil
 	}
