@@ -24,13 +24,13 @@ func GetCertList(c echo.Context) error {
 		size = 10
 	}
 
-	log, _ := common.GetLoggerWithTraceId(c)
+	log, traceId := common.GetLoggerWithTraceId(c)
 	userService, userClient := common.GetBisaleUserKycServiceClient()
 	defer common.BisaleUserKycServicePool.Put(userClient)
 
 	ctx := context.Background()
 
-	res, err := userService.SelectUserKycByConditions(ctx, "", keyword, status, int32(page), int32(size))
+	res, err := userService.SelectUserKycByConditions(ctx, traceId, keyword, status, int32(page), int32(size))
 	log.Info(res)
 	if err != nil {
 		log.Error(err)
@@ -48,7 +48,7 @@ func GetCertDetailById(c echo.Context) error {
 	defer common.BisaleUserKycServicePool.Put(userClient)
 
 	ctx := context.Background()
-	res, err := userService.SelectUserKycById(ctx, "", int32(id))
+	res, err := userService.SelectUserKycById(ctx, traceId, int32(id))
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
@@ -113,14 +113,14 @@ func PostCertResult(c echo.Context) error {
 	businessService, businessClient := common.GetBisaleBusinessServiceClient()
 	defer common.BisaleBusinessServicePool.Put(businessClient)
 
-	resp, err := userService.AuditUserKyc(context.Background(), "", req.Id, req.Status, req.Mark, req.UserId)
+	resp, err := userService.AuditUserKyc(context.Background(), traceId, req.Id, req.Status, req.Mark, req.UserId)
 	messageService, messageClient := common.GetMessageServiceClient()
 	defer common.MessageServicePool.Put(messageClient)
 
 	ctx := context.Background()
 	log.Info(fmt.Sprintf("The request status is %s", req.Status))
 	if req.Status == "2" {
-		err := businessService.EnableParticipant(context.Background(), "", req.UserId)
+		err := businessService.EnableParticipant(context.Background(), traceId, req.UserId)
 		if err != nil {
 			log.Error(err)
 			log.WithFields(logrus.Fields{
