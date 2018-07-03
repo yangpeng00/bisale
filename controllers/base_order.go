@@ -15,7 +15,7 @@ type OrderRequest struct {
 	Size int32 `query:"size"`
 	UserId int32 `query:"userId"`
 	Email string `query:"email"`
-	Currency string `query:"currency"`
+	Symbol string `query:"symbol"`
 	Status string `query:"status"`
 	StartTime string `query:"startTime"`
 	EndTime string `query:"endTime"`
@@ -62,7 +62,7 @@ func GetDepositOrder(c echo.Context) error {
 	params.StartPage = request.Page
 	params.UserId = request.UserId
 	params.Email = request.Email
-	params.Currency = request.Currency
+	params.Currency = request.Symbol
 	params.Status = request.Status
 	params.StartTime = request.StartTime
 	params.EndTime = request.EndTime
@@ -120,7 +120,7 @@ func GetWithdrawOrder(c echo.Context) error {
 	params.StartPage = request.Page
 	params.UserId = request.UserId
 	params.Email = request.Email
-	params.Currency = request.Currency
+	params.Currency = request.Symbol
 	params.Status = request.Status
 	params.StartTime = request.StartTime
 	params.EndTime = request.EndTime
