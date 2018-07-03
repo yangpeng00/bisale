@@ -15,9 +15,10 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 
 		var logId int32
 
-		if memberId := c.Get("member_id"); memberId != nil {
+		accountService, accountClient := common.GetAccountServiceClient()
+		defer common.AccountServicePool.Put(accountClient)
 
-			accountService, accountClient := common.GetAccountServiceClient()
+		if memberId := c.Get("member_id"); memberId != nil {
 
 			traceId := c.Request().Header.Get("X-Trace-Id")
 			agent, _ := json.Marshal(c.Request().UserAgent())
@@ -41,8 +42,6 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 				OpInput:  input,
 			})
 
-			common.AccountServicePool.Put(accountClient)
-
 			if err != nil {
 				return err
 			}
@@ -53,14 +52,10 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		if memberId := c.Get("member_id"); memberId != nil {
-
-			accountService, accountClient := common.GetAccountServiceClient()
 			accountService.OperateEnd(context.Background(), logId, &accountInputs.MemberOperationInput{
 				OpHttpCode: int32(c.Response().Status),
 				OpOutput:   c.Get("result-json").(string),
 			})
-
-			common.AccountServicePool.Put(accountClient)
 		}
 
 		return nil

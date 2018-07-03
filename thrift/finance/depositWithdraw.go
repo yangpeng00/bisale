@@ -1160,6 +1160,7 @@ func (p *TDepositWithdrawParams) String() string {
 //  - Fee
 //  - SourceAddress
 //  - DestinationTag
+//  - Confirmations
 type TDepositWithdrawResult_ struct {
   ID int32 `thrift:"id,1" db:"id" json:"id"`
   UserId int32 `thrift:"userId,2" db:"userId" json:"userId"`
@@ -1177,6 +1178,7 @@ type TDepositWithdrawResult_ struct {
   Fee string `thrift:"fee,14" db:"fee" json:"fee"`
   SourceAddress string `thrift:"sourceAddress,15" db:"sourceAddress" json:"sourceAddress"`
   DestinationTag string `thrift:"destinationTag,16" db:"destinationTag" json:"destinationTag"`
+  Confirmations int32 `thrift:"confirmations,17" db:"confirmations" json:"confirmations"`
 }
 
 func NewTDepositWithdrawResult_() *TDepositWithdrawResult_ {
@@ -1247,6 +1249,10 @@ func (p *TDepositWithdrawResult_) GetSourceAddress() string {
 
 func (p *TDepositWithdrawResult_) GetDestinationTag() string {
   return p.DestinationTag
+}
+
+func (p *TDepositWithdrawResult_) GetConfirmations() int32 {
+  return p.Confirmations
 }
 func (p *TDepositWithdrawResult_) IsSetEmpty() bool {
   return p.Empty != TDepositWithdrawResult__Empty_DEFAULT
@@ -1425,6 +1431,16 @@ func (p *TDepositWithdrawResult_) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 17:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField17(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -1584,6 +1600,15 @@ func (p *TDepositWithdrawResult_)  ReadField16(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TDepositWithdrawResult_)  ReadField17(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 17: ", err)
+} else {
+  p.Confirmations = v
+}
+  return nil
+}
+
 func (p *TDepositWithdrawResult_) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TDepositWithdrawResult"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1604,6 +1629,7 @@ func (p *TDepositWithdrawResult_) Write(oprot thrift.TProtocol) error {
     if err := p.writeField14(oprot); err != nil { return err }
     if err := p.writeField15(oprot); err != nil { return err }
     if err := p.writeField16(oprot); err != nil { return err }
+    if err := p.writeField17(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -1771,6 +1797,16 @@ func (p *TDepositWithdrawResult_) writeField16(oprot thrift.TProtocol) (err erro
   return thrift.PrependError(fmt.Sprintf("%T.destinationTag (16) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 16:destinationTag: ", p), err) }
+  return err
+}
+
+func (p *TDepositWithdrawResult_) writeField17(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("confirmations", thrift.I32, 17); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 17:confirmations: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Confirmations)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.confirmations (17) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 17:confirmations: ", p), err) }
   return err
 }
 
