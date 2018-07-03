@@ -7,6 +7,7 @@ import (
 	"bisale/bisale-console-api/common"
 	"bisale/bisale-console-api/controllers"
 	"context"
+	"fmt"
 )
 
 func Auth(next echo.HandlerFunc) echo.HandlerFunc {
@@ -34,10 +35,13 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 
 		c.Set("member_id", jwtOutput.MemberId)
 
+		fmt.Println("=========auth in =========")
+
 		if err := next(c); err != nil {
 			c.Error(err)
 		}
 
+		fmt.Println("=========auth end =========")
 		return nil
 	}
 }
