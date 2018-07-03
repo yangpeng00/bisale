@@ -40,7 +40,6 @@ func GetStatic(c echo.Context) error {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
 	}
-	fmt.Println("======base success=====")
 	return Status(c, codes.Success, staticResponse)
 }
 

@@ -46,7 +46,6 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 			}
 		}
 
-		fmt.Println("=========op in =========")
 
 		if err := next(c); err != nil {
 			c.Error(err)
@@ -60,7 +59,7 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 			})
 			common.AccountServicePool.Put(accountClient)
 		}
-		fmt.Println("=========op end =========")
+
 		return nil
 	}
 }
