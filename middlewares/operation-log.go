@@ -16,7 +16,6 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 		var logId int32
 
 		accountService, accountClient := common.GetAccountServiceClient()
-		defer common.AccountServicePool.Put(accountClient)
 
 		if memberId := c.Get("member_id"); memberId != nil {
 
@@ -43,6 +42,7 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 			})
 
 			if err != nil {
+				common.AccountServicePool.Put(accountClient)
 				return err
 			}
 		}
@@ -57,6 +57,8 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 				OpOutput:   c.Get("result-json").(string),
 			})
 		}
+
+		common.AccountServicePool.Put(accountClient)
 
 		return nil
 	}
