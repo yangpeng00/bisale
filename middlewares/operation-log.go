@@ -47,9 +47,13 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 			}
 		}
 
+		common.AccountServicePool.Put(accountClient)
+
 		if err := next(c); err != nil {
 			c.Error(err)
 		}
+
+		accountService, accountClient = common.GetAccountServiceClient()
 
 		if memberId := c.Get("member_id"); memberId != nil {
 			accountService.OperateEnd(context.Background(), logId, &accountInputs.MemberOperationInput{
