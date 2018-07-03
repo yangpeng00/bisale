@@ -19,22 +19,20 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		traceId := c.Request().Header.Get("X-Trace-Id")
-		accountService, accountClient := common.GetAccountServiceClient()
 
+		accountService, accountClient := common.GetAccountServiceClient()
 		jwtOutput, err := accountService.ValidateJWT(context.Background(), traceId, accessToken, config.Config.JWTToken)
+		common.AccountServicePool.Put(accountClient)
 
 		if err != nil {
-			common.AccountServicePool.Put(accountClient)
 			return err
 		}
 
 		if !jwtOutput.Valid {
-			common.AccountServicePool.Put(accountClient)
 			return controllers.Status(c, codes.AccessTokenIsInvalid, "")
 		}
 
 		c.Set("member_id", jwtOutput.MemberId)
-		common.AccountServicePool.Put(accountClient)
 
 		if err := next(c); err != nil {
 			c.Error(err)
