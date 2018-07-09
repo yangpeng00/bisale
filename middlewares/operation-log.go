@@ -8,15 +8,13 @@ import (
 	"github.com/labstack/echo"
 	"bisale/bisale-console-api/common"
 	accountInputs "bisale/bisale-console-api/thrift/inputs"
+	"fmt"
 )
 
 func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
 		var logId int32
-
-		accountService, accountClient := common.GetAccountServiceClient()
-		defer common.AccountServicePool.Put(accountClient)
 
 		if memberId := c.Get("member_id"); memberId != nil {
 
@@ -33,6 +31,7 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 
 			var err error
 
+			accountService, accountClient := common.GetAccountServiceClient()
 			logId, err = accountService.OperateStart(context.Background(), traceId, &accountInputs.MemberOperationInput{
 				OpMethod: c.Request().Method,
 				OpUrl:    c.Request().URL.String(),
@@ -41,21 +40,24 @@ func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {
 				OpAgent:  string(agent),
 				OpInput:  input,
 			})
-
+			common.AccountServicePool.Put(accountClient)
 			if err != nil {
 				return err
 			}
 		}
+
 
 		if err := next(c); err != nil {
 			c.Error(err)
 		}
 
 		if memberId := c.Get("member_id"); memberId != nil {
+			accountService, accountClient := common.GetAccountServiceClient()
 			accountService.OperateEnd(context.Background(), logId, &accountInputs.MemberOperationInput{
 				OpHttpCode: int32(c.Response().Status),
 				OpOutput:   c.Get("result-json").(string),
 			})
+			common.AccountServicePool.Put(accountClient)
 		}
 
 		return nil

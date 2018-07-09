@@ -7,6 +7,7 @@ import (
 	"bisale/bisale-console-api/common"
 	"bisale/bisale-console-api/controllers"
 	"context"
+	"fmt"
 )
 
 func Auth(next echo.HandlerFunc) echo.HandlerFunc {
@@ -19,10 +20,10 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		traceId := c.Request().Header.Get("X-Trace-Id")
-		accountService, accountClient := common.GetAccountServiceClient()
-		defer common.AccountServicePool.Put(accountClient)
 
+		accountService, accountClient := common.GetAccountServiceClient()
 		jwtOutput, err := accountService.ValidateJWT(context.Background(), traceId, accessToken, config.Config.JWTToken)
+		common.AccountServicePool.Put(accountClient)
 
 		if err != nil {
 			return err
@@ -37,6 +38,7 @@ func Auth(next echo.HandlerFunc) echo.HandlerFunc {
 		if err := next(c); err != nil {
 			c.Error(err)
 		}
+
 		return nil
 	}
 }
