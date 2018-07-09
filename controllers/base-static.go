@@ -5,7 +5,6 @@ import (
 	"bisale/bisale-console-api/common"
 	"context"
 	"bisale/bisale-console-api/codes"
-	"fmt"
 )
 
 type StaticResponse struct {

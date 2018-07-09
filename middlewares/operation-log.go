@@ -8,7 +8,6 @@ import (
 	"github.com/labstack/echo"
 	"bisale/bisale-console-api/common"
 	accountInputs "bisale/bisale-console-api/thrift/inputs"
-	"fmt"
 )
 
 func OperationLog(next echo.HandlerFunc) echo.HandlerFunc {

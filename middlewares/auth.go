@@ -7,7 +7,6 @@ import (
 	"bisale/bisale-console-api/common"
 	"bisale/bisale-console-api/controllers"
 	"context"
-	"fmt"
 )
 
 func Auth(next echo.HandlerFunc) echo.HandlerFunc {
