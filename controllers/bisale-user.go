@@ -138,12 +138,11 @@ func GetDepositAddressById(c echo.Context) error {
 
 	config := make(map[string]interface{})
 	config["user_id"] = id
-	config["currency"] = "*"
-	config["address_type"] = "1"
+	config["currencies"] = "*"
 	configStr, _ := json.Marshal(config)
 	fmt.Println(string(configStr))
 
-	result, err := walletService.Execute(context.Background(),"Address", "getDepositAddress", string(configStr))
+	result, err := walletService.Execute(context.Background(),"Address", "queryAddresses", string(configStr))
 
 	if err != nil {
 		log.Error(err)
