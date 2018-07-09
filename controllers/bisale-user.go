@@ -17,6 +17,7 @@ import (
 	"encoding/base64"
 	"github.com/satori/go.uuid"
 	"bisale/bisale-console-api/config"
+	"time"
 )
 
 type UserIdRequest struct {
@@ -64,7 +65,7 @@ func GetUserList(c echo.Context) error {
 	userParams.KycStatus = c.QueryParam("kycStatus")
 
 	res, err := userService.SelectUserByConditions(context.Background(), userParams)
-	if (err != nil) {
+	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
 	}
@@ -165,7 +166,7 @@ func GetAccountStatusById(c echo.Context) error {
 	accountInfo.CRID = crId.String()
 
 	accountInfo.Account = account
-	accountInfo.Date = "20180709"
+	accountInfo.Date = time.Now().Format("20060102")
 
 	serialMessage := accountInfo.Serialize()
 	//hmac ,use sha1
