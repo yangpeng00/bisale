@@ -9,6 +9,14 @@ import (
 	"strconv"
 	"encoding/json"
 	"fmt"
+	"crypto/hmac"
+	"crypto/sha1"
+	"bisale/bisale-console-api/domain"
+	"github.com/parnurzeal/gorequest"
+	"encoding/hex"
+	"encoding/base64"
+	"github.com/satori/go.uuid"
+	"bisale/bisale-console-api/config"
 )
 
 type UserIdRequest struct {
@@ -19,6 +27,22 @@ type EmailRequest struct {
 	Email string `json:"email"`
 }
 
+// util
+func Sha1(strMessage string) string {
+	ctx := sha1.New()
+	ctx.Write([]byte(strMessage))
+	return base64.StdEncoding.EncodeToString(ctx.Sum(nil))
+}
+
+func HmacSha1Signature(strMessage string, strSecret string) string {
+	key := []byte(strSecret)
+	h := hmac.New(sha1.New, key)
+	h.Write([]byte(strMessage))
+	return hex.EncodeToString(h.Sum(nil))
+	//return base64.StdEncoding.EncodeToString(h.Sum(nil))
+}
+
+// router
 func GetUserList(c echo.Context) error {
 	page, _ := strconv.ParseInt(c.QueryParam("page"), 10, 32)
 	size, _ := strconv.ParseInt(c.QueryParam("size"), 10, 32)
@@ -103,6 +127,72 @@ func GetGoogleStatusById(c echo.Context) error {
 	}
 
 	return Status(c, codes.Success, googleStatus)
+}
+
+func GetDepositAddressById(c echo.Context) error {
+	id, _ := strconv.ParseInt(c.QueryParam("id"), 10, 32)
+	log, _ := common.GetLoggerWithTraceId(c)
+
+	walletService, walletClient := common.GetWalletServiceClient()
+	defer common.WalletServicePool.Put(walletClient)
+
+	config := make(map[string]interface{})
+	config["user_id"] = id
+	config["currency"] = "*"
+	config["address_type"] = "1"
+	configStr, _ := json.Marshal(config)
+	fmt.Println(string(configStr))
+
+	result, err := walletService.Execute(context.Background(),"Address", "getDepositAddress", string(configStr))
+
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	return Status(c, codes.Success, result)
+}
+
+func GetAccountStatusById(c echo.Context) error {
+	log, _ := common.GetLoggerWithTraceId(c)
+
+	account := c.QueryParam("account")
+	key := c.QueryParam("key")
+
+	accountInfo := new(domain.AccountInfo)
+	accountInfo.MsgType = "GetAccountInfoRequest"
+
+	crId, _ :=  uuid.NewV4()
+	accountInfo.CRID = crId.String()
+
+	accountInfo.Account = account
+	accountInfo.Date = "20180709"
+
+	serialMessage := accountInfo.Serialize()
+	//hmac ,use sha1
+
+	hashKey := Sha1(key)
+	accountInfo.SIG = HmacSha1Signature(serialMessage, hashKey)
+
+	accountInfoStr, err := json.Marshal(accountInfo)
+
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	_, str, error := gorequest.New().
+		Post(config.Config.EngineUrl).
+		Send(string(accountInfoStr)).
+		Set("Accept", "application/json").
+		End()
+
+	if error != nil {
+		return Status(c, codes.ServiceError, error)
+	}
+
+	return Status(c, codes.Success, str)
+
 }
 
 func GetWithdrawStatusById(c echo.Context) error {

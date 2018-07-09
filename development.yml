@@ -5,6 +5,8 @@ version: 1.0.0
 banner_bucket: bisale-test-public
 banner_expired: 86400
 banner_size: 5242880
+#engine_url: http://10.1.0.31:8733/secure/rpc
+engine_url: http://47.75.15.189:8733/secure/RPC
 
 redis:
   host: 127.0.0.1

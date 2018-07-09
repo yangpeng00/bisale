@@ -58,9 +58,11 @@ func main() {
 	bisale.GET("/user/list/count", controllers.GetUserListCount)
 	bisale.GET("/user/google", controllers.GetGoogleStatusById)
 	bisale.GET("/user/detail", controllers.GetUserDetailById)
+	bisale.GET("/user/account", controllers.GetAccountStatusById)
 	bisale.POST("/user/google", controllers.PostGoogleCodeChange)
 	bisale.POST("/user/status", controllers.PostUserStatusChange)
 	bisale.POST("/user/captcha", controllers.PostCaptchaCountChange)
+	bisale.GET("/user/depositAddress", controllers.GetDepositAddressById)
 
 	//bisale.GET("/user/withdraw", controllers.GetWithdrawStatusById)
 	//bisale.POST("/user/withdraw", controllers.PostWithdrawStatusById)

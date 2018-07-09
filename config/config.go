@@ -15,6 +15,7 @@ var Config = struct {
 	BannerExpired int32 `yaml:"banner_expired" default: 86400`
 	BannerSize string `yaml:"banner_size" default: "5242880"`
 	OldKYCHost string `yaml:"old_kyc_bucket" default:"http://bi-sale.oss-cn-hongkong.aliyuncs.com/"`
+	EngineUrl string `yaml:"engine_url" default:"http://47.75.15.189:8733/secure/RPC"`
 	Redis struct {
 		Host        string
 		Port        string
