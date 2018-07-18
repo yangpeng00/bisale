@@ -46,7 +46,9 @@ wallet_service:
   port: 8002
 
 oms_service:
-  host: 192.168.31.105
+  host: 0.0.0.0
+#  host: 192.168.31.117
+#  host: 192.168.31.105
 #  host: 47.75.183.114
 #  host: 52.196.219.81
   port: 10011

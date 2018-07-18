@@ -35,6 +35,10 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "   selectSlaveRegisterCountDay(string traceId, i32 days)")
   fmt.Fprintln(os.Stderr, "   selectSlaveInviteFriendsAwardTop(string traceId, i32 top)")
   fmt.Fprintln(os.Stderr, "   selectSlaveInviteUserRelation(string traceId, i32 userId, i32 level)")
+  fmt.Fprintln(os.Stderr, "   selectUserAttributeListByConditions(string traceId, TUserAttributeParam params)")
+  fmt.Fprintln(os.Stderr, "  i32 selectUserAttributeCountByConditions(string traceId, TUserAttributeParam params)")
+  fmt.Fprintln(os.Stderr, "  bool updateUserAttributeByUserId(string traceId, TUserAttributeParam params)")
+  fmt.Fprintln(os.Stderr, "   selectUserAttributeLogByUserId(string traceId, i32 userId)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -137,19 +141,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectUserByConditions requires 1 args")
       flag.Usage()
     }
-    arg33 := flag.Arg(1)
-    mbTrans34 := thrift.NewTMemoryBufferLen(len(arg33))
-    defer mbTrans34.Close()
-    _, err35 := mbTrans34.WriteString(arg33)
-    if err35 != nil {
+    arg43 := flag.Arg(1)
+    mbTrans44 := thrift.NewTMemoryBufferLen(len(arg43))
+    defer mbTrans44.Close()
+    _, err45 := mbTrans44.WriteString(arg43)
+    if err45 != nil {
       Usage()
       return
     }
-    factory36 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt37 := factory36.GetProtocol(mbTrans34)
+    factory46 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt47 := factory46.GetProtocol(mbTrans44)
     argvalue0 := user.NewTUserParams()
-    err38 := argvalue0.Read(jsProt37)
-    if err38 != nil {
+    err48 := argvalue0.Read(jsProt47)
+    if err48 != nil {
       Usage()
       return
     }
@@ -162,19 +166,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "SelectUserCountByConditions requires 1 args")
       flag.Usage()
     }
-    arg39 := flag.Arg(1)
-    mbTrans40 := thrift.NewTMemoryBufferLen(len(arg39))
-    defer mbTrans40.Close()
-    _, err41 := mbTrans40.WriteString(arg39)
-    if err41 != nil {
+    arg49 := flag.Arg(1)
+    mbTrans50 := thrift.NewTMemoryBufferLen(len(arg49))
+    defer mbTrans50.Close()
+    _, err51 := mbTrans50.WriteString(arg49)
+    if err51 != nil {
       Usage()
       return
     }
-    factory42 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt43 := factory42.GetProtocol(mbTrans40)
+    factory52 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt53 := factory52.GetProtocol(mbTrans50)
     argvalue0 := user.NewTUserParams()
-    err44 := argvalue0.Read(jsProt43)
-    if err44 != nil {
+    err54 := argvalue0.Read(jsProt53)
+    if err54 != nil {
       Usage()
       return
     }
@@ -189,8 +193,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err46 := (strconv.Atoi(flag.Arg(2)))
-    if err46 != nil {
+    tmp1, err56 := (strconv.Atoi(flag.Arg(2)))
+    if err56 != nil {
       Usage()
       return
     }
@@ -206,8 +210,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err48 := (strconv.Atoi(flag.Arg(2)))
-    if err48 != nil {
+    tmp1, err58 := (strconv.Atoi(flag.Arg(2)))
+    if err58 != nil {
       Usage()
       return
     }
@@ -223,8 +227,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err50 := (strconv.Atoi(flag.Arg(2)))
-    if err50 != nil {
+    tmp1, err60 := (strconv.Atoi(flag.Arg(2)))
+    if err60 != nil {
       Usage()
       return
     }
@@ -240,8 +244,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err52 := (strconv.Atoi(flag.Arg(2)))
-    if err52 != nil {
+    tmp1, err62 := (strconv.Atoi(flag.Arg(2)))
+    if err62 != nil {
       Usage()
       return
     }
@@ -257,8 +261,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err54 := (strconv.Atoi(flag.Arg(2)))
-    if err54 != nil {
+    tmp1, err64 := (strconv.Atoi(flag.Arg(2)))
+    if err64 != nil {
       Usage()
       return
     }
@@ -274,22 +278,22 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err56 := (strconv.Atoi(flag.Arg(2)))
-    if err56 != nil {
+    tmp1, err66 := (strconv.Atoi(flag.Arg(2)))
+    if err66 != nil {
       Usage()
       return
     }
     argvalue1 := int32(tmp1)
     value1 := argvalue1
-    tmp2, err57 := (strconv.Atoi(flag.Arg(3)))
-    if err57 != nil {
+    tmp2, err67 := (strconv.Atoi(flag.Arg(3)))
+    if err67 != nil {
       Usage()
       return
     }
     argvalue2 := int32(tmp2)
     value2 := argvalue2
-    tmp3, err58 := (strconv.Atoi(flag.Arg(4)))
-    if err58 != nil {
+    tmp3, err68 := (strconv.Atoi(flag.Arg(4)))
+    if err68 != nil {
       Usage()
       return
     }
@@ -305,8 +309,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err60 := (strconv.Atoi(flag.Arg(2)))
-    if err60 != nil {
+    tmp1, err70 := (strconv.Atoi(flag.Arg(2)))
+    if err70 != nil {
       Usage()
       return
     }
@@ -332,8 +336,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err63 := (strconv.Atoi(flag.Arg(2)))
-    if err63 != nil {
+    tmp1, err73 := (strconv.Atoi(flag.Arg(2)))
+    if err73 != nil {
       Usage()
       return
     }
@@ -349,8 +353,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err65 := (strconv.Atoi(flag.Arg(2)))
-    if err65 != nil {
+    tmp1, err75 := (strconv.Atoi(flag.Arg(2)))
+    if err75 != nil {
       Usage()
       return
     }
@@ -366,21 +370,119 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err67 := (strconv.Atoi(flag.Arg(2)))
-    if err67 != nil {
+    tmp1, err77 := (strconv.Atoi(flag.Arg(2)))
+    if err77 != nil {
       Usage()
       return
     }
     argvalue1 := int32(tmp1)
     value1 := argvalue1
-    tmp2, err68 := (strconv.Atoi(flag.Arg(3)))
-    if err68 != nil {
+    tmp2, err78 := (strconv.Atoi(flag.Arg(3)))
+    if err78 != nil {
       Usage()
       return
     }
     argvalue2 := int32(tmp2)
     value2 := argvalue2
     fmt.Print(client.SelectSlaveInviteUserRelation(context.Background(), value0, value1, value2))
+    fmt.Print("\n")
+    break
+  case "selectUserAttributeListByConditions":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectUserAttributeListByConditions requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    arg80 := flag.Arg(2)
+    mbTrans81 := thrift.NewTMemoryBufferLen(len(arg80))
+    defer mbTrans81.Close()
+    _, err82 := mbTrans81.WriteString(arg80)
+    if err82 != nil {
+      Usage()
+      return
+    }
+    factory83 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt84 := factory83.GetProtocol(mbTrans81)
+    argvalue1 := user.NewTUserAttributeParam()
+    err85 := argvalue1.Read(jsProt84)
+    if err85 != nil {
+      Usage()
+      return
+    }
+    value1 := argvalue1
+    fmt.Print(client.SelectUserAttributeListByConditions(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "selectUserAttributeCountByConditions":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectUserAttributeCountByConditions requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    arg87 := flag.Arg(2)
+    mbTrans88 := thrift.NewTMemoryBufferLen(len(arg87))
+    defer mbTrans88.Close()
+    _, err89 := mbTrans88.WriteString(arg87)
+    if err89 != nil {
+      Usage()
+      return
+    }
+    factory90 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt91 := factory90.GetProtocol(mbTrans88)
+    argvalue1 := user.NewTUserAttributeParam()
+    err92 := argvalue1.Read(jsProt91)
+    if err92 != nil {
+      Usage()
+      return
+    }
+    value1 := argvalue1
+    fmt.Print(client.SelectUserAttributeCountByConditions(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "updateUserAttributeByUserId":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "UpdateUserAttributeByUserId requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    arg94 := flag.Arg(2)
+    mbTrans95 := thrift.NewTMemoryBufferLen(len(arg94))
+    defer mbTrans95.Close()
+    _, err96 := mbTrans95.WriteString(arg94)
+    if err96 != nil {
+      Usage()
+      return
+    }
+    factory97 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt98 := factory97.GetProtocol(mbTrans95)
+    argvalue1 := user.NewTUserAttributeParam()
+    err99 := argvalue1.Read(jsProt98)
+    if err99 != nil {
+      Usage()
+      return
+    }
+    value1 := argvalue1
+    fmt.Print(client.UpdateUserAttributeByUserId(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "selectUserAttributeLogByUserId":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectUserAttributeLogByUserId requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err101 := (strconv.Atoi(flag.Arg(2)))
+    if err101 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.SelectUserAttributeLogByUserId(context.Background(), value0, value1))
     fmt.Print("\n")
     break
   case "":

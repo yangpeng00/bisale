@@ -133,15 +133,28 @@ func PostCertResult(c echo.Context) error {
 			"user_id": req.UserId,
 		}).Info("邀请糖果发送成功")
 		if resp != nil {
-			err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
-			if err != nil {
-				log.WithFields(logrus.Fields{
-					"user_id": req.UserId,
-				}).Error("KYC邮件发送失败", err)
+			if resp.Email != "" {
+				err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
+				if err != nil {
+					log.WithFields(logrus.Fields{
+						"user_id": req.UserId,
+					}).Error("KYC邮件发送失败", err)
+				} else {
+					log.WithFields(logrus.Fields{
+						"user_id": req.UserId,
+					}).Info("KYC邮件发送成功")
+				}
 			} else {
-				log.WithFields(logrus.Fields{
-					"user_id": req.UserId,
-				}).Info("KYC邮件发送成功")
+				err := messageService.SendSMS(ctx, traceId, config.Config.KycFailedSMS.AppId, resp.Email, config.Config.KycFailedSMS.TemplateId, "{\"username\":"+"\""+resp.Mobile+"\"}", "zh-CN", 0)
+				if err != nil {
+					log.WithFields(logrus.Fields{
+						"user_id": req.UserId,
+					}).Error("KYC短信发送失败", err)
+				} else {
+					log.WithFields(logrus.Fields{
+						"user_id": req.UserId,
+					}).Info("KYC短信发送成功")
+				}
 			}
 		} else {
 			log.WithFields(logrus.Fields{
@@ -150,15 +163,28 @@ func PostCertResult(c echo.Context) error {
 		}
 	} else {
 		if resp != nil {
-			err := messageService.SendMail(ctx, traceId, config.Config.KycFailedMail.AppId, resp.Email, config.Config.KycFailedMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\",\"reason\":\""+req.Mark+"\"}", "zh-CN", 0)
-			if err != nil {
-				log.WithFields(logrus.Fields{
-					"user_id": req.UserId,
-				}).Error("KYC邮件发送失败", err)
+			if resp.Email != "" {
+				err := messageService.SendMail(ctx, traceId, config.Config.KycFailedMail.AppId, resp.Email, config.Config.KycFailedMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\",\"reason\":\""+req.Mark+"\"}", "zh-CN", 0)
+				if err != nil {
+					log.WithFields(logrus.Fields{
+						"user_id": req.UserId,
+					}).Error("KYC邮件发送失败", err)
+				} else {
+					log.WithFields(logrus.Fields{
+						"user_id": req.UserId,
+					}).Info("KYC邮件发送成功")
+				}
 			} else {
-				log.WithFields(logrus.Fields{
-					"user_id": req.UserId,
-				}).Info("KYC邮件发送成功")
+				err := messageService.SendSMS(ctx, traceId, config.Config.KycFailedSMS.AppId, resp.Email, config.Config.KycFailedSMS.TemplateId, "{\"username\":"+"\""+resp.Mobile+"\",\"reason\":\""+req.Mark+"\"}", "zh-CN", 0)
+				if err != nil {
+					log.WithFields(logrus.Fields{
+						"user_id": req.UserId,
+					}).Error("KYC短信发送失败", err)
+				} else {
+					log.WithFields(logrus.Fields{
+						"user_id": req.UserId,
+					}).Info("KYC短信发送成功")
+				}
 			}
 		} else {
 			log.WithFields(logrus.Fields{

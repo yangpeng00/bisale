@@ -17,6 +17,7 @@ type OrderRequest struct {
 	Email string `query:"email"`
 	Symbol string `query:"symbol"`
 	Status string `query:"status"`
+	Type int32 `query:"type"`
 	StartTime string `query:"startTime"`
 	EndTime string `query:"endTime"`
 }
@@ -66,6 +67,7 @@ func GetDepositOrder(c echo.Context) error {
 	params.Status = request.Status
 	params.StartTime = request.StartTime
 	params.EndTime = request.EndTime
+	params.Type = request.Type
 
 	listResult, err := withdrawService.SelectSlaveDepositListByConditions(context.Background(), params)
 

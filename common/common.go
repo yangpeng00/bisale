@@ -19,6 +19,7 @@ var StorageServicePool *thriftPool.ThriftPool
 var BisaleContentServicePool *thriftPool.ThriftPool
 var BisaleUserKycServicePool *thriftPool.ThriftPool
 var BisaleOrderServicePool *thriftPool.ThriftPool
+var BisaleSystemServicePool *thriftPool.ThriftPool
 var BisaleWithdrawServicePool *thriftPool.ThriftPool
 var BisaleBusinessServicePool *thriftPool.ThriftPool
 var BisaleUserServicePool *thriftPool.ThriftPool
@@ -135,6 +136,16 @@ func init() {
 		config.Config.BisaleOmsService.IdleTimeout,
 		openBisaleOrderServiceClient,
 		closeBisaleOrderServiceClient,
+	)
+
+	BisaleSystemServicePool = thriftPool.NewThriftPool(
+		config.Config.BisaleOmsService.Host,
+		config.Config.BisaleOmsService.Port,
+		config.Config.BisaleOmsService.MaxConn,
+		config.Config.BisaleOmsService.ConnTimeout,
+		config.Config.BisaleOmsService.IdleTimeout,
+		openBisaleSystemServiceClient,
+		closeBisaleSystemServiceClient,
 	)
 
 	// 配置 Bisale Withdraw 服务连接池

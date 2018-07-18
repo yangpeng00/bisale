@@ -96,4 +96,3 @@ func PostWithdrawResult(c echo.Context) error {
 	return Status(c, codes.Success, res)
 
 }
-

@@ -91,5 +91,14 @@ func main() {
 	bisale.GET("/order/exchange", controllers.GetExchangeOrder)
 	bisale.GET("/order/exchange/detail", controllers.GetExchangeOrderDetail)
 
+	bisale.GET("/reward/exchange", controllers.GetExchangeList)
+	bisale.GET("/reward/exchange/detail", controllers.GetExchangeDetail)
+	bisale.GET("/reward/bonus", controllers.GetBonusList)
+	bisale.GET("/reward/bonus/detail", controllers.GetBonusDetail)
+	bisale.GET("/reward/permission", controllers.GetUserAttribute)
+	bisale.GET("/reward/permission/log", controllers.GetUserAttributeLog)
+	bisale.POST("/reward/permission", controllers.PostUserAttribute)
+	bisale.POST("/reward/config", controllers.PostSystemConfig)
+
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }
