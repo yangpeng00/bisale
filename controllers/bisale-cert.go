@@ -155,7 +155,7 @@ func PostCertResult(c echo.Context) error {
 					}).Info("KYC邮件发送成功")
 				}
 			} else {
-				err := messageService.SendSMS(ctx, traceId, config.Config.KycFailedSMS.AppId, resp.Email, config.Config.KycFailedSMS.TemplateId, "{\"username\":"+"\""+resp.Mobile+"\"}", "zh-CN", 0)
+				err := messageService.SendSMS(ctx, traceId, config.Config.KycFailedSMS.AppId, resp.Mobile, config.Config.KycFailedSMS.TemplateId, "{\"username\":"+"\""+resp.Mobile+"\"}", "zh-CN", 0)
 				if err != nil {
 					log.WithFields(logrus.Fields{
 						"user_id": req.UserId,
@@ -185,7 +185,7 @@ func PostCertResult(c echo.Context) error {
 					}).Info("KYC邮件发送成功")
 				}
 			} else {
-				err := messageService.SendSMS(ctx, traceId, config.Config.KycFailedSMS.AppId, resp.Email, config.Config.KycFailedSMS.TemplateId, "{\"username\":"+"\""+resp.Mobile+"\",\"reason\":\""+req.Mark+"\"}", "zh-CN", 0)
+				err := messageService.SendSMS(ctx, traceId, config.Config.KycFailedSMS.AppId, resp.Mobile, config.Config.KycFailedSMS.TemplateId, "{\"username\":"+"\""+resp.Mobile+"\",\"reason\":\""+req.Mark+"\"}", "zh-CN", 0)
 				if err != nil {
 					log.WithFields(logrus.Fields{
 						"user_id": req.UserId,
