@@ -22,8 +22,8 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "Usage of ", os.Args[0], " [-h host:port] [-u url] [-f[ramed]] function [arg1 [arg2...]]:")
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
-  fmt.Fprintln(os.Stderr, "   selectUserKycByConditions(string traceId, string userName, string status, i32 startPage, i32 pageSize)")
-  fmt.Fprintln(os.Stderr, "  i32 selectUserKycCountByConditions(string traceId, string userName, string status)")
+  fmt.Fprintln(os.Stderr, "   selectUserKycByConditions(TUserKycParams params)")
+  fmt.Fprintln(os.Stderr, "  i32 selectUserKycCountByConditions(TUserKycParams params)")
   fmt.Fprintln(os.Stderr, "  TUserKyc selectUserKycById(string traceId, i32 id)")
   fmt.Fprintln(os.Stderr, "  TAuditUserKycResult auditUserKyc(string traceId, i32 id, string status, string mark, i32 userId)")
   fmt.Fprintln(os.Stderr, "  i32 selectSlaveAllUserKycCount(string traceId)")
@@ -126,45 +126,53 @@ func main() {
   
   switch cmd {
   case "selectUserKycByConditions":
-    if flag.NArg() - 1 != 5 {
-      fmt.Fprintln(os.Stderr, "SelectUserKycByConditions requires 5 args")
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "SelectUserKycByConditions requires 1 args")
       flag.Usage()
     }
-    argvalue0 := flag.Arg(1)
+    arg16 := flag.Arg(1)
+    mbTrans17 := thrift.NewTMemoryBufferLen(len(arg16))
+    defer mbTrans17.Close()
+    _, err18 := mbTrans17.WriteString(arg16)
+    if err18 != nil {
+      Usage()
+      return
+    }
+    factory19 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt20 := factory19.GetProtocol(mbTrans17)
+    argvalue0 := user.NewTUserKycParams()
+    err21 := argvalue0.Read(jsProt20)
+    if err21 != nil {
+      Usage()
+      return
+    }
     value0 := argvalue0
-    argvalue1 := flag.Arg(2)
-    value1 := argvalue1
-    argvalue2 := flag.Arg(3)
-    value2 := argvalue2
-    tmp3, err19 := (strconv.Atoi(flag.Arg(4)))
-    if err19 != nil {
-      Usage()
-      return
-    }
-    argvalue3 := int32(tmp3)
-    value3 := argvalue3
-    tmp4, err20 := (strconv.Atoi(flag.Arg(5)))
-    if err20 != nil {
-      Usage()
-      return
-    }
-    argvalue4 := int32(tmp4)
-    value4 := argvalue4
-    fmt.Print(client.SelectUserKycByConditions(context.Background(), value0, value1, value2, value3, value4))
+    fmt.Print(client.SelectUserKycByConditions(context.Background(), value0))
     fmt.Print("\n")
     break
   case "selectUserKycCountByConditions":
-    if flag.NArg() - 1 != 3 {
-      fmt.Fprintln(os.Stderr, "SelectUserKycCountByConditions requires 3 args")
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "SelectUserKycCountByConditions requires 1 args")
       flag.Usage()
     }
-    argvalue0 := flag.Arg(1)
+    arg22 := flag.Arg(1)
+    mbTrans23 := thrift.NewTMemoryBufferLen(len(arg22))
+    defer mbTrans23.Close()
+    _, err24 := mbTrans23.WriteString(arg22)
+    if err24 != nil {
+      Usage()
+      return
+    }
+    factory25 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt26 := factory25.GetProtocol(mbTrans23)
+    argvalue0 := user.NewTUserKycParams()
+    err27 := argvalue0.Read(jsProt26)
+    if err27 != nil {
+      Usage()
+      return
+    }
     value0 := argvalue0
-    argvalue1 := flag.Arg(2)
-    value1 := argvalue1
-    argvalue2 := flag.Arg(3)
-    value2 := argvalue2
-    fmt.Print(client.SelectUserKycCountByConditions(context.Background(), value0, value1, value2))
+    fmt.Print(client.SelectUserKycCountByConditions(context.Background(), value0))
     fmt.Print("\n")
     break
   case "selectUserKycById":
@@ -174,8 +182,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err25 := (strconv.Atoi(flag.Arg(2)))
-    if err25 != nil {
+    tmp1, err29 := (strconv.Atoi(flag.Arg(2)))
+    if err29 != nil {
       Usage()
       return
     }
@@ -191,8 +199,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err27 := (strconv.Atoi(flag.Arg(2)))
-    if err27 != nil {
+    tmp1, err31 := (strconv.Atoi(flag.Arg(2)))
+    if err31 != nil {
       Usage()
       return
     }
@@ -202,8 +210,8 @@ func main() {
     value2 := argvalue2
     argvalue3 := flag.Arg(4)
     value3 := argvalue3
-    tmp4, err30 := (strconv.Atoi(flag.Arg(5)))
-    if err30 != nil {
+    tmp4, err34 := (strconv.Atoi(flag.Arg(5)))
+    if err34 != nil {
       Usage()
       return
     }
@@ -229,8 +237,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err33 := (strconv.Atoi(flag.Arg(2)))
-    if err33 != nil {
+    tmp1, err37 := (strconv.Atoi(flag.Arg(2)))
+    if err37 != nil {
       Usage()
       return
     }

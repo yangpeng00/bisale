@@ -47,10 +47,7 @@ func HmacSha1Signature(strMessage string, strSecret string) string {
 func GetUserList(c echo.Context) error {
 	page, _ := strconv.ParseInt(c.QueryParam("page"), 10, 32)
 	size, _ := strconv.ParseInt(c.QueryParam("size"), 10, 32)
-
-	if size < 10 {
-		size = 10
-	}
+	userId, _ := strconv.ParseInt(c.QueryParam("userId"), 10, 32)
 
 	log, _ := common.GetLoggerWithTraceId(c)
 	userService, userClient := common.GetBisaleUserServiceClient()
@@ -59,7 +56,10 @@ func GetUserList(c echo.Context) error {
 	userParams := new(user.TUserParams)
 	userParams.StartPage = int32(page)
 	userParams.PageSize = int32(size)
-	userParams.UserName = c.QueryParam("keyword")
+	userParams.UserId = int32(userId)
+	userParams.UserName = c.QueryParam("username")
+	userParams.Mobile = c.QueryParam("mobile")
+	userParams.Email = c.QueryParam("email")
 	userParams.AccountStatus = c.QueryParam("accountStatus")
 	userParams.LoginStatus = c.QueryParam("loginStatus")
 	userParams.KycStatus = c.QueryParam("kycStatus")
@@ -74,13 +74,17 @@ func GetUserList(c echo.Context) error {
 }
 
 func GetUserListCount(c echo.Context) error {
+	userId, _ := strconv.ParseInt(c.QueryParam("userId"), 10, 32)
 
 	log, _ := common.GetLoggerWithTraceId(c)
 	userService, userClient := common.GetBisaleUserServiceClient()
 	defer common.BisaleUserServicePool.Put(userClient)
 
 	userParams := new(user.TUserParams)
-	userParams.UserName = c.QueryParam("keyword")
+	userParams.UserId = int32(userId)
+	userParams.UserName = c.QueryParam("username")
+	userParams.Mobile = c.QueryParam("mobile")
+	userParams.Email = c.QueryParam("email")
 	userParams.AccountStatus = c.QueryParam("accountStatus")
 	userParams.LoginStatus = c.QueryParam("loginStatus")
 	userParams.KycStatus = c.QueryParam("kycStatus")

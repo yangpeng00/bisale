@@ -1541,19 +1541,356 @@ func (p *TUserKycCountDay) String() string {
   return fmt.Sprintf("TUserKycCountDay(%+v)", *p)
 }
 
+// Attributes:
+//  - TraceId
+//  - UserName
+//  - Status
+//  - StartPage
+//  - PageSize
+//  - UserId
+//  - Email
+//  - Mobile
+type TUserKycParams struct {
+  TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
+  UserName string `thrift:"userName,2" db:"userName" json:"userName"`
+  Status string `thrift:"status,3" db:"status" json:"status"`
+  StartPage int32 `thrift:"startPage,4" db:"startPage" json:"startPage"`
+  PageSize int32 `thrift:"pageSize,5" db:"pageSize" json:"pageSize"`
+  UserId int32 `thrift:"userId,6" db:"userId" json:"userId"`
+  Email string `thrift:"email,7" db:"email" json:"email"`
+  Mobile string `thrift:"mobile,8" db:"mobile" json:"mobile"`
+}
+
+func NewTUserKycParams() *TUserKycParams {
+  return &TUserKycParams{}
+}
+
+
+func (p *TUserKycParams) GetTraceId() string {
+  return p.TraceId
+}
+
+func (p *TUserKycParams) GetUserName() string {
+  return p.UserName
+}
+
+func (p *TUserKycParams) GetStatus() string {
+  return p.Status
+}
+
+func (p *TUserKycParams) GetStartPage() int32 {
+  return p.StartPage
+}
+
+func (p *TUserKycParams) GetPageSize() int32 {
+  return p.PageSize
+}
+
+func (p *TUserKycParams) GetUserId() int32 {
+  return p.UserId
+}
+
+func (p *TUserKycParams) GetEmail() string {
+  return p.Email
+}
+
+func (p *TUserKycParams) GetMobile() string {
+  return p.Mobile
+}
+func (p *TUserKycParams) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 3:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField3(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 4:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField4(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 5:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField5(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 6:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField6(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 7:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField7(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 8:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField8(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TUserKycParams)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.TraceId = v
+}
+  return nil
+}
+
+func (p *TUserKycParams)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.UserName = v
+}
+  return nil
+}
+
+func (p *TUserKycParams)  ReadField3(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 3: ", err)
+} else {
+  p.Status = v
+}
+  return nil
+}
+
+func (p *TUserKycParams)  ReadField4(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.StartPage = v
+}
+  return nil
+}
+
+func (p *TUserKycParams)  ReadField5(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 5: ", err)
+} else {
+  p.PageSize = v
+}
+  return nil
+}
+
+func (p *TUserKycParams)  ReadField6(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 6: ", err)
+} else {
+  p.UserId = v
+}
+  return nil
+}
+
+func (p *TUserKycParams)  ReadField7(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 7: ", err)
+} else {
+  p.Email = v
+}
+  return nil
+}
+
+func (p *TUserKycParams)  ReadField8(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 8: ", err)
+} else {
+  p.Mobile = v
+}
+  return nil
+}
+
+func (p *TUserKycParams) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("TUserKycParams"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+    if err := p.writeField3(oprot); err != nil { return err }
+    if err := p.writeField4(oprot); err != nil { return err }
+    if err := p.writeField5(oprot); err != nil { return err }
+    if err := p.writeField6(oprot); err != nil { return err }
+    if err := p.writeField7(oprot); err != nil { return err }
+    if err := p.writeField8(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TUserKycParams) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("traceId", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:traceId: ", p), err) }
+  if err := oprot.WriteString(string(p.TraceId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.traceId (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:traceId: ", p), err) }
+  return err
+}
+
+func (p *TUserKycParams) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("userName", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:userName: ", p), err) }
+  if err := oprot.WriteString(string(p.UserName)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.userName (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:userName: ", p), err) }
+  return err
+}
+
+func (p *TUserKycParams) writeField3(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("status", thrift.STRING, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:status: ", p), err) }
+  if err := oprot.WriteString(string(p.Status)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.status (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:status: ", p), err) }
+  return err
+}
+
+func (p *TUserKycParams) writeField4(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("startPage", thrift.I32, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:startPage: ", p), err) }
+  if err := oprot.WriteI32(int32(p.StartPage)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.startPage (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:startPage: ", p), err) }
+  return err
+}
+
+func (p *TUserKycParams) writeField5(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("pageSize", thrift.I32, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:pageSize: ", p), err) }
+  if err := oprot.WriteI32(int32(p.PageSize)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.pageSize (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:pageSize: ", p), err) }
+  return err
+}
+
+func (p *TUserKycParams) writeField6(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("userId", thrift.I32, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:userId: ", p), err) }
+  if err := oprot.WriteI32(int32(p.UserId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.userId (6) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:userId: ", p), err) }
+  return err
+}
+
+func (p *TUserKycParams) writeField7(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("email", thrift.STRING, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:email: ", p), err) }
+  if err := oprot.WriteString(string(p.Email)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.email (7) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:email: ", p), err) }
+  return err
+}
+
+func (p *TUserKycParams) writeField8(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("mobile", thrift.STRING, 8); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:mobile: ", p), err) }
+  if err := oprot.WriteString(string(p.Mobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.mobile (8) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 8:mobile: ", p), err) }
+  return err
+}
+
+func (p *TUserKycParams) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TUserKycParams(%+v)", *p)
+}
+
 type TUserKycService interface {
   // Parameters:
-  //  - TraceId
-  //  - UserName
-  //  - Status
-  //  - StartPage
-  //  - PageSize
-  SelectUserKycByConditions(ctx context.Context, traceId string, userName string, status string, startPage int32, pageSize int32) (r []*TUserKycResult_, err error)
+  //  - Params
+  SelectUserKycByConditions(ctx context.Context, params *TUserKycParams) (r []*TUserKycResult_, err error)
   // Parameters:
-  //  - TraceId
-  //  - UserName
-  //  - Status
-  SelectUserKycCountByConditions(ctx context.Context, traceId string, userName string, status string) (r int32, err error)
+  //  - Params
+  SelectUserKycCountByConditions(ctx context.Context, params *TUserKycParams) (r int32, err error)
   // Parameters:
   //  - TraceId
   //  - ID
@@ -1599,18 +1936,10 @@ func NewTUserKycServiceClient(c thrift.TClient) *TUserKycServiceClient {
 }
 
 // Parameters:
-//  - TraceId
-//  - UserName
-//  - Status
-//  - StartPage
-//  - PageSize
-func (p *TUserKycServiceClient) SelectUserKycByConditions(ctx context.Context, traceId string, userName string, status string, startPage int32, pageSize int32) (r []*TUserKycResult_, err error) {
+//  - Params
+func (p *TUserKycServiceClient) SelectUserKycByConditions(ctx context.Context, params *TUserKycParams) (r []*TUserKycResult_, err error) {
   var _args0 TUserKycServiceSelectUserKycByConditionsArgs
-  _args0.TraceId = traceId
-  _args0.UserName = userName
-  _args0.Status = status
-  _args0.StartPage = startPage
-  _args0.PageSize = pageSize
+  _args0.Params = params
   var _result1 TUserKycServiceSelectUserKycByConditionsResult
   if err = p.c.Call(ctx, "selectUserKycByConditions", &_args0, &_result1); err != nil {
     return
@@ -1619,14 +1948,10 @@ func (p *TUserKycServiceClient) SelectUserKycByConditions(ctx context.Context, t
 }
 
 // Parameters:
-//  - TraceId
-//  - UserName
-//  - Status
-func (p *TUserKycServiceClient) SelectUserKycCountByConditions(ctx context.Context, traceId string, userName string, status string) (r int32, err error) {
+//  - Params
+func (p *TUserKycServiceClient) SelectUserKycCountByConditions(ctx context.Context, params *TUserKycParams) (r int32, err error) {
   var _args2 TUserKycServiceSelectUserKycCountByConditionsArgs
-  _args2.TraceId = traceId
-  _args2.UserName = userName
-  _args2.Status = status
+  _args2.Params = params
   var _result3 TUserKycServiceSelectUserKycCountByConditionsResult
   if err = p.c.Call(ctx, "selectUserKycCountByConditions", &_args2, &_result3); err != nil {
     return
@@ -1761,7 +2086,7 @@ func (p *tUserKycServiceProcessorSelectUserKycByConditions) Process(ctx context.
   result := TUserKycServiceSelectUserKycByConditionsResult{}
 var retval []*TUserKycResult_
   var err2 error
-  if retval, err2 = p.handler.SelectUserKycByConditions(ctx, args.TraceId, args.UserName, args.Status, args.StartPage, args.PageSize); err2 != nil {
+  if retval, err2 = p.handler.SelectUserKycByConditions(ctx, args.Params); err2 != nil {
     x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectUserKycByConditions: " + err2.Error())
     oprot.WriteMessageBegin("selectUserKycByConditions", thrift.EXCEPTION, seqId)
     x.Write(oprot)
@@ -1809,7 +2134,7 @@ func (p *tUserKycServiceProcessorSelectUserKycCountByConditions) Process(ctx con
   result := TUserKycServiceSelectUserKycCountByConditionsResult{}
 var retval int32
   var err2 error
-  if retval, err2 = p.handler.SelectUserKycCountByConditions(ctx, args.TraceId, args.UserName, args.Status); err2 != nil {
+  if retval, err2 = p.handler.SelectUserKycCountByConditions(ctx, args.Params); err2 != nil {
     x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectUserKycCountByConditions: " + err2.Error())
     oprot.WriteMessageBegin("selectUserKycCountByConditions", thrift.EXCEPTION, seqId)
     x.Write(oprot)
@@ -2033,43 +2358,26 @@ var retval []*TUserKycCountDay
 // HELPER FUNCTIONS AND STRUCTURES
 
 // Attributes:
-//  - TraceId
-//  - UserName
-//  - Status
-//  - StartPage
-//  - PageSize
+//  - Params
 type TUserKycServiceSelectUserKycByConditionsArgs struct {
-  TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
-  UserName string `thrift:"userName,2" db:"userName" json:"userName"`
-  Status string `thrift:"status,3" db:"status" json:"status"`
-  StartPage int32 `thrift:"startPage,4" db:"startPage" json:"startPage"`
-  PageSize int32 `thrift:"pageSize,5" db:"pageSize" json:"pageSize"`
+  Params *TUserKycParams `thrift:"params,1" db:"params" json:"params"`
 }
 
 func NewTUserKycServiceSelectUserKycByConditionsArgs() *TUserKycServiceSelectUserKycByConditionsArgs {
   return &TUserKycServiceSelectUserKycByConditionsArgs{}
 }
 
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs) GetTraceId() string {
-  return p.TraceId
+var TUserKycServiceSelectUserKycByConditionsArgs_Params_DEFAULT *TUserKycParams
+func (p *TUserKycServiceSelectUserKycByConditionsArgs) GetParams() *TUserKycParams {
+  if !p.IsSetParams() {
+    return TUserKycServiceSelectUserKycByConditionsArgs_Params_DEFAULT
+  }
+return p.Params
+}
+func (p *TUserKycServiceSelectUserKycByConditionsArgs) IsSetParams() bool {
+  return p.Params != nil
 }
 
-func (p *TUserKycServiceSelectUserKycByConditionsArgs) GetUserName() string {
-  return p.UserName
-}
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs) GetStatus() string {
-  return p.Status
-}
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs) GetStartPage() int32 {
-  return p.StartPage
-}
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs) GetPageSize() int32 {
-  return p.PageSize
-}
 func (p *TUserKycServiceSelectUserKycByConditionsArgs) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2084,48 +2392,8 @@ func (p *TUserKycServiceSelectUserKycByConditionsArgs) Read(iprot thrift.TProtoc
     if fieldTypeId == thrift.STOP { break; }
     switch fieldId {
     case 1:
-      if fieldTypeId == thrift.STRING {
+      if fieldTypeId == thrift.STRUCT {
         if err := p.ReadField1(iprot); err != nil {
-          return err
-        }
-      } else {
-        if err := iprot.Skip(fieldTypeId); err != nil {
-          return err
-        }
-      }
-    case 2:
-      if fieldTypeId == thrift.STRING {
-        if err := p.ReadField2(iprot); err != nil {
-          return err
-        }
-      } else {
-        if err := iprot.Skip(fieldTypeId); err != nil {
-          return err
-        }
-      }
-    case 3:
-      if fieldTypeId == thrift.STRING {
-        if err := p.ReadField3(iprot); err != nil {
-          return err
-        }
-      } else {
-        if err := iprot.Skip(fieldTypeId); err != nil {
-          return err
-        }
-      }
-    case 4:
-      if fieldTypeId == thrift.I32 {
-        if err := p.ReadField4(iprot); err != nil {
-          return err
-        }
-      } else {
-        if err := iprot.Skip(fieldTypeId); err != nil {
-          return err
-        }
-      }
-    case 5:
-      if fieldTypeId == thrift.I32 {
-        if err := p.ReadField5(iprot); err != nil {
           return err
         }
       } else {
@@ -2149,47 +2417,10 @@ func (p *TUserKycServiceSelectUserKycByConditionsArgs) Read(iprot thrift.TProtoc
 }
 
 func (p *TUserKycServiceSelectUserKycByConditionsArgs)  ReadField1(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.TraceId = v
-}
-  return nil
-}
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs)  ReadField2(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.UserName = v
-}
-  return nil
-}
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs)  ReadField3(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 3: ", err)
-} else {
-  p.Status = v
-}
-  return nil
-}
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs)  ReadField4(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 4: ", err)
-} else {
-  p.StartPage = v
-}
-  return nil
-}
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs)  ReadField5(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 5: ", err)
-} else {
-  p.PageSize = v
-}
+  p.Params = &TUserKycParams{}
+  if err := p.Params.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Params), err)
+  }
   return nil
 }
 
@@ -2198,10 +2429,6 @@ func (p *TUserKycServiceSelectUserKycByConditionsArgs) Write(oprot thrift.TProto
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if p != nil {
     if err := p.writeField1(oprot); err != nil { return err }
-    if err := p.writeField2(oprot); err != nil { return err }
-    if err := p.writeField3(oprot); err != nil { return err }
-    if err := p.writeField4(oprot); err != nil { return err }
-    if err := p.writeField5(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -2211,52 +2438,13 @@ func (p *TUserKycServiceSelectUserKycByConditionsArgs) Write(oprot thrift.TProto
 }
 
 func (p *TUserKycServiceSelectUserKycByConditionsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("traceId", thrift.STRING, 1); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:traceId: ", p), err) }
-  if err := oprot.WriteString(string(p.TraceId)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.traceId (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("params", thrift.STRUCT, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:params: ", p), err) }
+  if err := p.Params.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Params), err)
+  }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:traceId: ", p), err) }
-  return err
-}
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs) writeField2(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("userName", thrift.STRING, 2); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:userName: ", p), err) }
-  if err := oprot.WriteString(string(p.UserName)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.userName (2) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:userName: ", p), err) }
-  return err
-}
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs) writeField3(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("status", thrift.STRING, 3); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:status: ", p), err) }
-  if err := oprot.WriteString(string(p.Status)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.status (3) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:status: ", p), err) }
-  return err
-}
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs) writeField4(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("startPage", thrift.I32, 4); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:startPage: ", p), err) }
-  if err := oprot.WriteI32(int32(p.StartPage)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.startPage (4) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:startPage: ", p), err) }
-  return err
-}
-
-func (p *TUserKycServiceSelectUserKycByConditionsArgs) writeField5(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("pageSize", thrift.I32, 5); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:pageSize: ", p), err) }
-  if err := oprot.WriteI32(int32(p.PageSize)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.pageSize (5) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:pageSize: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:params: ", p), err) }
   return err
 }
 
@@ -2386,31 +2574,26 @@ func (p *TUserKycServiceSelectUserKycByConditionsResult) String() string {
 }
 
 // Attributes:
-//  - TraceId
-//  - UserName
-//  - Status
+//  - Params
 type TUserKycServiceSelectUserKycCountByConditionsArgs struct {
-  TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
-  UserName string `thrift:"userName,2" db:"userName" json:"userName"`
-  Status string `thrift:"status,3" db:"status" json:"status"`
+  Params *TUserKycParams `thrift:"params,1" db:"params" json:"params"`
 }
 
 func NewTUserKycServiceSelectUserKycCountByConditionsArgs() *TUserKycServiceSelectUserKycCountByConditionsArgs {
   return &TUserKycServiceSelectUserKycCountByConditionsArgs{}
 }
 
-
-func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) GetTraceId() string {
-  return p.TraceId
+var TUserKycServiceSelectUserKycCountByConditionsArgs_Params_DEFAULT *TUserKycParams
+func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) GetParams() *TUserKycParams {
+  if !p.IsSetParams() {
+    return TUserKycServiceSelectUserKycCountByConditionsArgs_Params_DEFAULT
+  }
+return p.Params
+}
+func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) IsSetParams() bool {
+  return p.Params != nil
 }
 
-func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) GetUserName() string {
-  return p.UserName
-}
-
-func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) GetStatus() string {
-  return p.Status
-}
 func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2425,28 +2608,8 @@ func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) Read(iprot thrift.TP
     if fieldTypeId == thrift.STOP { break; }
     switch fieldId {
     case 1:
-      if fieldTypeId == thrift.STRING {
+      if fieldTypeId == thrift.STRUCT {
         if err := p.ReadField1(iprot); err != nil {
-          return err
-        }
-      } else {
-        if err := iprot.Skip(fieldTypeId); err != nil {
-          return err
-        }
-      }
-    case 2:
-      if fieldTypeId == thrift.STRING {
-        if err := p.ReadField2(iprot); err != nil {
-          return err
-        }
-      } else {
-        if err := iprot.Skip(fieldTypeId); err != nil {
-          return err
-        }
-      }
-    case 3:
-      if fieldTypeId == thrift.STRING {
-        if err := p.ReadField3(iprot); err != nil {
           return err
         }
       } else {
@@ -2470,29 +2633,10 @@ func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) Read(iprot thrift.TP
 }
 
 func (p *TUserKycServiceSelectUserKycCountByConditionsArgs)  ReadField1(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.TraceId = v
-}
-  return nil
-}
-
-func (p *TUserKycServiceSelectUserKycCountByConditionsArgs)  ReadField2(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.UserName = v
-}
-  return nil
-}
-
-func (p *TUserKycServiceSelectUserKycCountByConditionsArgs)  ReadField3(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 3: ", err)
-} else {
-  p.Status = v
-}
+  p.Params = &TUserKycParams{}
+  if err := p.Params.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Params), err)
+  }
   return nil
 }
 
@@ -2501,8 +2645,6 @@ func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) Write(oprot thrift.T
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if p != nil {
     if err := p.writeField1(oprot); err != nil { return err }
-    if err := p.writeField2(oprot); err != nil { return err }
-    if err := p.writeField3(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -2512,32 +2654,13 @@ func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) Write(oprot thrift.T
 }
 
 func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) writeField1(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("traceId", thrift.STRING, 1); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:traceId: ", p), err) }
-  if err := oprot.WriteString(string(p.TraceId)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.traceId (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("params", thrift.STRUCT, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:params: ", p), err) }
+  if err := p.Params.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Params), err)
+  }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:traceId: ", p), err) }
-  return err
-}
-
-func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) writeField2(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("userName", thrift.STRING, 2); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:userName: ", p), err) }
-  if err := oprot.WriteString(string(p.UserName)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.userName (2) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:userName: ", p), err) }
-  return err
-}
-
-func (p *TUserKycServiceSelectUserKycCountByConditionsArgs) writeField3(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("status", thrift.STRING, 3); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:status: ", p), err) }
-  if err := oprot.WriteString(string(p.Status)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.status (3) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:status: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:params: ", p), err) }
   return err
 }
 

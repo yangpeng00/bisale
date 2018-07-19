@@ -92,13 +92,13 @@ var Config = struct {
 
 	KycSuccessSMS struct {
 		AppId      string `yaml:"app_id" default:"bisale-admin"`
-		TemplateId string `yaml:"app_id" default:"template::mail::kyc-success"`
+		TemplateId string `yaml:"template_id" default:"template::sms::kyc-success"`
 		DataFormat string
 	} `yaml:"kyc_success_sms"`
 
 	KycFailedSMS struct {
 		AppId      string `yaml:"app_id" default:"bisale-admin"`
-		TemplateId string `yaml:"app_id" default:"template::mail::kyc-failed"`
+		TemplateId string `yaml:"template_id" default:"template::sms::kyc-failed"`
 		DataFormat string
 	} `yaml:"kyc_failed_sms"`
 }{}

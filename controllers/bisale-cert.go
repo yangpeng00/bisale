@@ -11,26 +11,36 @@ import (
 	"strings"
 	"github.com/sirupsen/logrus"
 	"fmt"
+	"bisale/bisale-console-api/thrift/user"
+	"encoding/json"
 )
 
 func GetCertList(c echo.Context) error {
-	keyword := c.QueryParam("keyword")
-	status := c.QueryParam("status")
-
-	page, _ := strconv.ParseInt(c.QueryParam("page"), 10, 32)
-	size, _ := strconv.ParseInt(c.QueryParam("size"), 10, 32)
-
-	if size < 10 {
-		size = 10
-	}
-
 	log, traceId := common.GetLoggerWithTraceId(c)
 	userService, userClient := common.GetBisaleUserKycServiceClient()
 	defer common.BisaleUserKycServicePool.Put(userClient)
 
+	userId, _ := strconv.ParseInt(c.QueryParam("userId"), 10, 32)
+	page, _ := strconv.ParseInt(c.QueryParam("page"), 10, 32)
+	size, _ := strconv.ParseInt(c.QueryParam("size"), 10, 32)
+
+	userParams := new(user.TUserKycParams)
+	userParams.TraceId = traceId
+	userParams.StartPage = int32(page)
+	userParams.PageSize = int32(size)
+	userParams.UserId = int32(userId)
+	userParams.UserName = c.QueryParam("username")
+	userParams.Mobile = c.QueryParam("mobile")
+	userParams.Email = c.QueryParam("email")
+	userParams.Status = c.QueryParam("status")
+
+	xxx, _ := json.Marshal(userParams)
+	fmt.Println("======")
+	fmt.Println(string(xxx))
+
 	ctx := context.Background()
 
-	res, err := userService.SelectUserKycByConditions(ctx, traceId, keyword, status, int32(page), int32(size))
+	res, err := userService.SelectUserKycByConditions(ctx, userParams)
 	log.Info(res)
 	if err != nil {
 		log.Error(err)
@@ -202,13 +212,20 @@ func PostCertResult(c echo.Context) error {
 
 func GetCertListCount(c echo.Context) error {
 	log, traceId := common.GetLoggerWithTraceId(c)
-	keyword := c.QueryParam("keyword")
-	status := c.QueryParam("status")
+
+	userId, _ := strconv.ParseInt(c.QueryParam("userId"), 10, 32)
+	userParams := new(user.TUserKycParams)
+	userParams.TraceId = traceId
+	userParams.UserId = int32(userId)
+	userParams.UserName = c.QueryParam("username")
+	userParams.Mobile = c.QueryParam("mobile")
+	userParams.Email = c.QueryParam("email")
+	userParams.Status = c.QueryParam("status")
 
 	userService, userClient := common.GetBisaleUserKycServiceClient()
 	defer common.BisaleUserKycServicePool.Put(userClient)
 
-	res, err := userService.SelectUserKycCountByConditions(context.Background(), traceId, keyword, status)
+	res, err := userService.SelectUserKycCountByConditions(context.Background(), userParams)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)

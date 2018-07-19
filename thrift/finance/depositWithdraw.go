@@ -2562,10 +2562,12 @@ func (p *TTradeAwardDaysCountResult_) String() string {
 //  - UserId
 //  - Email
 //  - AwardNumber
+//  - Status
 type TTradeAwardDetailListResult_ struct {
   UserId int32 `thrift:"userId,1" db:"userId" json:"userId"`
   Email string `thrift:"email,2" db:"email" json:"email"`
   AwardNumber string `thrift:"awardNumber,3" db:"awardNumber" json:"awardNumber"`
+  Status string `thrift:"status,4" db:"status" json:"status"`
 }
 
 func NewTTradeAwardDetailListResult_() *TTradeAwardDetailListResult_ {
@@ -2583,6 +2585,10 @@ func (p *TTradeAwardDetailListResult_) GetEmail() string {
 
 func (p *TTradeAwardDetailListResult_) GetAwardNumber() string {
   return p.AwardNumber
+}
+
+func (p *TTradeAwardDetailListResult_) GetStatus() string {
+  return p.Status
 }
 func (p *TTradeAwardDetailListResult_) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -2620,6 +2626,16 @@ func (p *TTradeAwardDetailListResult_) Read(iprot thrift.TProtocol) error {
     case 3:
       if fieldTypeId == thrift.STRING {
         if err := p.ReadField3(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 4:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField4(iprot); err != nil {
           return err
         }
       } else {
@@ -2669,6 +2685,15 @@ func (p *TTradeAwardDetailListResult_)  ReadField3(iprot thrift.TProtocol) error
   return nil
 }
 
+func (p *TTradeAwardDetailListResult_)  ReadField4(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.Status = v
+}
+  return nil
+}
+
 func (p *TTradeAwardDetailListResult_) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TTradeAwardDetailListResult"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -2676,6 +2701,7 @@ func (p *TTradeAwardDetailListResult_) Write(oprot thrift.TProtocol) error {
     if err := p.writeField1(oprot); err != nil { return err }
     if err := p.writeField2(oprot); err != nil { return err }
     if err := p.writeField3(oprot); err != nil { return err }
+    if err := p.writeField4(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -2711,6 +2737,16 @@ func (p *TTradeAwardDetailListResult_) writeField3(oprot thrift.TProtocol) (err 
   return thrift.PrependError(fmt.Sprintf("%T.awardNumber (3) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 3:awardNumber: ", p), err) }
+  return err
+}
+
+func (p *TTradeAwardDetailListResult_) writeField4(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("status", thrift.STRING, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:status: ", p), err) }
+  if err := oprot.WriteString(string(p.Status)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.status (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:status: ", p), err) }
   return err
 }
 

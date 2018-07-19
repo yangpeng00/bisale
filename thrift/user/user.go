@@ -592,6 +592,9 @@ func (p *TUser) String() string {
 //  - StartPage
 //  - PageSize
 //  - TraceId
+//  - UserId
+//  - Mobile
+//  - Email
 type TUserParams struct {
   UserName string `thrift:"userName,1" db:"userName" json:"userName"`
   LoginStatus string `thrift:"loginStatus,2" db:"loginStatus" json:"loginStatus"`
@@ -600,6 +603,9 @@ type TUserParams struct {
   StartPage int32 `thrift:"startPage,5" db:"startPage" json:"startPage"`
   PageSize int32 `thrift:"pageSize,6" db:"pageSize" json:"pageSize"`
   TraceId string `thrift:"traceId,7" db:"traceId" json:"traceId"`
+  UserId int32 `thrift:"userId,8" db:"userId" json:"userId"`
+  Mobile string `thrift:"mobile,9" db:"mobile" json:"mobile"`
+  Email string `thrift:"email,10" db:"email" json:"email"`
 }
 
 func NewTUserParams() *TUserParams {
@@ -633,6 +639,18 @@ func (p *TUserParams) GetPageSize() int32 {
 
 func (p *TUserParams) GetTraceId() string {
   return p.TraceId
+}
+
+func (p *TUserParams) GetUserId() int32 {
+  return p.UserId
+}
+
+func (p *TUserParams) GetMobile() string {
+  return p.Mobile
+}
+
+func (p *TUserParams) GetEmail() string {
+  return p.Email
 }
 func (p *TUserParams) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -710,6 +728,36 @@ func (p *TUserParams) Read(iprot thrift.TProtocol) error {
     case 7:
       if fieldTypeId == thrift.STRING {
         if err := p.ReadField7(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 8:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField8(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 9:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField9(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 10:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField10(iprot); err != nil {
           return err
         }
       } else {
@@ -795,6 +843,33 @@ func (p *TUserParams)  ReadField7(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TUserParams)  ReadField8(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 8: ", err)
+} else {
+  p.UserId = v
+}
+  return nil
+}
+
+func (p *TUserParams)  ReadField9(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 9: ", err)
+} else {
+  p.Mobile = v
+}
+  return nil
+}
+
+func (p *TUserParams)  ReadField10(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 10: ", err)
+} else {
+  p.Email = v
+}
+  return nil
+}
+
 func (p *TUserParams) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TUserParams"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -806,6 +881,9 @@ func (p *TUserParams) Write(oprot thrift.TProtocol) error {
     if err := p.writeField5(oprot); err != nil { return err }
     if err := p.writeField6(oprot); err != nil { return err }
     if err := p.writeField7(oprot); err != nil { return err }
+    if err := p.writeField8(oprot); err != nil { return err }
+    if err := p.writeField9(oprot); err != nil { return err }
+    if err := p.writeField10(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -881,6 +959,36 @@ func (p *TUserParams) writeField7(oprot thrift.TProtocol) (err error) {
   return thrift.PrependError(fmt.Sprintf("%T.traceId (7) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 7:traceId: ", p), err) }
+  return err
+}
+
+func (p *TUserParams) writeField8(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("userId", thrift.I32, 8); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:userId: ", p), err) }
+  if err := oprot.WriteI32(int32(p.UserId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.userId (8) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 8:userId: ", p), err) }
+  return err
+}
+
+func (p *TUserParams) writeField9(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("mobile", thrift.STRING, 9); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:mobile: ", p), err) }
+  if err := oprot.WriteString(string(p.Mobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.mobile (9) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 9:mobile: ", p), err) }
+  return err
+}
+
+func (p *TUserParams) writeField10(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("email", thrift.STRING, 10); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 10:email: ", p), err) }
+  if err := oprot.WriteString(string(p.Email)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.email (10) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 10:email: ", p), err) }
   return err
 }
 
