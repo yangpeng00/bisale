@@ -33,6 +33,7 @@ var _ = bytes.Equal
 //  - ErrorCount
 //  - ErrorStartAt
 //  - Empty
+//  - PrefixMobile
 type TUser struct {
   ID int32 `thrift:"id,1" db:"id" json:"id"`
   Mobile string `thrift:"mobile,2" db:"mobile" json:"mobile"`
@@ -48,6 +49,7 @@ type TUser struct {
   ErrorCount int32 `thrift:"errorCount,12" db:"errorCount" json:"errorCount"`
   ErrorStartAt string `thrift:"errorStartAt,13" db:"errorStartAt" json:"errorStartAt"`
   Empty bool `thrift:"empty,14" db:"empty" json:"empty,omitempty"`
+  PrefixMobile string `thrift:"prefixMobile,15" db:"prefixMobile" json:"prefixMobile"`
 }
 
 func NewTUser() *TUser {
@@ -110,6 +112,10 @@ var TUser_Empty_DEFAULT bool = false
 
 func (p *TUser) GetEmpty() bool {
   return p.Empty
+}
+
+func (p *TUser) GetPrefixMobile() string {
+  return p.PrefixMobile
 }
 func (p *TUser) IsSetEmpty() bool {
   return p.Empty != TUser_Empty_DEFAULT
@@ -268,6 +274,16 @@ func (p *TUser) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 15:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField15(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -409,6 +425,15 @@ func (p *TUser)  ReadField14(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TUser)  ReadField15(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 15: ", err)
+} else {
+  p.PrefixMobile = v
+}
+  return nil
+}
+
 func (p *TUser) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TUser"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -427,6 +452,7 @@ func (p *TUser) Write(oprot thrift.TProtocol) error {
     if err := p.writeField12(oprot); err != nil { return err }
     if err := p.writeField13(oprot); err != nil { return err }
     if err := p.writeField14(oprot); err != nil { return err }
+    if err := p.writeField15(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -574,6 +600,16 @@ func (p *TUser) writeField14(oprot thrift.TProtocol) (err error) {
     if err := oprot.WriteFieldEnd(); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field end error 14:empty: ", p), err) }
   }
+  return err
+}
+
+func (p *TUser) writeField15(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("prefixMobile", thrift.STRING, 15); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 15:prefixMobile: ", p), err) }
+  if err := oprot.WriteString(string(p.PrefixMobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.prefixMobile (15) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 15:prefixMobile: ", p), err) }
   return err
 }
 
