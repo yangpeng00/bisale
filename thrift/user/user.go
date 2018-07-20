@@ -1502,6 +1502,8 @@ func (p *TUserResults) String() string {
 //  - PassportLastName
 //  - PassportFirstName
 //  - UserKycId
+//  - Account
+//  - AccountPassword
 type TUserInfo struct {
   ID int32 `thrift:"id,1" db:"id" json:"id"`
   IdRealName string `thrift:"idRealName,2" db:"idRealName" json:"idRealName"`
@@ -1518,6 +1520,8 @@ type TUserInfo struct {
   PassportLastName string `thrift:"passportLastName,13" db:"passportLastName" json:"passportLastName"`
   PassportFirstName string `thrift:"passportFirstName,14" db:"passportFirstName" json:"passportFirstName"`
   UserKycId int32 `thrift:"userKycId,15" db:"userKycId" json:"userKycId"`
+  Account string `thrift:"account,16" db:"account" json:"account"`
+  AccountPassword string `thrift:"accountPassword,17" db:"accountPassword" json:"accountPassword"`
 }
 
 func NewTUserInfo() *TUserInfo {
@@ -1583,6 +1587,14 @@ func (p *TUserInfo) GetPassportFirstName() string {
 
 func (p *TUserInfo) GetUserKycId() int32 {
   return p.UserKycId
+}
+
+func (p *TUserInfo) GetAccount() string {
+  return p.Account
+}
+
+func (p *TUserInfo) GetAccountPassword() string {
+  return p.AccountPassword
 }
 func (p *TUserInfo) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -1747,6 +1759,26 @@ func (p *TUserInfo) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 16:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField16(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 17:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField17(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -1897,6 +1929,24 @@ func (p *TUserInfo)  ReadField15(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TUserInfo)  ReadField16(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 16: ", err)
+} else {
+  p.Account = v
+}
+  return nil
+}
+
+func (p *TUserInfo)  ReadField17(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 17: ", err)
+} else {
+  p.AccountPassword = v
+}
+  return nil
+}
+
 func (p *TUserInfo) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TUserInfo"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1916,6 +1966,8 @@ func (p *TUserInfo) Write(oprot thrift.TProtocol) error {
     if err := p.writeField13(oprot); err != nil { return err }
     if err := p.writeField14(oprot); err != nil { return err }
     if err := p.writeField15(oprot); err != nil { return err }
+    if err := p.writeField16(oprot); err != nil { return err }
+    if err := p.writeField17(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -2071,6 +2123,26 @@ func (p *TUserInfo) writeField15(oprot thrift.TProtocol) (err error) {
   return thrift.PrependError(fmt.Sprintf("%T.userKycId (15) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 15:userKycId: ", p), err) }
+  return err
+}
+
+func (p *TUserInfo) writeField16(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("account", thrift.STRING, 16); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 16:account: ", p), err) }
+  if err := oprot.WriteString(string(p.Account)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.account (16) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 16:account: ", p), err) }
+  return err
+}
+
+func (p *TUserInfo) writeField17(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("accountPassword", thrift.STRING, 17); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 17:accountPassword: ", p), err) }
+  if err := oprot.WriteString(string(p.AccountPassword)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.accountPassword (17) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 17:accountPassword: ", p), err) }
   return err
 }
 
