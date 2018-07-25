@@ -40,6 +40,7 @@ var _ = bytes.Equal
 //  - UpdatedAt
 //  - Empty
 //  - Mark
+//  - Source
 type TUserKyc struct {
   ID int32 `thrift:"id,1" db:"id" json:"id"`
   UserId int32 `thrift:"userId,2" db:"userId" json:"userId"`
@@ -62,6 +63,7 @@ type TUserKyc struct {
   UpdatedAt string `thrift:"updatedAt,19" db:"updatedAt" json:"updatedAt"`
   Empty bool `thrift:"empty,20" db:"empty" json:"empty,omitempty"`
   Mark string `thrift:"mark,21" db:"mark" json:"mark"`
+  Source int32 `thrift:"source,22" db:"source" json:"source"`
 }
 
 func NewTUserKyc() *TUserKyc {
@@ -152,6 +154,10 @@ func (p *TUserKyc) GetEmpty() bool {
 
 func (p *TUserKyc) GetMark() string {
   return p.Mark
+}
+
+func (p *TUserKyc) GetSource() int32 {
+  return p.Source
 }
 func (p *TUserKyc) IsSetEmpty() bool {
   return p.Empty != TUserKyc_Empty_DEFAULT
@@ -380,6 +386,16 @@ func (p *TUserKyc) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 22:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField22(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -584,6 +600,15 @@ func (p *TUserKyc)  ReadField21(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TUserKyc)  ReadField22(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 22: ", err)
+} else {
+  p.Source = v
+}
+  return nil
+}
+
 func (p *TUserKyc) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TUserKyc"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -609,6 +634,7 @@ func (p *TUserKyc) Write(oprot thrift.TProtocol) error {
     if err := p.writeField19(oprot); err != nil { return err }
     if err := p.writeField20(oprot); err != nil { return err }
     if err := p.writeField21(oprot); err != nil { return err }
+    if err := p.writeField22(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -829,6 +855,16 @@ func (p *TUserKyc) writeField21(oprot thrift.TProtocol) (err error) {
   return err
 }
 
+func (p *TUserKyc) writeField22(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("source", thrift.I32, 22); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 22:source: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Source)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.source (22) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 22:source: ", p), err) }
+  return err
+}
+
 func (p *TUserKyc) String() string {
   if p == nil {
     return "<nil>"
@@ -847,6 +883,7 @@ func (p *TUserKyc) String() string {
 //  - PassportLastName
 //  - PassportFirstName
 //  - UserId
+//  - Source
 type TUserKycResult_ struct {
   ID int32 `thrift:"id,1" db:"id" json:"id"`
   IdRealName string `thrift:"idRealName,2" db:"idRealName" json:"idRealName"`
@@ -858,6 +895,7 @@ type TUserKycResult_ struct {
   PassportLastName string `thrift:"passportLastName,8" db:"passportLastName" json:"passportLastName"`
   PassportFirstName string `thrift:"passportFirstName,9" db:"passportFirstName" json:"passportFirstName"`
   UserId int32 `thrift:"userId,10" db:"userId" json:"userId"`
+  Source int32 `thrift:"source,11" db:"source" json:"source"`
 }
 
 func NewTUserKycResult_() *TUserKycResult_ {
@@ -903,6 +941,10 @@ func (p *TUserKycResult_) GetPassportFirstName() string {
 
 func (p *TUserKycResult_) GetUserId() int32 {
   return p.UserId
+}
+
+func (p *TUserKycResult_) GetSource() int32 {
+  return p.Source
 }
 func (p *TUserKycResult_) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -1017,6 +1059,16 @@ func (p *TUserKycResult_) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 11:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField11(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -1122,6 +1174,15 @@ func (p *TUserKycResult_)  ReadField10(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TUserKycResult_)  ReadField11(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 11: ", err)
+} else {
+  p.Source = v
+}
+  return nil
+}
+
 func (p *TUserKycResult_) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TUserKycResult"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1136,6 +1197,7 @@ func (p *TUserKycResult_) Write(oprot thrift.TProtocol) error {
     if err := p.writeField8(oprot); err != nil { return err }
     if err := p.writeField9(oprot); err != nil { return err }
     if err := p.writeField10(oprot); err != nil { return err }
+    if err := p.writeField11(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -1241,6 +1303,16 @@ func (p *TUserKycResult_) writeField10(oprot thrift.TProtocol) (err error) {
   return thrift.PrependError(fmt.Sprintf("%T.userId (10) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 10:userId: ", p), err) }
+  return err
+}
+
+func (p *TUserKycResult_) writeField11(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("source", thrift.I32, 11); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 11:source: ", p), err) }
+  if err := oprot.WriteI32(int32(p.Source)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.source (11) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 11:source: ", p), err) }
   return err
 }
 
