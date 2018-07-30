@@ -740,6 +740,7 @@ func (p *TDepositWithdraw) String() string {
 //  - StartPage
 //  - PageSize
 //  - Type
+//  - Mobile
 type TDepositWithdrawParams struct {
   TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
   UserName string `thrift:"userName,2" db:"userName" json:"userName"`
@@ -752,6 +753,7 @@ type TDepositWithdrawParams struct {
   StartPage int32 `thrift:"startPage,9" db:"startPage" json:"startPage"`
   PageSize int32 `thrift:"pageSize,10" db:"pageSize" json:"pageSize"`
   Type int32 `thrift:"type,11" db:"type" json:"type"`
+  Mobile string `thrift:"mobile,12" db:"mobile" json:"mobile"`
 }
 
 func NewTDepositWithdrawParams() *TDepositWithdrawParams {
@@ -801,6 +803,10 @@ func (p *TDepositWithdrawParams) GetPageSize() int32 {
 
 func (p *TDepositWithdrawParams) GetType() int32 {
   return p.Type
+}
+
+func (p *TDepositWithdrawParams) GetMobile() string {
+  return p.Mobile
 }
 func (p *TDepositWithdrawParams) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -925,6 +931,16 @@ func (p *TDepositWithdrawParams) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 12:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField12(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -1039,6 +1055,15 @@ func (p *TDepositWithdrawParams)  ReadField11(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TDepositWithdrawParams)  ReadField12(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 12: ", err)
+} else {
+  p.Mobile = v
+}
+  return nil
+}
+
 func (p *TDepositWithdrawParams) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TDepositWithdrawParams"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1054,6 +1079,7 @@ func (p *TDepositWithdrawParams) Write(oprot thrift.TProtocol) error {
     if err := p.writeField9(oprot); err != nil { return err }
     if err := p.writeField10(oprot); err != nil { return err }
     if err := p.writeField11(oprot); err != nil { return err }
+    if err := p.writeField12(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -1172,6 +1198,16 @@ func (p *TDepositWithdrawParams) writeField11(oprot thrift.TProtocol) (err error
   return err
 }
 
+func (p *TDepositWithdrawParams) writeField12(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("mobile", thrift.STRING, 12); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 12:mobile: ", p), err) }
+  if err := oprot.WriteString(string(p.Mobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.mobile (12) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 12:mobile: ", p), err) }
+  return err
+}
+
 func (p *TDepositWithdrawParams) String() string {
   if p == nil {
     return "<nil>"
@@ -1197,6 +1233,7 @@ func (p *TDepositWithdrawParams) String() string {
 //  - SourceAddress
 //  - DestinationTag
 //  - Confirmations
+//  - Mobile
 type TDepositWithdrawResult_ struct {
   ID int32 `thrift:"id,1" db:"id" json:"id"`
   UserId int32 `thrift:"userId,2" db:"userId" json:"userId"`
@@ -1215,6 +1252,7 @@ type TDepositWithdrawResult_ struct {
   SourceAddress string `thrift:"sourceAddress,15" db:"sourceAddress" json:"sourceAddress"`
   DestinationTag string `thrift:"destinationTag,16" db:"destinationTag" json:"destinationTag"`
   Confirmations int32 `thrift:"confirmations,17" db:"confirmations" json:"confirmations"`
+  Mobile string `thrift:"mobile,18" db:"mobile" json:"mobile"`
 }
 
 func NewTDepositWithdrawResult_() *TDepositWithdrawResult_ {
@@ -1289,6 +1327,10 @@ func (p *TDepositWithdrawResult_) GetDestinationTag() string {
 
 func (p *TDepositWithdrawResult_) GetConfirmations() int32 {
   return p.Confirmations
+}
+
+func (p *TDepositWithdrawResult_) GetMobile() string {
+  return p.Mobile
 }
 func (p *TDepositWithdrawResult_) IsSetEmpty() bool {
   return p.Empty != TDepositWithdrawResult__Empty_DEFAULT
@@ -1477,6 +1519,16 @@ func (p *TDepositWithdrawResult_) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 18:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField18(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -1645,6 +1697,15 @@ func (p *TDepositWithdrawResult_)  ReadField17(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TDepositWithdrawResult_)  ReadField18(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 18: ", err)
+} else {
+  p.Mobile = v
+}
+  return nil
+}
+
 func (p *TDepositWithdrawResult_) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TDepositWithdrawResult"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1666,6 +1727,7 @@ func (p *TDepositWithdrawResult_) Write(oprot thrift.TProtocol) error {
     if err := p.writeField15(oprot); err != nil { return err }
     if err := p.writeField16(oprot); err != nil { return err }
     if err := p.writeField17(oprot); err != nil { return err }
+    if err := p.writeField18(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -1846,6 +1908,16 @@ func (p *TDepositWithdrawResult_) writeField17(oprot thrift.TProtocol) (err erro
   return err
 }
 
+func (p *TDepositWithdrawResult_) writeField18(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("mobile", thrift.STRING, 18); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 18:mobile: ", p), err) }
+  if err := oprot.WriteString(string(p.Mobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.mobile (18) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 18:mobile: ", p), err) }
+  return err
+}
+
 func (p *TDepositWithdrawResult_) String() string {
   if p == nil {
     return "<nil>"
@@ -1863,6 +1935,7 @@ func (p *TDepositWithdrawResult_) String() string {
 //  - PageSize
 //  - Sort
 //  - CurrentDate
+//  - Mobile
 type TTradeAwardParams struct {
   TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
   StartDate string `thrift:"startDate,2" db:"startDate" json:"startDate"`
@@ -1873,6 +1946,7 @@ type TTradeAwardParams struct {
   PageSize int32 `thrift:"pageSize,7" db:"pageSize" json:"pageSize"`
   Sort string `thrift:"sort,8" db:"sort" json:"sort"`
   CurrentDate string `thrift:"currentDate,9" db:"currentDate" json:"currentDate"`
+  Mobile string `thrift:"mobile,10" db:"mobile" json:"mobile"`
 }
 
 func NewTTradeAwardParams() *TTradeAwardParams {
@@ -1914,6 +1988,10 @@ func (p *TTradeAwardParams) GetSort() string {
 
 func (p *TTradeAwardParams) GetCurrentDate() string {
   return p.CurrentDate
+}
+
+func (p *TTradeAwardParams) GetMobile() string {
+  return p.Mobile
 }
 func (p *TTradeAwardParams) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -2018,6 +2096,16 @@ func (p *TTradeAwardParams) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 10:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField10(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -2114,6 +2202,15 @@ func (p *TTradeAwardParams)  ReadField9(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TTradeAwardParams)  ReadField10(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 10: ", err)
+} else {
+  p.Mobile = v
+}
+  return nil
+}
+
 func (p *TTradeAwardParams) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TTradeAwardParams"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -2127,6 +2224,7 @@ func (p *TTradeAwardParams) Write(oprot thrift.TProtocol) error {
     if err := p.writeField7(oprot); err != nil { return err }
     if err := p.writeField8(oprot); err != nil { return err }
     if err := p.writeField9(oprot); err != nil { return err }
+    if err := p.writeField10(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -2222,6 +2320,16 @@ func (p *TTradeAwardParams) writeField9(oprot thrift.TProtocol) (err error) {
   return thrift.PrependError(fmt.Sprintf("%T.currentDate (9) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 9:currentDate: ", p), err) }
+  return err
+}
+
+func (p *TTradeAwardParams) writeField10(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("mobile", thrift.STRING, 10); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 10:mobile: ", p), err) }
+  if err := oprot.WriteString(string(p.Mobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.mobile (10) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 10:mobile: ", p), err) }
   return err
 }
 
@@ -2563,11 +2671,13 @@ func (p *TTradeAwardDaysCountResult_) String() string {
 //  - Email
 //  - AwardNumber
 //  - Status
+//  - Mobile
 type TTradeAwardDetailListResult_ struct {
   UserId int32 `thrift:"userId,1" db:"userId" json:"userId"`
   Email string `thrift:"email,2" db:"email" json:"email"`
   AwardNumber string `thrift:"awardNumber,3" db:"awardNumber" json:"awardNumber"`
   Status string `thrift:"status,4" db:"status" json:"status"`
+  Mobile string `thrift:"mobile,5" db:"mobile" json:"mobile"`
 }
 
 func NewTTradeAwardDetailListResult_() *TTradeAwardDetailListResult_ {
@@ -2589,6 +2699,10 @@ func (p *TTradeAwardDetailListResult_) GetAwardNumber() string {
 
 func (p *TTradeAwardDetailListResult_) GetStatus() string {
   return p.Status
+}
+
+func (p *TTradeAwardDetailListResult_) GetMobile() string {
+  return p.Mobile
 }
 func (p *TTradeAwardDetailListResult_) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -2636,6 +2750,16 @@ func (p *TTradeAwardDetailListResult_) Read(iprot thrift.TProtocol) error {
     case 4:
       if fieldTypeId == thrift.STRING {
         if err := p.ReadField4(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 5:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField5(iprot); err != nil {
           return err
         }
       } else {
@@ -2694,6 +2818,15 @@ func (p *TTradeAwardDetailListResult_)  ReadField4(iprot thrift.TProtocol) error
   return nil
 }
 
+func (p *TTradeAwardDetailListResult_)  ReadField5(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 5: ", err)
+} else {
+  p.Mobile = v
+}
+  return nil
+}
+
 func (p *TTradeAwardDetailListResult_) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TTradeAwardDetailListResult"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -2702,6 +2835,7 @@ func (p *TTradeAwardDetailListResult_) Write(oprot thrift.TProtocol) error {
     if err := p.writeField2(oprot); err != nil { return err }
     if err := p.writeField3(oprot); err != nil { return err }
     if err := p.writeField4(oprot); err != nil { return err }
+    if err := p.writeField5(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -2747,6 +2881,16 @@ func (p *TTradeAwardDetailListResult_) writeField4(oprot thrift.TProtocol) (err 
   return thrift.PrependError(fmt.Sprintf("%T.status (4) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 4:status: ", p), err) }
+  return err
+}
+
+func (p *TTradeAwardDetailListResult_) writeField5(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("mobile", thrift.STRING, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:mobile: ", p), err) }
+  if err := oprot.WriteString(string(p.Mobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.mobile (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:mobile: ", p), err) }
   return err
 }
 
@@ -2923,9 +3067,13 @@ func (p *TTradeAwardDetailCountResult_) String() string {
 // Attributes:
 //  - Currency
 //  - TotalAmount
+//  - GetDay
+//  - UserId
 type TDividedCurrencyResult_ struct {
   Currency string `thrift:"currency,1" db:"currency" json:"currency"`
   TotalAmount string `thrift:"totalAmount,2" db:"totalAmount" json:"totalAmount"`
+  GetDay string `thrift:"getDay,3" db:"getDay" json:"getDay"`
+  UserId int32 `thrift:"userId,4" db:"userId" json:"userId"`
 }
 
 func NewTDividedCurrencyResult_() *TDividedCurrencyResult_ {
@@ -2939,6 +3087,14 @@ func (p *TDividedCurrencyResult_) GetCurrency() string {
 
 func (p *TDividedCurrencyResult_) GetTotalAmount() string {
   return p.TotalAmount
+}
+
+func (p *TDividedCurrencyResult_) GetGetDay() string {
+  return p.GetDay
+}
+
+func (p *TDividedCurrencyResult_) GetUserId() int32 {
+  return p.UserId
 }
 func (p *TDividedCurrencyResult_) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -2966,6 +3122,26 @@ func (p *TDividedCurrencyResult_) Read(iprot thrift.TProtocol) error {
     case 2:
       if fieldTypeId == thrift.STRING {
         if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 3:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField3(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 4:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField4(iprot); err != nil {
           return err
         }
       } else {
@@ -3006,12 +3182,32 @@ func (p *TDividedCurrencyResult_)  ReadField2(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TDividedCurrencyResult_)  ReadField3(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 3: ", err)
+} else {
+  p.GetDay = v
+}
+  return nil
+}
+
+func (p *TDividedCurrencyResult_)  ReadField4(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.UserId = v
+}
+  return nil
+}
+
 func (p *TDividedCurrencyResult_) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TDividedCurrencyResult"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if p != nil {
     if err := p.writeField1(oprot); err != nil { return err }
     if err := p.writeField2(oprot); err != nil { return err }
+    if err := p.writeField3(oprot); err != nil { return err }
+    if err := p.writeField4(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -3037,6 +3233,26 @@ func (p *TDividedCurrencyResult_) writeField2(oprot thrift.TProtocol) (err error
   return thrift.PrependError(fmt.Sprintf("%T.totalAmount (2) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 2:totalAmount: ", p), err) }
+  return err
+}
+
+func (p *TDividedCurrencyResult_) writeField3(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("getDay", thrift.STRING, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:getDay: ", p), err) }
+  if err := oprot.WriteString(string(p.GetDay)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.getDay (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:getDay: ", p), err) }
+  return err
+}
+
+func (p *TDividedCurrencyResult_) writeField4(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("userId", thrift.I32, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:userId: ", p), err) }
+  if err := oprot.WriteI32(int32(p.UserId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.userId (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:userId: ", p), err) }
   return err
 }
 
@@ -3381,10 +3597,12 @@ func (p *TDividedDaysCountResult_) String() string {
 //  - UserId
 //  - Email
 //  - CurrencyList
+//  - Mobile
 type TDividedDaysDetailListResult_ struct {
   UserId int32 `thrift:"userId,1" db:"userId" json:"userId"`
   Email string `thrift:"email,2" db:"email" json:"email"`
   CurrencyList []*TDividedCurrencyResult_ `thrift:"currencyList,3" db:"currencyList" json:"currencyList"`
+  Mobile string `thrift:"mobile,4" db:"mobile" json:"mobile"`
 }
 
 func NewTDividedDaysDetailListResult_() *TDividedDaysDetailListResult_ {
@@ -3402,6 +3620,10 @@ func (p *TDividedDaysDetailListResult_) GetEmail() string {
 
 func (p *TDividedDaysDetailListResult_) GetCurrencyList() []*TDividedCurrencyResult_ {
   return p.CurrencyList
+}
+
+func (p *TDividedDaysDetailListResult_) GetMobile() string {
+  return p.Mobile
 }
 func (p *TDividedDaysDetailListResult_) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -3439,6 +3661,16 @@ func (p *TDividedDaysDetailListResult_) Read(iprot thrift.TProtocol) error {
     case 3:
       if fieldTypeId == thrift.LIST {
         if err := p.ReadField3(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 4:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField4(iprot); err != nil {
           return err
         }
       } else {
@@ -3499,6 +3731,15 @@ func (p *TDividedDaysDetailListResult_)  ReadField3(iprot thrift.TProtocol) erro
   return nil
 }
 
+func (p *TDividedDaysDetailListResult_)  ReadField4(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.Mobile = v
+}
+  return nil
+}
+
 func (p *TDividedDaysDetailListResult_) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TDividedDaysDetailListResult"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -3506,6 +3747,7 @@ func (p *TDividedDaysDetailListResult_) Write(oprot thrift.TProtocol) error {
     if err := p.writeField1(oprot); err != nil { return err }
     if err := p.writeField2(oprot); err != nil { return err }
     if err := p.writeField3(oprot); err != nil { return err }
+    if err := p.writeField4(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -3550,6 +3792,16 @@ func (p *TDividedDaysDetailListResult_) writeField3(oprot thrift.TProtocol) (err
   }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 3:currencyList: ", p), err) }
+  return err
+}
+
+func (p *TDividedDaysDetailListResult_) writeField4(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("mobile", thrift.STRING, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:mobile: ", p), err) }
+  if err := oprot.WriteString(string(p.Mobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.mobile (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:mobile: ", p), err) }
   return err
 }
 

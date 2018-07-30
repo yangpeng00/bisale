@@ -3512,6 +3512,7 @@ func (p *TUserAttribute) String() string {
 //  - PageSize
 //  - IsTrade
 //  - IsSpecial
+//  - Mobile
 type TUserAttributeParam struct {
   UserId int32 `thrift:"userId,1" db:"userId" json:"userId"`
   Email string `thrift:"email,2" db:"email" json:"email"`
@@ -3519,6 +3520,7 @@ type TUserAttributeParam struct {
   PageSize int32 `thrift:"pageSize,4" db:"pageSize" json:"pageSize"`
   IsTrade string `thrift:"isTrade,5" db:"isTrade" json:"isTrade"`
   IsSpecial int32 `thrift:"isSpecial,6" db:"isSpecial" json:"isSpecial"`
+  Mobile string `thrift:"mobile,7" db:"mobile" json:"mobile"`
 }
 
 func NewTUserAttributeParam() *TUserAttributeParam {
@@ -3548,6 +3550,10 @@ func (p *TUserAttributeParam) GetIsTrade() string {
 
 func (p *TUserAttributeParam) GetIsSpecial() int32 {
   return p.IsSpecial
+}
+
+func (p *TUserAttributeParam) GetMobile() string {
+  return p.Mobile
 }
 func (p *TUserAttributeParam) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -3615,6 +3621,16 @@ func (p *TUserAttributeParam) Read(iprot thrift.TProtocol) error {
     case 6:
       if fieldTypeId == thrift.I32 {
         if err := p.ReadField6(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 7:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField7(iprot); err != nil {
           return err
         }
       } else {
@@ -3691,6 +3707,15 @@ func (p *TUserAttributeParam)  ReadField6(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TUserAttributeParam)  ReadField7(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 7: ", err)
+} else {
+  p.Mobile = v
+}
+  return nil
+}
+
 func (p *TUserAttributeParam) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TUserAttributeParam"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -3701,6 +3726,7 @@ func (p *TUserAttributeParam) Write(oprot thrift.TProtocol) error {
     if err := p.writeField4(oprot); err != nil { return err }
     if err := p.writeField5(oprot); err != nil { return err }
     if err := p.writeField6(oprot); err != nil { return err }
+    if err := p.writeField7(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -3769,6 +3795,16 @@ func (p *TUserAttributeParam) writeField6(oprot thrift.TProtocol) (err error) {
   return err
 }
 
+func (p *TUserAttributeParam) writeField7(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("mobile", thrift.STRING, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:mobile: ", p), err) }
+  if err := oprot.WriteString(string(p.Mobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.mobile (7) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:mobile: ", p), err) }
+  return err
+}
+
 func (p *TUserAttributeParam) String() string {
   if p == nil {
     return "<nil>"
@@ -3783,6 +3819,7 @@ func (p *TUserAttributeParam) String() string {
 //  - Empty
 //  - CreatedAt
 //  - IsSpecial
+//  - Mobile
 type TUserAttributeResult_ struct {
   UserId string `thrift:"userId,1" db:"userId" json:"userId"`
   Email string `thrift:"email,2" db:"email" json:"email"`
@@ -3790,6 +3827,7 @@ type TUserAttributeResult_ struct {
   Empty bool `thrift:"empty,4" db:"empty" json:"empty,omitempty"`
   CreatedAt string `thrift:"createdAt,5" db:"createdAt" json:"createdAt"`
   IsSpecial int32 `thrift:"isSpecial,6" db:"isSpecial" json:"isSpecial"`
+  Mobile string `thrift:"mobile,7" db:"mobile" json:"mobile"`
 }
 
 func NewTUserAttributeResult_() *TUserAttributeResult_ {
@@ -3820,6 +3858,10 @@ func (p *TUserAttributeResult_) GetCreatedAt() string {
 
 func (p *TUserAttributeResult_) GetIsSpecial() int32 {
   return p.IsSpecial
+}
+
+func (p *TUserAttributeResult_) GetMobile() string {
+  return p.Mobile
 }
 func (p *TUserAttributeResult_) IsSetEmpty() bool {
   return p.Empty != TUserAttributeResult__Empty_DEFAULT
@@ -3898,6 +3940,16 @@ func (p *TUserAttributeResult_) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 7:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField7(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -3967,6 +4019,15 @@ func (p *TUserAttributeResult_)  ReadField6(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TUserAttributeResult_)  ReadField7(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 7: ", err)
+} else {
+  p.Mobile = v
+}
+  return nil
+}
+
 func (p *TUserAttributeResult_) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TUserAttributeResult"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -3977,6 +4038,7 @@ func (p *TUserAttributeResult_) Write(oprot thrift.TProtocol) error {
     if err := p.writeField4(oprot); err != nil { return err }
     if err := p.writeField5(oprot); err != nil { return err }
     if err := p.writeField6(oprot); err != nil { return err }
+    if err := p.writeField7(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -4044,6 +4106,16 @@ func (p *TUserAttributeResult_) writeField6(oprot thrift.TProtocol) (err error) 
   return thrift.PrependError(fmt.Sprintf("%T.isSpecial (6) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 6:isSpecial: ", p), err) }
+  return err
+}
+
+func (p *TUserAttributeResult_) writeField7(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("mobile", thrift.STRING, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:mobile: ", p), err) }
+  if err := oprot.WriteString(string(p.Mobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.mobile (7) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:mobile: ", p), err) }
   return err
 }
 

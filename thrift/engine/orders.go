@@ -776,6 +776,7 @@ func (p *TOrders) String() string {
 //  - StartPage
 //  - PageSize
 //  - TraceId
+//  - Mobile
 type TOrdersParams struct {
   UserId int32 `thrift:"userId,1" db:"userId" json:"userId"`
   Email string `thrift:"email,2" db:"email" json:"email"`
@@ -788,6 +789,7 @@ type TOrdersParams struct {
   StartPage int32 `thrift:"startPage,9" db:"startPage" json:"startPage"`
   PageSize int32 `thrift:"pageSize,10" db:"pageSize" json:"pageSize"`
   TraceId string `thrift:"traceId,11" db:"traceId" json:"traceId"`
+  Mobile string `thrift:"mobile,12" db:"mobile" json:"mobile"`
 }
 
 func NewTOrdersParams() *TOrdersParams {
@@ -837,6 +839,10 @@ func (p *TOrdersParams) GetPageSize() int32 {
 
 func (p *TOrdersParams) GetTraceId() string {
   return p.TraceId
+}
+
+func (p *TOrdersParams) GetMobile() string {
+  return p.Mobile
 }
 func (p *TOrdersParams) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -961,6 +967,16 @@ func (p *TOrdersParams) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 12:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField12(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -1075,6 +1091,15 @@ func (p *TOrdersParams)  ReadField11(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TOrdersParams)  ReadField12(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 12: ", err)
+} else {
+  p.Mobile = v
+}
+  return nil
+}
+
 func (p *TOrdersParams) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TOrdersParams"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1090,6 +1115,7 @@ func (p *TOrdersParams) Write(oprot thrift.TProtocol) error {
     if err := p.writeField9(oprot); err != nil { return err }
     if err := p.writeField10(oprot); err != nil { return err }
     if err := p.writeField11(oprot); err != nil { return err }
+    if err := p.writeField12(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -1208,6 +1234,16 @@ func (p *TOrdersParams) writeField11(oprot thrift.TProtocol) (err error) {
   return err
 }
 
+func (p *TOrdersParams) writeField12(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("mobile", thrift.STRING, 12); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 12:mobile: ", p), err) }
+  if err := oprot.WriteString(string(p.Mobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.mobile (12) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 12:mobile: ", p), err) }
+  return err
+}
+
 func (p *TOrdersParams) String() string {
   if p == nil {
     return "<nil>"
@@ -1231,6 +1267,7 @@ func (p *TOrdersParams) String() string {
 //  - Empty
 //  - OrderType
 //  - Account
+//  - Mobile
 type TOrdersResults struct {
   OrderId string `thrift:"orderId,1" db:"orderId" json:"orderId"`
   Created string `thrift:"created,2" db:"created" json:"created"`
@@ -1247,6 +1284,7 @@ type TOrdersResults struct {
   Empty bool `thrift:"empty,13" db:"empty" json:"empty,omitempty"`
   OrderType string `thrift:"orderType,14" db:"orderType" json:"orderType"`
   Account string `thrift:"account,15" db:"account" json:"account"`
+  Mobile string `thrift:"mobile,16" db:"mobile" json:"mobile"`
 }
 
 func NewTOrdersResults() *TOrdersResults {
@@ -1313,6 +1351,10 @@ func (p *TOrdersResults) GetOrderType() string {
 
 func (p *TOrdersResults) GetAccount() string {
   return p.Account
+}
+
+func (p *TOrdersResults) GetMobile() string {
+  return p.Mobile
 }
 func (p *TOrdersResults) IsSetEmpty() bool {
   return p.Empty != TOrdersResults_Empty_DEFAULT
@@ -1481,6 +1523,16 @@ func (p *TOrdersResults) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 16:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField16(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -1631,6 +1683,15 @@ func (p *TOrdersResults)  ReadField15(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *TOrdersResults)  ReadField16(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 16: ", err)
+} else {
+  p.Mobile = v
+}
+  return nil
+}
+
 func (p *TOrdersResults) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TOrdersResults"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -1650,6 +1711,7 @@ func (p *TOrdersResults) Write(oprot thrift.TProtocol) error {
     if err := p.writeField13(oprot); err != nil { return err }
     if err := p.writeField14(oprot); err != nil { return err }
     if err := p.writeField15(oprot); err != nil { return err }
+    if err := p.writeField16(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -1807,6 +1869,16 @@ func (p *TOrdersResults) writeField15(oprot thrift.TProtocol) (err error) {
   return thrift.PrependError(fmt.Sprintf("%T.account (15) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 15:account: ", p), err) }
+  return err
+}
+
+func (p *TOrdersResults) writeField16(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("mobile", thrift.STRING, 16); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 16:mobile: ", p), err) }
+  if err := oprot.WriteString(string(p.Mobile)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.mobile (16) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 16:mobile: ", p), err) }
   return err
 }
 
