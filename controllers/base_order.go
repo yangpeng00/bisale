@@ -15,6 +15,7 @@ type OrderRequest struct {
 	Size int32 `query:"size"`
 	UserId int32 `query:"userId"`
 	Email string `query:"email"`
+	Mobile string `query:"mobile"`
 	Symbol string `query:"symbol"`
 	Status string `query:"status"`
 	Type int32 `query:"type"`
@@ -27,6 +28,7 @@ type ExchangeRequest struct {
 	Size int32 `query:"size"`
 	UserId int32 `query:"userId"`
 	Email string `query:"email"`
+	Mobile string `query:"mobile"`
 	Side string `query:"side"`
 	Status string `query:"status"`
 	Symbol string `query:"symbol"`
@@ -63,6 +65,7 @@ func GetDepositOrder(c echo.Context) error {
 	params.StartPage = request.Page
 	params.UserId = request.UserId
 	params.Email = request.Email
+	params.Mobile = request.Mobile
 	params.Currency = request.Symbol
 	params.Status = request.Status
 	params.StartTime = request.StartTime
@@ -122,6 +125,7 @@ func GetWithdrawOrder(c echo.Context) error {
 	params.StartPage = request.Page
 	params.UserId = request.UserId
 	params.Email = request.Email
+	params.Mobile = request.Mobile
 	params.Currency = request.Symbol
 	params.Status = request.Status
 	params.StartTime = request.StartTime
@@ -182,6 +186,7 @@ func GetExchangeOrder(c echo.Context) error {
 	params.Symbol = request.Symbol
 	params.Side = request.Side
 	params.Email = request.Email
+	params.Mobile = request.Mobile
 
 	list, err := orderService.SelectEngineOrdersListByConditions(context.Background(), params)
 	if err != nil {

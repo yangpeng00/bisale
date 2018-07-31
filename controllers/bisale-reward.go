@@ -17,6 +17,7 @@ type RewardParam struct {
 	StartDate string `query:"startDate" json:"startDate"`
 	EndDate string `query:"endDate" json:"endDate"`
 	UserId int32 `query:"userId" json:"userId"`
+	Mobile string `query:"mobile" json:"mobile"`
 	Email string `query:"email" json:"email"`
 	Page int32 `query:"page" json:"page"`
 	Size int32 `query:"size" json:"size"`
@@ -27,6 +28,7 @@ type RewardParam struct {
 type UserParams struct {
 	UserId int32 `query:"userId" json:"userId"`
 	Email string `query:"email" json:"email"`
+	Mobile string `query:"mobile" json:"mobile"`
 	IsSpecial int32 `query:"isSpecial" json:"isSpecial"`
 	Page int32 `query:"page" json:"page"`
 	Size int32 `query:"size" json:"size"`
@@ -90,6 +92,7 @@ func GetExchangeDetail(c echo.Context) error {
 	query.StartPage = params.Page
 	query.UserId = params.UserId
 	query.Email = params.Email
+	query.Mobile = params.Mobile
 	query.Sort = params.Sort
 	query.StartDate = params.StartDate
 	query.EndDate = params.EndDate
@@ -128,6 +131,7 @@ func GetExchangeList(c echo.Context) error {
 	query.StartPage = params.Page
 	query.UserId = params.UserId
 	query.Email = params.Email
+	query.Mobile = params.Mobile
 	query.Sort = params.Sort
 	query.StartDate = params.StartDate
 	query.EndDate = params.EndDate
@@ -166,6 +170,7 @@ func GetBonusList(c echo.Context) error {
 	query.StartPage = params.Page
 	query.UserId = params.UserId
 	query.Email = params.Email
+	query.Mobile = params.Mobile
 	query.StartDate = params.StartDate
 	query.EndDate = params.EndDate
 	query.CurrentDate = params.CurrentDate
@@ -205,6 +210,7 @@ func GetBonusDetail(c echo.Context) error {
 	query.StartPage = params.Page
 	query.UserId = params.UserId
 	query.Email = params.Email
+	query.Mobile = params.Mobile
 	query.StartDate = params.StartDate
 	query.EndDate = params.EndDate
 	query.CurrentDate = params.CurrentDate
@@ -247,6 +253,7 @@ func GetUserAttribute(c echo.Context) error {
 	params.IsSpecial = query.IsSpecial
 	params.UserId = query.UserId
 	params.Email = query.Email
+	params.Mobile = query.Mobile
 	params.StartPage = query.Page
 	params.PageSize = query.Size
 
@@ -303,6 +310,7 @@ func PostUserAttribute(c echo.Context) error {
 	params.IsTrade = query.IsTrade
 	params.UserId = query.UserId
 	params.Email = query.Email
+	params.Mobile = query.Mobile
 	params.StartPage = query.Page
 	params.PageSize = query.Size
 
