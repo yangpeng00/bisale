@@ -31,7 +31,10 @@ func GetWithdrawList(c echo.Context) error {
 	withdrawParams := new(finance.TDepositWithdrawParams)
 
 	withdrawParams.TraceId = traceId
-	withdrawParams.UserName = c.QueryParam("keyword")
+	withdrawParams.Mobile = c.QueryParam("mobile")
+	withdrawParams.Email = c.QueryParam("email")
+	userId, _ := strconv.ParseInt(c.QueryParam("userId"), 10, 32)
+	withdrawParams.UserId = int32(userId)
 	withdrawParams.Status = c.QueryParam("status")
 	withdrawParams.StartTime = c.QueryParam("startedAt")
 	withdrawParams.EndTime = c.QueryParam("endedAt")
