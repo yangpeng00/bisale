@@ -42,7 +42,8 @@ storage_service:
 wallet_service:
 #  host: 18.182.55.110
 #  port: 10020
-  host: 192.168.31.23
+#  host: 192.168.31.23
+  host: 52.196.219.81
   port: 8002
 
 oms_service:
