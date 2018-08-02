@@ -33,7 +33,7 @@ var _ = bytes.Equal
 //  - Empty
 type TSystemNotice struct {
   ID int32 `thrift:"id,1" db:"id" json:"id"`
-  Channel int32 `thrift:"channel,2" db:"channel" json:"channel"`
+  Channel string `thrift:"channel,2" db:"channel" json:"channel"`
   Lang string `thrift:"lang,3" db:"lang" json:"lang"`
   Title string `thrift:"title,4" db:"title" json:"title"`
   LinkUrl string `thrift:"linkUrl,5" db:"linkUrl" json:"linkUrl"`
@@ -55,7 +55,7 @@ func (p *TSystemNotice) GetID() int32 {
   return p.ID
 }
 
-func (p *TSystemNotice) GetChannel() int32 {
+func (p *TSystemNotice) GetChannel() string {
   return p.Channel
 }
 
@@ -127,7 +127,7 @@ func (p *TSystemNotice) Read(iprot thrift.TProtocol) error {
         }
       }
     case 2:
-      if fieldTypeId == thrift.I32 {
+      if fieldTypeId == thrift.STRING {
         if err := p.ReadField2(iprot); err != nil {
           return err
         }
@@ -261,7 +261,7 @@ func (p *TSystemNotice)  ReadField1(iprot thrift.TProtocol) error {
 }
 
 func (p *TSystemNotice)  ReadField2(iprot thrift.TProtocol) error {
-  if v, err := iprot.ReadI32(); err != nil {
+  if v, err := iprot.ReadString(); err != nil {
   return thrift.PrependError("error reading field 2: ", err)
 } else {
   p.Channel = v
@@ -394,9 +394,9 @@ func (p *TSystemNotice) writeField1(oprot thrift.TProtocol) (err error) {
 }
 
 func (p *TSystemNotice) writeField2(oprot thrift.TProtocol) (err error) {
-  if err := oprot.WriteFieldBegin("channel", thrift.I32, 2); err != nil {
+  if err := oprot.WriteFieldBegin("channel", thrift.STRING, 2); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:channel: ", p), err) }
-  if err := oprot.WriteI32(int32(p.Channel)); err != nil {
+  if err := oprot.WriteString(string(p.Channel)); err != nil {
   return thrift.PrependError(fmt.Sprintf("%T.channel (2) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 2:channel: ", p), err) }

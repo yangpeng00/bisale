@@ -4,7 +4,7 @@ Dir="./.thrift/thrift-bisale-oss"
 if [ -d $Dir ];
 then
     cd $Dir
-    git checkout feature-mobile-20180727
+    git checkout change_channel
     git pull
     cd ../../
 else

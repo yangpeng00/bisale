@@ -28,7 +28,7 @@ type Banner struct {
 
 type Notice struct {
 	Id int32 `json:"id"`
-	Channel int32 `json:"channel"`
+	Channel string `json:"channel"`
 	Lang string `json:"lang"`
 	Title string `json:"title"`
 	LinkUrl string `json:"linkUrl"`
