@@ -12,7 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"fmt"
 	"bisale/bisale-console-api/thrift/user"
-	"encoding/json"
+	"bisale/bisale-console-api/utils"
 )
 
 func GetCertList(c echo.Context) error {
@@ -34,14 +34,9 @@ func GetCertList(c echo.Context) error {
 	userParams.Email = c.QueryParam("email")
 	userParams.Status = c.QueryParam("status")
 
-	xxx, _ := json.Marshal(userParams)
-	fmt.Println("======")
-	fmt.Println(string(xxx))
-
 	ctx := context.Background()
 
 	res, err := userService.SelectUserKycByConditions(ctx, userParams)
-	log.Info(res)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
@@ -150,7 +145,7 @@ func PostCertResult(c echo.Context) error {
 		}).Info("邀请糖果发送成功")
 		if resp != nil {
 			if resp.Email != "" {
-				err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":"+"\""+resp.Email+"\"}", "zh-CN", 0)
+				err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":" + "\"" + utils.FormatEmail(resp.Email) + "\"}", "zh-CN", 0)
 				if err != nil {
 					log.WithFields(logrus.Fields{
 						"user_id": req.UserId,
@@ -161,7 +156,7 @@ func PostCertResult(c echo.Context) error {
 					}).Info("KYC邮件发送成功")
 				}
 			} else {
-				err := messageService.SendSMS(ctx, traceId, config.Config.KycFailedSMS.AppId, resp.Mobile, config.Config.KycSuccessSMS.TemplateId, "{\"username\":"+"\""+splitByLine(resp.Mobile)+"\"}", "zh-CN", 0)
+				err := messageService.SendSMS(ctx, traceId, config.Config.KycFailedSMS.AppId, resp.Mobile, config.Config.KycSuccessSMS.TemplateId, "{\"username\":" + "\"" + splitByLine(utils.FormatMobile(resp.Mobile)) + "\"}", "zh-CN", 0)
 				if err != nil {
 					log.WithFields(logrus.Fields{
 						"user_id": req.UserId,
