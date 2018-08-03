@@ -14,6 +14,7 @@ import (
 	"bisale/bisale-console-api/thrift/user"
 	"time"
 	"encoding/json"
+	"bisale/bisale-console-api/utils"
 )
 
 func GetCertList(c echo.Context) error {
@@ -164,8 +165,13 @@ func PostCertResult(c echo.Context) error {
 				} else {
 					data["amount"] = "100"
 				}
-				payload, _ := json.Marshal(data)
+				if resp.Email == "" {
+					data["inviter"] = utils.FormatMobile(resp.Mobile)
+				} else {
+					data["inviter"] = utils.FormatEmail(resp.Email)
+				}
 				data["symbol"] = "BSE"
+				payload, _ := json.Marshal(data)
 				if strings.Contains(inviter.Username, "@") {
 					err := messageService.SendMail(ctx, traceId, config.Config.InviteCandySuccessMail.AppId, inviter.Username, config.Config.InviteCandySuccessMail.TemplateId, string(payload), "zh-CN", 0)
 					if err != nil {
