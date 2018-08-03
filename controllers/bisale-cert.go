@@ -156,42 +156,44 @@ func PostCertResult(c echo.Context) error {
 			if err != nil {
 				log.Error(fmt.Printf("获取邀请人列表失败，用户ID: %d", req.UserId))
 			}
-			for _, inviter := range inviterList {
-				data := make(map[string]string)
-				data["username"] = inviter.Username
-				if inviter.Level == 1 {
-					data["amount"] = "200"
-				} else {
-					data["amount"] = "100"
-				}
-				if resp.Email == "" {
-					data["inviter"] = utils.FormatMobile(resp.Mobile)
-				} else {
-					data["inviter"] = utils.FormatEmail(resp.Email)
-				}
-				data["symbol"] = "BSE"
-				payload, _ := json.Marshal(data)
-				if strings.Contains(inviter.Username, "@") {
-					err := messageService.SendMail(ctx, traceId, config.Config.InviteCandySuccessMail.AppId, inviter.Username, config.Config.InviteCandySuccessMail.TemplateId, string(payload), "zh-CN", 0)
-					if err != nil {
-						log.WithFields(logrus.Fields{
-							"username": inviter.Username,
-						}).Error("奖励邮件发送失败", err)
+			if (params.StartTime < utils.GetCurrentTimestamp()) && (params.EndTime > utils.GetCurrentTimestamp()) {
+				for _, inviter := range inviterList {
+					data := make(map[string]string)
+					data["username"] = inviter.Username
+					if inviter.Level == 1 {
+						data["amount"] = "200"
 					} else {
-						log.WithFields(logrus.Fields{
-							"username": inviter.Username,
-						}).Info("奖励邮件发送成功")
+						data["amount"] = "100"
 					}
-				} else {
-					err := messageService.SendSMS(ctx, traceId, config.Config.InviteCandySuccessSMS.AppId,inviter.PrefixMobile + inviter.Username, config.Config.InviteCandySuccessSMS.TemplateId, string(payload), "zh-CN", 0)
-					if err != nil {
-						log.WithFields(logrus.Fields{
-							"username": inviter.Username,
-						}).Error("奖励短信发送失败", err)
+					if resp.Email == "" {
+						data["inviter"] = utils.FormatMobile(resp.Mobile)
 					} else {
-						log.WithFields(logrus.Fields{
-							"username": inviter.Username,
-						}).Info("奖励短信发送成功")
+						data["inviter"] = utils.FormatEmail(resp.Email)
+					}
+					data["symbol"] = "BSE"
+					payload, _ := json.Marshal(data)
+					if strings.Contains(inviter.Username, "@") {
+						err := messageService.SendMail(ctx, traceId, config.Config.InviteCandySuccessMail.AppId, inviter.Username, config.Config.InviteCandySuccessMail.TemplateId, string(payload), "zh-CN", 0)
+						if err != nil {
+							log.WithFields(logrus.Fields{
+								"username": inviter.Username,
+							}).Error("奖励邮件发送失败", err)
+						} else {
+							log.WithFields(logrus.Fields{
+								"username": inviter.Username,
+							}).Info("奖励邮件发送成功")
+						}
+					} else {
+						err := messageService.SendSMS(ctx, traceId, config.Config.InviteCandySuccessSMS.AppId,inviter.PrefixMobile + inviter.Username, config.Config.InviteCandySuccessSMS.TemplateId, string(payload), "zh-CN", 0)
+						if err != nil {
+							log.WithFields(logrus.Fields{
+								"username": inviter.Username,
+							}).Error("奖励短信发送失败", err)
+						} else {
+							log.WithFields(logrus.Fields{
+								"username": inviter.Username,
+							}).Info("奖励短信发送成功")
+						}
 					}
 				}
 			}
