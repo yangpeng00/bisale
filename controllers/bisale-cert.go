@@ -166,9 +166,9 @@ func PostCertResult(c echo.Context) error {
 						data["amount"] = "100"
 					}
 					if resp.Email == "" {
-						data["inviter"] = utils.FormatMobile(resp.Mobile)
+						data["invitee"] = utils.FormatMobile(resp.Mobile)
 					} else {
-						data["inviter"] = utils.FormatEmail(resp.Email)
+						data["invitee"] = utils.FormatEmail(resp.Email)
 					}
 					data["symbol"] = "BSE"
 					payload, _ := json.Marshal(data)
