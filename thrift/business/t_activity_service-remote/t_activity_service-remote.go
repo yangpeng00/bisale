@@ -14,7 +14,7 @@ import (
         "strconv"
         "strings"
         "git.apache.org/thrift.git/lib/go/thrift"
-        "bisale/bisale-console-api/thrift/business"
+        "bisale/bisale-console-api/thrift/reformationgh"
 )
 
 
@@ -113,7 +113,7 @@ func main() {
   }
   iprot := protocolFactory.GetProtocol(trans)
   oprot := protocolFactory.GetProtocol(trans)
-  client := business.NewTActivityServiceClient(thrift.NewTStandardClient(iprot, oprot))
+  client := reformationgh.NewTActivityServiceClient(thrift.NewTStandardClient(iprot, oprot))
   if err := trans.Open(); err != nil {
     fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
     os.Exit(1)

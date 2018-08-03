@@ -14,7 +14,7 @@ import (
         "strconv"
         "strings"
         "git.apache.org/thrift.git/lib/go/thrift"
-        "business"
+        "bisale/bisale-console-api/thrift/reformationgh"
 )
 
 
@@ -27,6 +27,14 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "   SelectInviteeListByUserId(string traceId, i32 userId)")
   fmt.Fprintln(os.Stderr, "  void EnableParticipant(string traceId, i32 userId)")
   fmt.Fprintln(os.Stderr, "  TUsername selectRealNameByUsername(string traceId, string username)")
+  fmt.Fprintln(os.Stderr, "   selectInviteRecordByUserId(string traceId, i32 userId, i32 page, i32 pageSize)")
+  fmt.Fprintln(os.Stderr, "  InviteNum selectInviteNumByUserId(string traceId, i32 userId)")
+  fmt.Fprintln(os.Stderr, "   selectRewardRecordByUserId(string traceId, i32 userId, i32 page, i32 pageSize)")
+  fmt.Fprintln(os.Stderr, "   selectRewardAmountByUserId(string traceId, i32 userId)")
+  fmt.Fprintln(os.Stderr, "  i32 selectTotalRewardRecords(string traceId, i32 userId)")
+  fmt.Fprintln(os.Stderr, "  i32 selectTotalInviteRecords(string traceId, i32 userId)")
+  fmt.Fprintln(os.Stderr, "   selectInviters(string traceId, i32 invitee_id)")
+  fmt.Fprintln(os.Stderr, "  TCandyParameter getCandyParameter(string traceId)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -117,7 +125,7 @@ func main() {
   }
   iprot := protocolFactory.GetProtocol(trans)
   oprot := protocolFactory.GetProtocol(trans)
-  client := business.NewTReformationActivityServiceClient(thrift.NewTStandardClient(iprot, oprot))
+  client := reformationgh.NewTReformationActivityServiceClient(thrift.NewTStandardClient(iprot, oprot))
   if err := trans.Open(); err != nil {
     fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
     os.Exit(1)
@@ -131,19 +139,19 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    arg15 := flag.Arg(2)
-    mbTrans16 := thrift.NewTMemoryBufferLen(len(arg15))
-    defer mbTrans16.Close()
-    _, err17 := mbTrans16.WriteString(arg15)
-    if err17 != nil {
+    arg35 := flag.Arg(2)
+    mbTrans36 := thrift.NewTMemoryBufferLen(len(arg35))
+    defer mbTrans36.Close()
+    _, err37 := mbTrans36.WriteString(arg35)
+    if err37 != nil {
       Usage()
       return
     }
-    factory18 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt19 := factory18.GetProtocol(mbTrans16)
-    argvalue1 := business.NewTParticipantRelation()
-    err20 := argvalue1.Read(jsProt19)
-    if err20 != nil {
+    factory38 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt39 := factory38.GetProtocol(mbTrans36)
+    argvalue1 := reformationgh.NewTParticipantRelation()
+    err40 := argvalue1.Read(jsProt39)
+    if err40 != nil {
       Usage()
       return
     }
@@ -168,8 +176,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err23 := (strconv.Atoi(flag.Arg(2)))
-    if err23 != nil {
+    tmp1, err43 := (strconv.Atoi(flag.Arg(2)))
+    if err43 != nil {
       Usage()
       return
     }
@@ -185,8 +193,8 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    tmp1, err25 := (strconv.Atoi(flag.Arg(2)))
-    if err25 != nil {
+    tmp1, err45 := (strconv.Atoi(flag.Arg(2)))
+    if err45 != nil {
       Usage()
       return
     }
@@ -205,6 +213,163 @@ func main() {
     argvalue1 := flag.Arg(2)
     value1 := argvalue1
     fmt.Print(client.SelectRealNameByUsername(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "selectInviteRecordByUserId":
+    if flag.NArg() - 1 != 4 {
+      fmt.Fprintln(os.Stderr, "SelectInviteRecordByUserId requires 4 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err49 := (strconv.Atoi(flag.Arg(2)))
+    if err49 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    tmp2, err50 := (strconv.Atoi(flag.Arg(3)))
+    if err50 != nil {
+      Usage()
+      return
+    }
+    argvalue2 := int32(tmp2)
+    value2 := argvalue2
+    tmp3, err51 := (strconv.Atoi(flag.Arg(4)))
+    if err51 != nil {
+      Usage()
+      return
+    }
+    argvalue3 := int32(tmp3)
+    value3 := argvalue3
+    fmt.Print(client.SelectInviteRecordByUserId(context.Background(), value0, value1, value2, value3))
+    fmt.Print("\n")
+    break
+  case "selectInviteNumByUserId":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectInviteNumByUserId requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err53 := (strconv.Atoi(flag.Arg(2)))
+    if err53 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.SelectInviteNumByUserId(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "selectRewardRecordByUserId":
+    if flag.NArg() - 1 != 4 {
+      fmt.Fprintln(os.Stderr, "SelectRewardRecordByUserId requires 4 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err55 := (strconv.Atoi(flag.Arg(2)))
+    if err55 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    tmp2, err56 := (strconv.Atoi(flag.Arg(3)))
+    if err56 != nil {
+      Usage()
+      return
+    }
+    argvalue2 := int32(tmp2)
+    value2 := argvalue2
+    tmp3, err57 := (strconv.Atoi(flag.Arg(4)))
+    if err57 != nil {
+      Usage()
+      return
+    }
+    argvalue3 := int32(tmp3)
+    value3 := argvalue3
+    fmt.Print(client.SelectRewardRecordByUserId(context.Background(), value0, value1, value2, value3))
+    fmt.Print("\n")
+    break
+  case "selectRewardAmountByUserId":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectRewardAmountByUserId requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err59 := (strconv.Atoi(flag.Arg(2)))
+    if err59 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.SelectRewardAmountByUserId(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "selectTotalRewardRecords":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectTotalRewardRecords requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err61 := (strconv.Atoi(flag.Arg(2)))
+    if err61 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.SelectTotalRewardRecords(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "selectTotalInviteRecords":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectTotalInviteRecords requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err63 := (strconv.Atoi(flag.Arg(2)))
+    if err63 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.SelectTotalInviteRecords(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "selectInviters":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectInviters requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    tmp1, err65 := (strconv.Atoi(flag.Arg(2)))
+    if err65 != nil {
+      Usage()
+      return
+    }
+    argvalue1 := int32(tmp1)
+    value1 := argvalue1
+    fmt.Print(client.SelectInviters(context.Background(), value0, value1))
+    fmt.Print("\n")
+    break
+  case "getCandyParameter":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "GetCandyParameter requires 1 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    fmt.Print(client.GetCandyParameter(context.Background(), value0))
     fmt.Print("\n")
     break
   case "":

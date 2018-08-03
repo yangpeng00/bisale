@@ -9,11 +9,10 @@ then
 else
     git clone git@git.bisale.org:backend/thrift-business.git $Dir
     cd $Dir
-    git checkout dev
+    git checkout invitation_trade_dev
 fi
 
 cd ../../
 thrift -out ./thrift -r --gen go:package_prefix=bisale/bisale-console-api/thrift/ $Dir/thrift/reformationActivity.thrift
-thrift -out ./thrift -r --gen go:package_prefix=bisale/bisale-console-api/thrift/ $Dir/thrift/
 
 sed -i '' 's/oprot.Flush()/oprot.Flush(ctx)/g' ./thrift/**/*.go

@@ -101,6 +101,30 @@ var Config = struct {
 		TemplateId string `yaml:"template_id" default:"template::sms::kyc-failed"`
 		DataFormat string
 	} `yaml:"kyc_failed_sms"`
+
+	KycCandySuccessMail struct{
+		AppId      string `yaml:"app_id" default:"bisale-transfer"`
+		TemplateId string `yaml:"template_id" default:"template::mail::kyc-candy-success"`
+		DataFormat string
+	} `yaml:"kyc_candy_success_sms"`
+
+	KycCandySuccessSMS struct{
+		AppId      string `yaml:"app_id" default:"bisale-transfer"`
+		TemplateId string `yaml:"template_id" default:"template::sms::kyc-candy-success"`
+		DataFormat string
+	} `yaml:"kyc_candy_failed_sms"`
+
+	InviteCandySuccessMail struct{
+		AppId      string `yaml:"app_id" default:"bisale-transfer"`
+		TemplateId string `yaml:"template_id" default:"template::mail::invite-candy-success"`
+		DataFormat string
+	} `yaml:"invite_candy_success_sms"`
+
+	InviteCandySuccessSMS struct{
+		AppId      string `yaml:"app_id" default:"bisale-transfer"`
+		TemplateId string `yaml:"template_id" default:"template::sms::invite-candy-success"`
+		DataFormat string
+	} `yaml:"invite_candy_success_sms"`
 }{}
 
 func init() {
