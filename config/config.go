@@ -118,7 +118,7 @@ var Config = struct {
 		AppId      string `yaml:"app_id" default:"bisale-transfer"`
 		TemplateId string `yaml:"template_id" default:"template::mail::invite-candy-success"`
 		DataFormat string
-	} `yaml:"invite_candy_success_sms"`
+	} `yaml:"invite_candy_success_mail"`
 
 	InviteCandySuccessSMS struct{
 		AppId      string `yaml:"app_id" default:"bisale-transfer"`

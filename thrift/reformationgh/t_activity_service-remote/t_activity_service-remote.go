@@ -14,7 +14,7 @@ import (
         "strconv"
         "strings"
         "git.apache.org/thrift.git/lib/go/thrift"
-        "bisale/bisale-console-api/thrift/reformation"
+        "reformationgh"
 )
 
 
@@ -22,11 +22,7 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "Usage of ", os.Args[0], " [-h host:port] [-u url] [-f[ramed]] function [arg1 [arg2...]]:")
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
-  fmt.Fprintln(os.Stderr, "  void InsertRelation(string traceId, TParticipantRelation participantRelation)")
-  fmt.Fprintln(os.Stderr, "   SelectTop10Account(string traceId)")
-  fmt.Fprintln(os.Stderr, "   SelectInviteeListByUserId(string traceId, i32 userId)")
-  fmt.Fprintln(os.Stderr, "  void EnableParticipant(string traceId, i32 userId)")
-  fmt.Fprintln(os.Stderr, "  TUsername selectRealNameByUsername(string traceId, string username)")
+  fmt.Fprintln(os.Stderr, "  TCandyParameter getCandyParameter(string traceId)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -117,94 +113,21 @@ func main() {
   }
   iprot := protocolFactory.GetProtocol(trans)
   oprot := protocolFactory.GetProtocol(trans)
-  client := reformation.NewTReformationActivityServiceClient(thrift.NewTStandardClient(iprot, oprot))
+  client := reformationgh.NewTActivityServiceClient(thrift.NewTStandardClient(iprot, oprot))
   if err := trans.Open(); err != nil {
     fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
     os.Exit(1)
   }
   
   switch cmd {
-  case "InsertRelation":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "InsertRelation requires 2 args")
-      flag.Usage()
-    }
-    argvalue0 := flag.Arg(1)
-    value0 := argvalue0
-    arg15 := flag.Arg(2)
-    mbTrans16 := thrift.NewTMemoryBufferLen(len(arg15))
-    defer mbTrans16.Close()
-    _, err17 := mbTrans16.WriteString(arg15)
-    if err17 != nil {
-      Usage()
-      return
-    }
-    factory18 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt19 := factory18.GetProtocol(mbTrans16)
-    argvalue1 := reformation.NewTParticipantRelation()
-    err20 := argvalue1.Read(jsProt19)
-    if err20 != nil {
-      Usage()
-      return
-    }
-    value1 := argvalue1
-    fmt.Print(client.InsertRelation(context.Background(), value0, value1))
-    fmt.Print("\n")
-    break
-  case "SelectTop10Account":
+  case "getCandyParameter":
     if flag.NArg() - 1 != 1 {
-      fmt.Fprintln(os.Stderr, "SelectTop10Account requires 1 args")
+      fmt.Fprintln(os.Stderr, "GetCandyParameter requires 1 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    fmt.Print(client.SelectTop10Account(context.Background(), value0))
-    fmt.Print("\n")
-    break
-  case "SelectInviteeListByUserId":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "SelectInviteeListByUserId requires 2 args")
-      flag.Usage()
-    }
-    argvalue0 := flag.Arg(1)
-    value0 := argvalue0
-    tmp1, err23 := (strconv.Atoi(flag.Arg(2)))
-    if err23 != nil {
-      Usage()
-      return
-    }
-    argvalue1 := int32(tmp1)
-    value1 := argvalue1
-    fmt.Print(client.SelectInviteeListByUserId(context.Background(), value0, value1))
-    fmt.Print("\n")
-    break
-  case "EnableParticipant":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "EnableParticipant requires 2 args")
-      flag.Usage()
-    }
-    argvalue0 := flag.Arg(1)
-    value0 := argvalue0
-    tmp1, err25 := (strconv.Atoi(flag.Arg(2)))
-    if err25 != nil {
-      Usage()
-      return
-    }
-    argvalue1 := int32(tmp1)
-    value1 := argvalue1
-    fmt.Print(client.EnableParticipant(context.Background(), value0, value1))
-    fmt.Print("\n")
-    break
-  case "selectRealNameByUsername":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "SelectRealNameByUsername requires 2 args")
-      flag.Usage()
-    }
-    argvalue0 := flag.Arg(1)
-    value0 := argvalue0
-    argvalue1 := flag.Arg(2)
-    value1 := argvalue1
-    fmt.Print(client.SelectRealNameByUsername(context.Background(), value0, value1))
+    fmt.Print(client.GetCandyParameter(context.Background(), value0))
     fmt.Print("\n")
     break
   case "":

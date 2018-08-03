@@ -14,7 +14,7 @@ import (
         "strconv"
         "strings"
         "git.apache.org/thrift.git/lib/go/thrift"
-        "bisale/bisale-console-api/thrift/reformationgh"
+        "business"
 )
 
 
@@ -125,7 +125,7 @@ func main() {
   }
   iprot := protocolFactory.GetProtocol(trans)
   oprot := protocolFactory.GetProtocol(trans)
-  client := reformationgh.NewTReformationActivityServiceClient(thrift.NewTStandardClient(iprot, oprot))
+  client := business.NewTReformationActivityServiceClient(thrift.NewTStandardClient(iprot, oprot))
   if err := trans.Open(); err != nil {
     fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
     os.Exit(1)
@@ -149,7 +149,7 @@ func main() {
     }
     factory38 := thrift.NewTSimpleJSONProtocolFactory()
     jsProt39 := factory38.GetProtocol(mbTrans36)
-    argvalue1 := reformationgh.NewTParticipantRelation()
+    argvalue1 := business.NewTParticipantRelation()
     err40 := argvalue1.Read(jsProt39)
     if err40 != nil {
       Usage()
