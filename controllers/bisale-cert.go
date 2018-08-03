@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"bisale/bisale-console-api/thrift/user"
 	"time"
+	"encoding/json"
 )
 
 func GetCertList(c echo.Context) error {
@@ -156,8 +157,17 @@ func PostCertResult(c echo.Context) error {
 				log.Error(fmt.Printf("获取邀请人列表失败，用户ID: %d", req.UserId))
 			}
 			for _, inviter := range inviterList {
+				data := make(map[string]string)
+				data["username"] = inviter.Username
+				if inviter.Level == 1 {
+					data["amount"] = "200"
+				} else {
+					data["amount"] = "100"
+				}
+				payload, _ := json.Marshal(data)
+				data["symbol"] = "BSE"
 				if strings.Contains(inviter.Username, "@") {
-					err := messageService.SendMail(ctx, traceId, config.Config.InviteCandySuccessMail.AppId, inviter.Username, config.Config.InviteCandySuccessMail.TemplateId, "{\"username\":" + "\"" + inviter.Username + "\"}", "zh-CN", 0)
+					err := messageService.SendMail(ctx, traceId, config.Config.InviteCandySuccessMail.AppId, inviter.Username, config.Config.InviteCandySuccessMail.TemplateId, string(payload), "zh-CN", 0)
 					if err != nil {
 						log.WithFields(logrus.Fields{
 							"username": inviter.Username,
@@ -168,7 +178,7 @@ func PostCertResult(c echo.Context) error {
 						}).Info("奖励邮件发送成功")
 					}
 				} else {
-					err := messageService.SendSMS(ctx, traceId, config.Config.InviteCandySuccessSMS.AppId,inviter.PrefixMobile + inviter.Username, config.Config.InviteCandySuccessSMS.TemplateId, "{\"username\":" + "\"" + inviter.Username + "\"}", "zh-CN", 0)
+					err := messageService.SendSMS(ctx, traceId, config.Config.InviteCandySuccessSMS.AppId,inviter.PrefixMobile + inviter.Username, config.Config.InviteCandySuccessSMS.TemplateId, string(payload), "zh-CN", 0)
 					if err != nil {
 						log.WithFields(logrus.Fields{
 							"username": inviter.Username,
@@ -183,7 +193,13 @@ func PostCertResult(c echo.Context) error {
 
 			if resp.Email != "" {
 				if (params.StartTime < time.Now().Unix()) && (params.EndTime > time.Now().Unix()) {
-					err := messageService.SendMail(ctx, traceId, config.Config.KycCandySuccessMail.AppId, resp.Email, config.Config.KycCandySuccessMail.TemplateId, "{\"username\":" + "\"" + resp.Email + "\"}", "zh-CN", 0)
+					data := make(map[string]string)
+					data["username"] = resp.Email
+					data["amount"] = "300"
+					data["symbol"] = "BSE"
+					payload, _ := json.Marshal(data)
+					err := messageService.SendMail(ctx, traceId, config.Config.KycCandySuccessMail.AppId, resp.Email, config.Config.KycCandySuccessMail.TemplateId, string(payload), "zh-CN", 0)
+
 					if err != nil {
 						log.WithFields(logrus.Fields{
 							"user_id": req.UserId,
@@ -194,7 +210,7 @@ func PostCertResult(c echo.Context) error {
 						}).Info("奖励邮件发送成功")
 					}
 				} else {
-					err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":" + "\"" + resp.Email + "\"}", "zh-CN", 0)
+					err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":\"" + resp.Email + "\"}", "zh-CN", 0)
 					if err != nil {
 						log.WithFields(logrus.Fields{
 							"user_id": req.UserId,
@@ -207,7 +223,12 @@ func PostCertResult(c echo.Context) error {
 				}
 			} else {
 				if (params.StartTime < time.Now().Unix()) && (params.EndTime > time.Now().Unix()) {
-					err := messageService.SendSMS(ctx, traceId, config.Config.KycCandySuccessSMS.AppId, resp.Mobile, config.Config.KycCandySuccessSMS.TemplateId, "{\"username\":" + "\"" + splitByLine(resp.Mobile) + "\"}", "zh-CN", 0)
+					data := make(map[string]string)
+					data["username"] = splitByLine(resp.Mobile)
+					data["amount"] = "300"
+					data["symbol"] = "BSE"
+					payload, _ := json.Marshal(data)
+					err := messageService.SendSMS(ctx, traceId, config.Config.KycCandySuccessSMS.AppId, resp.Mobile, config.Config.KycCandySuccessSMS.TemplateId, string(payload), "zh-CN", 0)
 					if err != nil {
 						log.WithFields(logrus.Fields{
 							"user_id": req.UserId,
