@@ -21,6 +21,12 @@ var BisaleUserKycServicePool *thriftPool.ThriftPool
 var BisaleOrderServicePool *thriftPool.ThriftPool
 var BisaleSystemServicePool *thriftPool.ThriftPool
 var BisaleWithdrawServicePool *thriftPool.ThriftPool
+var BisaleAppVersionServicePool *thriftPool.ThriftPool
+var BisaleBalanceAccountServicePool *thriftPool.ThriftPool
+var BisaleTransferRequestServicePool *thriftPool.ThriftPool
+var BisaleAccountTransferServicePool *thriftPool.ThriftPool
+var BisaleTradeDetailServicePool *thriftPool.ThriftPool
+var BisaleAccountStatementPool *thriftPool.ThriftPool
 var BisaleBusinessServicePool *thriftPool.ThriftPool
 var BisaleUserServicePool *thriftPool.ThriftPool
 var WalletServicePool *thriftPool.ThriftPool
@@ -146,6 +152,66 @@ func init() {
 		config.Config.BisaleOmsService.IdleTimeout,
 		openBisaleSystemServiceClient,
 		closeBisaleSystemServiceClient,
+	)
+
+	BisaleAppVersionServicePool = thriftPool.NewThriftPool(
+		config.Config.BisaleOmsService.Host,
+		config.Config.BisaleOmsService.Port,
+		config.Config.BisaleOmsService.MaxConn,
+		config.Config.BisaleOmsService.ConnTimeout,
+		config.Config.BisaleOmsService.IdleTimeout,
+		openBisaleAppVersionServiceClient,
+		closeBisaleAppVersionServiceClient,
+	)
+
+	BisaleBalanceAccountServicePool = thriftPool.NewThriftPool(
+		config.Config.BisaleOmsService.Host,
+		config.Config.BisaleOmsService.Port,
+		config.Config.BisaleOmsService.MaxConn,
+		config.Config.BisaleOmsService.ConnTimeout,
+		config.Config.BisaleOmsService.IdleTimeout,
+		openBisaleBalanceAccountServiceClient,
+		closeBisaleBalanceAccountServiceClient,
+	)
+
+	BisaleTransferRequestServicePool = thriftPool.NewThriftPool(
+		config.Config.BisaleOmsService.Host,
+		config.Config.BisaleOmsService.Port,
+		config.Config.BisaleOmsService.MaxConn,
+		config.Config.BisaleOmsService.ConnTimeout,
+		config.Config.BisaleOmsService.IdleTimeout,
+		openBisaleTransferRequestServiceClient,
+		closeBisaleTransferRequestServiceClient,
+	)
+
+	BisaleAccountTransferServicePool = thriftPool.NewThriftPool(
+		config.Config.BisaleOmsService.Host,
+		config.Config.BisaleOmsService.Port,
+		config.Config.BisaleOmsService.MaxConn,
+		config.Config.BisaleOmsService.ConnTimeout,
+		config.Config.BisaleOmsService.IdleTimeout,
+		openBisaleAccountTransferServiceClient,
+		closeBisaleAccountTransferServiceClient,
+	)
+
+	BisaleTradeDetailServicePool = thriftPool.NewThriftPool(
+		config.Config.BisaleOmsService.Host,
+		config.Config.BisaleOmsService.Port,
+		config.Config.BisaleOmsService.MaxConn,
+		config.Config.BisaleOmsService.ConnTimeout,
+		config.Config.BisaleOmsService.IdleTimeout,
+		openBisaleTradeDetailServiceClient,
+		closeBisaleTradeDetailServiceClient,
+	)
+
+	BisaleAccountStatementPool = thriftPool.NewThriftPool(
+		config.Config.BisaleOmsService.Host,
+		config.Config.BisaleOmsService.Port,
+		config.Config.BisaleOmsService.MaxConn,
+		config.Config.BisaleOmsService.ConnTimeout,
+		config.Config.BisaleOmsService.IdleTimeout,
+		openBisaleAccountStatementServiceClient,
+		closeBisaleAccountStatementServiceClient,
 	)
 
 	// 配置 Bisale Withdraw 服务连接池

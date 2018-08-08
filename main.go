@@ -100,5 +100,16 @@ func main() {
 	bisale.POST("/reward/permission", controllers.PostUserAttribute)
 	bisale.POST("/reward/config", controllers.PostSystemConfig)
 
+	bisale.GET("/reconciliation/exchangeDetail", controllers.GetReconciliationExchangeDetail)
+	bisale.GET("/reconciliation/reconciliation", controllers.GetReconciliation)
+	bisale.GET("/reconciliation/transferRequest", controllers.GetTransferRequest)
+	bisale.GET("/reconciliation/engineAccount", controllers.GetEngineAccount)
+	bisale.GET("/reconciliation/blockchainDeposit", controllers.GetBlockchainDeposit)
+	bisale.GET("/reconciliation/blockchainWithdraw", controllers.GetBlockchainWithdraw)
+
+	bisale.GET("/appVersion", controllers.GetAppVersion)
+	bisale.POST("/appVersion", controllers.PostAppVersion)
+	bisale.PUT("/appVersion",controllers.PutAppVersion)
+
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }
