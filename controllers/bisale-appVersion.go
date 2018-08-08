@@ -41,9 +41,10 @@ func PostAppVersion(c echo.Context) error {
 	appVersionService, appVersionClient := common.GetBisaleAppVersionServiceClient()
 	defer common.BisaleAppVersionServicePool.Put(appVersionClient)
 
-	appVersionService.SelectAppVersions(context.Background(), "", "")
+	params := new(content.TAppVersion)
+	c.Bind(params)
 
-	_, err := appVersionService.AddAppVersion(context.Background(), nil)
+	_, err := appVersionService.AddAppVersion(context.Background(), params)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
@@ -56,9 +57,10 @@ func PutAppVersion(c echo.Context) error {
 	appVersionService, appVersionClient := common.GetBisaleAppVersionServiceClient()
 	defer common.BisaleAppVersionServicePool.Put(appVersionClient)
 
-	appVersionService.SelectAppVersions(context.Background(), "", "")
+	params := new(content.TAppVersion)
+	c.Bind(params)
 
-	_, err := appVersionService.EditAppVersion(context.Background(), nil)
+	_, err := appVersionService.EditAppVersion(context.Background(), params)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
