@@ -446,7 +446,13 @@ type TAppVersionService interface {
   // Parameters:
   //  - Version
   //  - Status
-  SelectAppVersions(ctx context.Context, version string, status string) (r []*TAppVersion, err error)
+  //  - StartPage
+  //  - PageSize
+  SelectAppVersions(ctx context.Context, version string, status string, startPage int32, pageSize int32) (r []*TAppVersion, err error)
+  // Parameters:
+  //  - Version
+  //  - Status
+  SelectAppVersionCount(ctx context.Context, version string, status string) (r int32, err error)
 }
 
 type TAppVersionServiceClient struct {
@@ -527,15 +533,33 @@ func (p *TAppVersionServiceClient) EditAppVersion(ctx context.Context, appVersio
 // Parameters:
 //  - Version
 //  - Status
-func (p *TAppVersionServiceClient) SelectAppVersions(ctx context.Context, version string, status string) (r []*TAppVersion, err error) {
+//  - StartPage
+//  - PageSize
+func (p *TAppVersionServiceClient) SelectAppVersions(ctx context.Context, version string, status string, startPage int32, pageSize int32) (r []*TAppVersion, err error) {
   var _args10 TAppVersionServiceSelectAppVersionsArgs
   _args10.Version = version
   _args10.Status = status
+  _args10.StartPage = startPage
+  _args10.PageSize = pageSize
   var _result11 TAppVersionServiceSelectAppVersionsResult
   if err = p.c.Call(ctx, "selectAppVersions", &_args10, &_result11); err != nil {
     return
   }
   return _result11.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Version
+//  - Status
+func (p *TAppVersionServiceClient) SelectAppVersionCount(ctx context.Context, version string, status string) (r int32, err error) {
+  var _args12 TAppVersionServiceSelectAppVersionCountArgs
+  _args12.Version = version
+  _args12.Status = status
+  var _result13 TAppVersionServiceSelectAppVersionCountResult
+  if err = p.c.Call(ctx, "selectAppVersionCount", &_args12, &_result13); err != nil {
+    return
+  }
+  return _result13.GetSuccess(), nil
 }
 
 type TAppVersionServiceProcessor struct {
@@ -558,14 +582,15 @@ func (p *TAppVersionServiceProcessor) ProcessorMap() map[string]thrift.TProcesso
 
 func NewTAppVersionServiceProcessor(handler TAppVersionService) *TAppVersionServiceProcessor {
 
-  self12 := &TAppVersionServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self12.processorMap["selectLangTypes"] = &tAppVersionServiceProcessorSelectLangTypes{handler:handler}
-  self12.processorMap["selectSourceTypes"] = &tAppVersionServiceProcessorSelectSourceTypes{handler:handler}
-  self12.processorMap["selectStatusTypes"] = &tAppVersionServiceProcessorSelectStatusTypes{handler:handler}
-  self12.processorMap["addAppVersion"] = &tAppVersionServiceProcessorAddAppVersion{handler:handler}
-  self12.processorMap["editAppVersion"] = &tAppVersionServiceProcessorEditAppVersion{handler:handler}
-  self12.processorMap["selectAppVersions"] = &tAppVersionServiceProcessorSelectAppVersions{handler:handler}
-return self12
+  self14 := &TAppVersionServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self14.processorMap["selectLangTypes"] = &tAppVersionServiceProcessorSelectLangTypes{handler:handler}
+  self14.processorMap["selectSourceTypes"] = &tAppVersionServiceProcessorSelectSourceTypes{handler:handler}
+  self14.processorMap["selectStatusTypes"] = &tAppVersionServiceProcessorSelectStatusTypes{handler:handler}
+  self14.processorMap["addAppVersion"] = &tAppVersionServiceProcessorAddAppVersion{handler:handler}
+  self14.processorMap["editAppVersion"] = &tAppVersionServiceProcessorEditAppVersion{handler:handler}
+  self14.processorMap["selectAppVersions"] = &tAppVersionServiceProcessorSelectAppVersions{handler:handler}
+  self14.processorMap["selectAppVersionCount"] = &tAppVersionServiceProcessorSelectAppVersionCount{handler:handler}
+return self14
 }
 
 func (p *TAppVersionServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -576,12 +601,12 @@ func (p *TAppVersionServiceProcessor) Process(ctx context.Context, iprot, oprot 
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x13 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x15 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x13.Write(oprot)
+  x15.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush(ctx)
-  return false, x13
+  return false, x15
 
 }
 
@@ -845,7 +870,7 @@ func (p *tAppVersionServiceProcessorSelectAppVersions) Process(ctx context.Conte
   result := TAppVersionServiceSelectAppVersionsResult{}
 var retval []*TAppVersion
   var err2 error
-  if retval, err2 = p.handler.SelectAppVersions(ctx, args.Version, args.Status); err2 != nil {
+  if retval, err2 = p.handler.SelectAppVersions(ctx, args.Version, args.Status, args.StartPage, args.PageSize); err2 != nil {
     x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectAppVersions: " + err2.Error())
     oprot.WriteMessageBegin("selectAppVersions", thrift.EXCEPTION, seqId)
     x.Write(oprot)
@@ -856,6 +881,54 @@ var retval []*TAppVersion
     result.Success = retval
 }
   if err2 = oprot.WriteMessageBegin("selectAppVersions", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tAppVersionServiceProcessorSelectAppVersionCount struct {
+  handler TAppVersionService
+}
+
+func (p *tAppVersionServiceProcessorSelectAppVersionCount) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TAppVersionServiceSelectAppVersionCountArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("selectAppVersionCount", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TAppVersionServiceSelectAppVersionCountResult{}
+var retval int32
+  var err2 error
+  if retval, err2 = p.handler.SelectAppVersionCount(ctx, args.Version, args.Status); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing selectAppVersionCount: " + err2.Error())
+    oprot.WriteMessageBegin("selectAppVersionCount", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = &retval
+}
+  if err2 = oprot.WriteMessageBegin("selectAppVersionCount", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
   if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -992,13 +1065,13 @@ func (p *TAppVersionServiceSelectLangTypesResult)  ReadField0(iprot thrift.TProt
   tSlice := make([]string, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-var _elem14 string
+var _elem16 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _elem14 = v
+    _elem16 = v
 }
-    p.Success = append(p.Success, _elem14)
+    p.Success = append(p.Success, _elem16)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -1162,13 +1235,13 @@ func (p *TAppVersionServiceSelectSourceTypesResult)  ReadField0(iprot thrift.TPr
   tSlice := make([]string, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-var _elem15 string
+var _elem17 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _elem15 = v
+    _elem17 = v
 }
-    p.Success = append(p.Success, _elem15)
+    p.Success = append(p.Success, _elem17)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -1332,13 +1405,13 @@ func (p *TAppVersionServiceSelectStatusTypesResult)  ReadField0(iprot thrift.TPr
   tSlice := make([]string, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-var _elem16 string
+var _elem18 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _elem16 = v
+    _elem18 = v
 }
-    p.Success = append(p.Success, _elem16)
+    p.Success = append(p.Success, _elem18)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -1785,9 +1858,13 @@ func (p *TAppVersionServiceEditAppVersionResult) String() string {
 // Attributes:
 //  - Version
 //  - Status
+//  - StartPage
+//  - PageSize
 type TAppVersionServiceSelectAppVersionsArgs struct {
   Version string `thrift:"version,1" db:"version" json:"version"`
   Status string `thrift:"status,2" db:"status" json:"status"`
+  StartPage int32 `thrift:"startPage,3" db:"startPage" json:"startPage"`
+  PageSize int32 `thrift:"pageSize,4" db:"pageSize" json:"pageSize"`
 }
 
 func NewTAppVersionServiceSelectAppVersionsArgs() *TAppVersionServiceSelectAppVersionsArgs {
@@ -1801,6 +1878,14 @@ func (p *TAppVersionServiceSelectAppVersionsArgs) GetVersion() string {
 
 func (p *TAppVersionServiceSelectAppVersionsArgs) GetStatus() string {
   return p.Status
+}
+
+func (p *TAppVersionServiceSelectAppVersionsArgs) GetStartPage() int32 {
+  return p.StartPage
+}
+
+func (p *TAppVersionServiceSelectAppVersionsArgs) GetPageSize() int32 {
+  return p.PageSize
 }
 func (p *TAppVersionServiceSelectAppVersionsArgs) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -1828,6 +1913,26 @@ func (p *TAppVersionServiceSelectAppVersionsArgs) Read(iprot thrift.TProtocol) e
     case 2:
       if fieldTypeId == thrift.STRING {
         if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 3:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField3(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 4:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField4(iprot); err != nil {
           return err
         }
       } else {
@@ -1868,12 +1973,32 @@ func (p *TAppVersionServiceSelectAppVersionsArgs)  ReadField2(iprot thrift.TProt
   return nil
 }
 
+func (p *TAppVersionServiceSelectAppVersionsArgs)  ReadField3(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 3: ", err)
+} else {
+  p.StartPage = v
+}
+  return nil
+}
+
+func (p *TAppVersionServiceSelectAppVersionsArgs)  ReadField4(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.PageSize = v
+}
+  return nil
+}
+
 func (p *TAppVersionServiceSelectAppVersionsArgs) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("selectAppVersions_args"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if p != nil {
     if err := p.writeField1(oprot); err != nil { return err }
     if err := p.writeField2(oprot); err != nil { return err }
+    if err := p.writeField3(oprot); err != nil { return err }
+    if err := p.writeField4(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -1899,6 +2024,26 @@ func (p *TAppVersionServiceSelectAppVersionsArgs) writeField2(oprot thrift.TProt
   return thrift.PrependError(fmt.Sprintf("%T.status (2) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 2:status: ", p), err) }
+  return err
+}
+
+func (p *TAppVersionServiceSelectAppVersionsArgs) writeField3(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("startPage", thrift.I32, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:startPage: ", p), err) }
+  if err := oprot.WriteI32(int32(p.StartPage)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.startPage (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:startPage: ", p), err) }
+  return err
+}
+
+func (p *TAppVersionServiceSelectAppVersionsArgs) writeField4(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("pageSize", thrift.I32, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:pageSize: ", p), err) }
+  if err := oprot.WriteI32(int32(p.PageSize)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.pageSize (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:pageSize: ", p), err) }
   return err
 }
 
@@ -1974,11 +2119,11 @@ func (p *TAppVersionServiceSelectAppVersionsResult)  ReadField0(iprot thrift.TPr
   tSlice := make([]*TAppVersion, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-    _elem17 := &TAppVersion{}
-    if err := _elem17.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem17), err)
+    _elem19 := &TAppVersion{}
+    if err := _elem19.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem19), err)
     }
-    p.Success = append(p.Success, _elem17)
+    p.Success = append(p.Success, _elem19)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -2025,6 +2170,233 @@ func (p *TAppVersionServiceSelectAppVersionsResult) String() string {
     return "<nil>"
   }
   return fmt.Sprintf("TAppVersionServiceSelectAppVersionsResult(%+v)", *p)
+}
+
+// Attributes:
+//  - Version
+//  - Status
+type TAppVersionServiceSelectAppVersionCountArgs struct {
+  Version string `thrift:"version,1" db:"version" json:"version"`
+  Status string `thrift:"status,2" db:"status" json:"status"`
+}
+
+func NewTAppVersionServiceSelectAppVersionCountArgs() *TAppVersionServiceSelectAppVersionCountArgs {
+  return &TAppVersionServiceSelectAppVersionCountArgs{}
+}
+
+
+func (p *TAppVersionServiceSelectAppVersionCountArgs) GetVersion() string {
+  return p.Version
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountArgs) GetStatus() string {
+  return p.Status
+}
+func (p *TAppVersionServiceSelectAppVersionCountArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountArgs)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.Version = v
+}
+  return nil
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountArgs)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.Status = v
+}
+  return nil
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectAppVersionCount_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("version", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:version: ", p), err) }
+  if err := oprot.WriteString(string(p.Version)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.version (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:version: ", p), err) }
+  return err
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountArgs) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("status", thrift.STRING, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:status: ", p), err) }
+  if err := oprot.WriteString(string(p.Status)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.status (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:status: ", p), err) }
+  return err
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TAppVersionServiceSelectAppVersionCountArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TAppVersionServiceSelectAppVersionCountResult struct {
+  Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTAppVersionServiceSelectAppVersionCountResult() *TAppVersionServiceSelectAppVersionCountResult {
+  return &TAppVersionServiceSelectAppVersionCountResult{}
+}
+
+var TAppVersionServiceSelectAppVersionCountResult_Success_DEFAULT int32
+func (p *TAppVersionServiceSelectAppVersionCountResult) GetSuccess() int32 {
+  if !p.IsSetSuccess() {
+    return TAppVersionServiceSelectAppVersionCountResult_Success_DEFAULT
+  }
+return *p.Success
+}
+func (p *TAppVersionServiceSelectAppVersionCountResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountResult)  ReadField0(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 0: ", err)
+} else {
+  p.Success = &v
+}
+  return nil
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("selectAppVersionCount_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.I32, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteI32(int32(*p.Success)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.success (0) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TAppVersionServiceSelectAppVersionCountResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TAppVersionServiceSelectAppVersionCountResult(%+v)", *p)
 }
 
 

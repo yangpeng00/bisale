@@ -27,7 +27,8 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "   selectStatusTypes()")
   fmt.Fprintln(os.Stderr, "  i32 addAppVersion(TAppVersion appVersion)")
   fmt.Fprintln(os.Stderr, "  i32 editAppVersion(TAppVersion appVersion)")
-  fmt.Fprintln(os.Stderr, "   selectAppVersions(string version, string status)")
+  fmt.Fprintln(os.Stderr, "   selectAppVersions(string version, string status, i32 startPage, i32 pageSize)")
+  fmt.Fprintln(os.Stderr, "  i32 selectAppVersionCount(string version, string status)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -154,19 +155,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "AddAppVersion requires 1 args")
       flag.Usage()
     }
-    arg18 := flag.Arg(1)
-    mbTrans19 := thrift.NewTMemoryBufferLen(len(arg18))
-    defer mbTrans19.Close()
-    _, err20 := mbTrans19.WriteString(arg18)
-    if err20 != nil {
+    arg20 := flag.Arg(1)
+    mbTrans21 := thrift.NewTMemoryBufferLen(len(arg20))
+    defer mbTrans21.Close()
+    _, err22 := mbTrans21.WriteString(arg20)
+    if err22 != nil {
       Usage()
       return
     }
-    factory21 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt22 := factory21.GetProtocol(mbTrans19)
+    factory23 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt24 := factory23.GetProtocol(mbTrans21)
     argvalue0 := content.NewTAppVersion()
-    err23 := argvalue0.Read(jsProt22)
-    if err23 != nil {
+    err25 := argvalue0.Read(jsProt24)
+    if err25 != nil {
       Usage()
       return
     }
@@ -179,19 +180,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "EditAppVersion requires 1 args")
       flag.Usage()
     }
-    arg24 := flag.Arg(1)
-    mbTrans25 := thrift.NewTMemoryBufferLen(len(arg24))
-    defer mbTrans25.Close()
-    _, err26 := mbTrans25.WriteString(arg24)
-    if err26 != nil {
+    arg26 := flag.Arg(1)
+    mbTrans27 := thrift.NewTMemoryBufferLen(len(arg26))
+    defer mbTrans27.Close()
+    _, err28 := mbTrans27.WriteString(arg26)
+    if err28 != nil {
       Usage()
       return
     }
-    factory27 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt28 := factory27.GetProtocol(mbTrans25)
+    factory29 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt30 := factory29.GetProtocol(mbTrans27)
     argvalue0 := content.NewTAppVersion()
-    err29 := argvalue0.Read(jsProt28)
-    if err29 != nil {
+    err31 := argvalue0.Read(jsProt30)
+    if err31 != nil {
       Usage()
       return
     }
@@ -200,15 +201,41 @@ func main() {
     fmt.Print("\n")
     break
   case "selectAppVersions":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "SelectAppVersions requires 2 args")
+    if flag.NArg() - 1 != 4 {
+      fmt.Fprintln(os.Stderr, "SelectAppVersions requires 4 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
     argvalue1 := flag.Arg(2)
     value1 := argvalue1
-    fmt.Print(client.SelectAppVersions(context.Background(), value0, value1))
+    tmp2, err34 := (strconv.Atoi(flag.Arg(3)))
+    if err34 != nil {
+      Usage()
+      return
+    }
+    argvalue2 := int32(tmp2)
+    value2 := argvalue2
+    tmp3, err35 := (strconv.Atoi(flag.Arg(4)))
+    if err35 != nil {
+      Usage()
+      return
+    }
+    argvalue3 := int32(tmp3)
+    value3 := argvalue3
+    fmt.Print(client.SelectAppVersions(context.Background(), value0, value1, value2, value3))
+    fmt.Print("\n")
+    break
+  case "selectAppVersionCount":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "SelectAppVersionCount requires 2 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
+    value1 := argvalue1
+    fmt.Print(client.SelectAppVersionCount(context.Background(), value0, value1))
     fmt.Print("\n")
     break
   case "":

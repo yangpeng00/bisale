@@ -9,6 +9,8 @@ import (
 	"bisale/bisale-console-api/thrift/finance"
 	"strconv"
 	"bisale/bisale-console-api/thrift/balanceAccount"
+	"encoding/json"
+	"fmt"
 )
 
 type TradeDetailResult struct {
@@ -96,16 +98,15 @@ func GetTransferRequest(c echo.Context) error {
 
 	status, _ := strconv.ParseInt(c.QueryParam("status"), 10, 32)
 	params.Status = int32(status)
+	transferType, _ := strconv.ParseInt(c.QueryParam("type"), 10, 32)
+	params.Type = int32(transferType)
+	source, _ := strconv.ParseInt(c.QueryParam("source"), 10, 32)
+	params.Source = int32(source)
 	userId, _ := strconv.ParseInt(c.QueryParam("userId"), 10, 32)
 	params.UserId = int32(userId)
 
 	params.Email = c.QueryParam("email")
 	params.Currency = c.QueryParam("currency")
-
-	transferType, _ := strconv.ParseInt(c.QueryParam("type"), 10, 32)
-	params.Type = int32(transferType)
-	source, _ := strconv.ParseInt(c.QueryParam("source"), 10, 32)
-	params.Source = int32(source)
 
 	result, err := transferRequestService.GetTransferRequestList(context.Background(), params)
 
@@ -153,12 +154,22 @@ func GetBlockchainDeposit(c echo.Context) error {
 	params.PageSize = int32(pageSize)
 	startPage, _ := strconv.ParseInt(c.QueryParam("page"), 10, 32)
 	params.Page = int32(startPage)
-	orderId, _ := strconv.ParseInt(c.QueryParam("orderId"), 10, 32)
-	params.OrderId = int32(orderId)
-	checkExec, _ := strconv.ParseInt(c.QueryParam("checkExec"), 10, 8)
-	params.CheckExec = int8(checkExec)
-	status, _ := strconv.ParseInt(c.QueryParam("status"), 10, 8)
-	params.Status = int8(status)
+	if c.QueryParam("orderId") != "" {
+		orderId, _ := strconv.ParseInt(c.QueryParam("orderId"), 10, 32)
+		params.OrderId = int32(orderId)
+	}
+	if c.QueryParam("checkExec") != "" {
+		checkExec, _ := strconv.ParseInt(c.QueryParam("checkExec"), 10, 8)
+		params.CheckExec = int8(checkExec)
+	}
+	if c.QueryParam("status") != "" {
+		status, _ := strconv.ParseInt(c.QueryParam("status"), 10, 8)
+		params.Status = int8(status)
+	}
+
+	xxx, _ := json.Marshal(params)
+	fmt.Println("==========")
+	fmt.Println(string(xxx))
 
 	result, err := balanceAccountService.GetChainDeposit(context.Background(), params)
 	if err != nil {
@@ -188,6 +199,10 @@ func GetBlockchainWithdraw(c echo.Context) error {
 	params.CheckExec = int8(checkExec)
 	status, _ := strconv.ParseInt(c.QueryParam("status"), 10, 8)
 	params.Status = int8(status)
+
+	xxx, _ := json.Marshal(params)
+	fmt.Println("==========")
+	fmt.Println(string(xxx))
 
 	result, err := balanceAccountService.GetChainWithdraw(context.Background(), params)
 	if err != nil {
