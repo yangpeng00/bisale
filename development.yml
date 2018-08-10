@@ -47,12 +47,12 @@ wallet_service:
   port: 8002
 
 oms_service:
-#  host: 0.0.0.0
+  host: 0.0.0.0
 #  host: 192.168.31.94
 # jun feng
 #  host: 192.168.31.117
 # yang peng
-  host: 192.168.31.128
+#  host: 192.168.31.128
 #  host: 192.168.31.128
 #  host: 192.168.31.117
 #  host: 192.168.31.105

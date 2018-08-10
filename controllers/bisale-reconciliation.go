@@ -9,8 +9,6 @@ import (
 	"bisale/bisale-console-api/thrift/finance"
 	"strconv"
 	"bisale/bisale-console-api/thrift/balanceAccount"
-	"encoding/json"
-	"fmt"
 )
 
 type TradeDetailResult struct {
@@ -143,7 +141,7 @@ func GetEngineAccount(c echo.Context) error {
 func GetBlockchainDeposit(c echo.Context) error {
 	log, _ := common.GetLoggerWithTraceId(c)
 	balanceAccountService, balanceAccountClient := common.GetBisaleBalanceAccountServiceClient()
-	defer common.BisaleUserServicePool.Put(balanceAccountClient)
+	defer common.BisaleBalanceAccountServicePool.Put(balanceAccountClient)
 
 	params := new(balanceAccount.TChainDepositWithdrawParams)
 	params.TxId =  c.QueryParam("txId")
@@ -167,10 +165,6 @@ func GetBlockchainDeposit(c echo.Context) error {
 		params.Status = int8(status)
 	}
 
-	xxx, _ := json.Marshal(params)
-	fmt.Println("==========")
-	fmt.Println(string(xxx))
-
 	result, err := balanceAccountService.GetChainDeposit(context.Background(), params)
 	if err != nil {
 		log.Error(err)
@@ -182,7 +176,7 @@ func GetBlockchainDeposit(c echo.Context) error {
 func GetBlockchainWithdraw(c echo.Context) error {
 	log, _ := common.GetLoggerWithTraceId(c)
 	balanceAccountService, balanceAccountClient := common.GetBisaleBalanceAccountServiceClient()
-	defer common.BisaleUserServicePool.Put(balanceAccountClient)
+	defer common.BisaleBalanceAccountServicePool.Put(balanceAccountClient)
 
 	params := new(balanceAccount.TChainDepositWithdrawParams)
 	params.TxId =  c.QueryParam("txId")
@@ -199,10 +193,6 @@ func GetBlockchainWithdraw(c echo.Context) error {
 	params.CheckExec = int8(checkExec)
 	status, _ := strconv.ParseInt(c.QueryParam("status"), 10, 8)
 	params.Status = int8(status)
-
-	xxx, _ := json.Marshal(params)
-	fmt.Println("==========")
-	fmt.Println(string(xxx))
 
 	result, err := balanceAccountService.GetChainWithdraw(context.Background(), params)
 	if err != nil {
