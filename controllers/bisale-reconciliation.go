@@ -116,7 +116,7 @@ func GetTransferRequest(c echo.Context) error {
 }
 
 func GetEngineAccount(c echo.Context) error {
-	log, _ := common.GetLoggerWithTraceId(c)
+	log, traceId := common.GetLoggerWithTraceId(c)
 	engineAccountService, engineAccountClient := common.GetBisaleAccountTransferServiceClient()
 	defer common.BisaleAccountTransferServicePool.Put(engineAccountClient)
 
@@ -125,6 +125,14 @@ func GetEngineAccount(c echo.Context) error {
 	params.PageSize = int32(pageSize)
 	startPage, _ := strconv.ParseInt(c.QueryParam("page"), 10, 32)
 	params.StartPage = int32(startPage)
+	userId, _ := strconv.ParseInt(c.QueryParam("userId"), 10, 32)
+	params.UserId = int32(userId)
+	params.Email = c.QueryParam("email")
+	params.Currency = c.QueryParam("currency")
+	params.StartTime = c.QueryParam("startTime")
+	params.EndTime = c.QueryParam("endTime")
+	params.Type = c.QueryParam("type")
+	params.TraceId = traceId
 
 	list, err := engineAccountService.SelectEngineAccountDataBy(context.Background(), params)
 	count, err := engineAccountService.SelectEngineAccountCountBy(context.Background(), params)
