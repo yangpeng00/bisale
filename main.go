@@ -110,6 +110,7 @@ func main() {
 	bisale.GET("/appVersion", controllers.GetAppVersion)
 	bisale.POST("/appVersion", controllers.PostAppVersion)
 	bisale.PUT("/appVersion",controllers.PutAppVersion)
+	bisale.GET("/currencyList", controllers.GetCurrencyList)
 
 	e.Logger.Fatal(e.Start(config.GetListenNetAddress()))
 }

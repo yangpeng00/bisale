@@ -9,6 +9,7 @@ import (
 	"bisale/bisale-console-api/thrift/finance"
 	"strconv"
 	"bisale/bisale-console-api/thrift/balanceAccount"
+	"encoding/json"
 )
 
 type TradeDetailResult struct {
@@ -208,5 +209,23 @@ func GetBlockchainWithdraw(c echo.Context) error {
 		return Status(c, codes.ServiceError, err)
 	}
 	return Status(c, codes.Success, result)
+}
+
+func GetCurrencyList(c echo.Context) error {
+	log, _ := common.GetLoggerWithTraceId(c)
+	walletService, walletClient := common.GetWalletServiceClient()
+	defer common.WalletServicePool.Put(walletClient)
+
+	config := make(map[string]interface{})
+	config["lang"] = "zh-CN"
+	configStr, _ := json.Marshal(config)
+
+	currencyInfo, err := walletService.Execute(context.Background(),"Currency", "getConfigs", string(configStr))
+	log.Info(currencyInfo)
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+	return Status(c, codes.Success, currencyInfo)
 }
 
