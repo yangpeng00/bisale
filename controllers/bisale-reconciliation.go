@@ -95,14 +95,23 @@ func GetTransferRequest(c echo.Context) error {
 	params.EndTime = c.QueryParam("endTime")
 	params.StartTime = c.QueryParam("startTime")
 
-	status, _ := strconv.ParseInt(c.QueryParam("status"), 10, 32)
-	params.Status = int32(status)
-	transferType, _ := strconv.ParseInt(c.QueryParam("type"), 10, 32)
-	params.Type = int32(transferType)
-	source, _ := strconv.ParseInt(c.QueryParam("source"), 10, 32)
-	params.Source = int32(source)
 	userId, _ := strconv.ParseInt(c.QueryParam("userId"), 10, 32)
 	params.UserId = int32(userId)
+	status, _ := strconv.ParseInt(c.QueryParam("status"), 10, 32)
+	params.Status = int32(status)
+	if params.Status == 0 {
+		params.Status = -1
+	}
+	transferType, _ := strconv.ParseInt(c.QueryParam("type"), 10, 32)
+	params.Type = int32(transferType)
+	if params.Type == 0 {
+		params.Type = -1
+	}
+	source, _ := strconv.ParseInt(c.QueryParam("source"), 10, 32)
+	params.Source = int32(source)
+	if params.Source == 0 {
+		params.Source = -1
+	}
 
 	params.Email = c.QueryParam("email")
 	params.Currency = c.QueryParam("currency")
@@ -161,18 +170,12 @@ func GetBlockchainDeposit(c echo.Context) error {
 	params.PageSize = int32(pageSize)
 	startPage, _ := strconv.ParseInt(c.QueryParam("page"), 10, 32)
 	params.Page = int32(startPage)
-	if c.QueryParam("orderId") != "" {
-		orderId, _ := strconv.ParseInt(c.QueryParam("orderId"), 10, 32)
-		params.OrderId = int32(orderId)
-	}
-	if c.QueryParam("checkExec") != "" {
-		checkExec, _ := strconv.ParseInt(c.QueryParam("checkExec"), 10, 8)
-		params.CheckExec = int8(checkExec)
-	}
-	if c.QueryParam("status") != "" {
-		status, _ := strconv.ParseInt(c.QueryParam("status"), 10, 8)
-		params.Status = int8(status)
-	}
+	orderId, _ := strconv.ParseInt(c.QueryParam("orderId"), 10, 32)
+	params.OrderId = int32(orderId)
+	checkExec, _ := strconv.ParseInt(c.QueryParam("checkExec"), 10, 8)
+	params.CheckExec = int8(checkExec - 1)
+	status, _ := strconv.ParseInt(c.QueryParam("status"), 10, 8)
+	params.Status = int8(status - 1)
 
 	result, err := balanceAccountService.GetChainDeposit(context.Background(), params)
 	if err != nil {
@@ -199,9 +202,9 @@ func GetBlockchainWithdraw(c echo.Context) error {
 	orderId, _ := strconv.ParseInt(c.QueryParam("orderId"), 10, 32)
 	params.OrderId = int32(orderId)
 	checkExec, _ := strconv.ParseInt(c.QueryParam("checkExec"), 10, 8)
-	params.CheckExec = int8(checkExec)
+	params.CheckExec = int8(checkExec - 1)
 	status, _ := strconv.ParseInt(c.QueryParam("status"), 10, 8)
-	params.Status = int8(status)
+	params.Status = int8(status - 1)
 
 	result, err := balanceAccountService.GetChainWithdraw(context.Background(), params)
 	if err != nil {
