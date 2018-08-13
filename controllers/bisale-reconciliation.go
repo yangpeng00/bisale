@@ -243,3 +243,16 @@ func CancelBlockchainException(c echo.Context) error {
 	return Status(c, codes.Success, nil)
 }
 
+func GetSymbolList(c echo.Context) error {
+	log, _ := common.GetLoggerWithTraceId(c)
+	orderService, orderClient := common.GetBisaleOrderServiceClient()
+	defer common.BisaleOrderServicePool.Put(orderClient)
+
+	list, err := orderService.SelectSymbolsList(context.Background())
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	return Status(c, codes.Success, list)
+}
