@@ -8,6 +8,7 @@ import (
 	"bisale/foundation/thrift/pool"
 	"github.com/labstack/echo"
 	"github.com/go-redis/redis"
+	"runtime"
 )
 
 var Log *logrus.Logger
@@ -186,4 +187,12 @@ func GetLoggerWithTraceId(c echo.Context) (*logrus.Entry, string) {
 	return Log.WithFields(logrus.Fields{
 		"trace-id": traceId,
 	}), traceId
+}
+
+func GetCodePosition(skip int) string {
+	_, file, line, ok := runtime.Caller(skip)
+	if ok {
+		return fmt.Sprintf("%s:%d", file, line)
+	}
+	return ""
 }

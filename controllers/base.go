@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"encoding/json"
 	"github.com/labstack/echo"
+	"bisale/bisale-console-api/common"
 	"bisale/bisale-console-api/locales"
 )
 
@@ -53,6 +54,7 @@ func Response(c echo.Context, r Result) error {
 		if err, ok := r.Data.(error); ok {
 			r.Data = err.Error()
 		}
+		c.Response().Header().Set("X-Trace-Position",common.GetCodePosition(3))
 	}
 
 	if r.Code < 520 {
