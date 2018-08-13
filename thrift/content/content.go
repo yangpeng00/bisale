@@ -50,6 +50,7 @@ func NewTSystemNotice() *TSystemNotice {
   return &TSystemNotice{}
 }
 
+
 func (p *TSystemNotice) GetID() int32 {
   return p.ID
 }
