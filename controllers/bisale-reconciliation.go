@@ -229,3 +229,17 @@ func GetCurrencyList(c echo.Context) error {
 	return Status(c, codes.Success, currencyInfo)
 }
 
+func CancelBlockchainException(c echo.Context) error {
+	log, _ := common.GetLoggerWithTraceId(c)
+	balanceAccountService, balanceAccountClient := common.GetBisaleBalanceAccountServiceClient()
+	defer common.BisaleBalanceAccountServicePool.Put(balanceAccountClient)
+
+	_, err := balanceAccountService.ChainEdit(context.Background(), nil)
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
+	return Status(c, codes.Success, nil)
+}
+

@@ -4,6 +4,8 @@ Dir="./.thrift/thrift-bisale-oss"
 if [ -d $Dir ];
 then
     cd $Dir
+    git add .
+    git stash
     git checkout balance-account-20180725
     git pull
     cd ../../

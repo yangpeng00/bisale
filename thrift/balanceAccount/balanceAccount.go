@@ -32,6 +32,7 @@ var _ = bytes.Equal
 //  - Fee
 //  - NetworkFee
 //  - TradeTime
+//  - CreatedAt
 type TChainDepositWithdrawResult_ struct {
   ID int32 `thrift:"id,1" db:"id" json:"id"`
   UserId int32 `thrift:"userId,2" db:"userId" json:"userId"`
@@ -46,6 +47,7 @@ type TChainDepositWithdrawResult_ struct {
   Fee string `thrift:"fee,11" db:"fee" json:"fee"`
   NetworkFee string `thrift:"networkFee,12" db:"networkFee" json:"networkFee"`
   TradeTime string `thrift:"tradeTime,13" db:"tradeTime" json:"tradeTime"`
+  CreatedAt string `thrift:"createdAt,14" db:"createdAt" json:"createdAt"`
 }
 
 func NewTChainDepositWithdrawResult_() *TChainDepositWithdrawResult_ {
@@ -103,6 +105,10 @@ func (p *TChainDepositWithdrawResult_) GetNetworkFee() string {
 
 func (p *TChainDepositWithdrawResult_) GetTradeTime() string {
   return p.TradeTime
+}
+
+func (p *TChainDepositWithdrawResult_) GetCreatedAt() string {
+  return p.CreatedAt
 }
 func (p *TChainDepositWithdrawResult_) Read(iprot thrift.TProtocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
@@ -247,6 +253,16 @@ func (p *TChainDepositWithdrawResult_) Read(iprot thrift.TProtocol) error {
           return err
         }
       }
+    case 14:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField14(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -381,6 +397,15 @@ func (p *TChainDepositWithdrawResult_)  ReadField13(iprot thrift.TProtocol) erro
   return nil
 }
 
+func (p *TChainDepositWithdrawResult_)  ReadField14(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 14: ", err)
+} else {
+  p.CreatedAt = v
+}
+  return nil
+}
+
 func (p *TChainDepositWithdrawResult_) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("TChainDepositWithdrawResult"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -398,6 +423,7 @@ func (p *TChainDepositWithdrawResult_) Write(oprot thrift.TProtocol) error {
     if err := p.writeField11(oprot); err != nil { return err }
     if err := p.writeField12(oprot); err != nil { return err }
     if err := p.writeField13(oprot); err != nil { return err }
+    if err := p.writeField14(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -533,6 +559,16 @@ func (p *TChainDepositWithdrawResult_) writeField13(oprot thrift.TProtocol) (err
   return thrift.PrependError(fmt.Sprintf("%T.tradeTime (13) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 13:tradeTime: ", p), err) }
+  return err
+}
+
+func (p *TChainDepositWithdrawResult_) writeField14(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("createdAt", thrift.STRING, 14); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 14:createdAt: ", p), err) }
+  if err := oprot.WriteString(string(p.CreatedAt)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.createdAt (14) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 14:createdAt: ", p), err) }
   return err
 }
 
@@ -1071,6 +1107,170 @@ func (p *TChainDepositWithdrawParams) String() string {
   return fmt.Sprintf("TChainDepositWithdrawParams(%+v)", *p)
 }
 
+// Attributes:
+//  - ID
+//  - CheckExec
+//  - Type
+type TChainEditParams struct {
+  ID int32 `thrift:"id,1" db:"id" json:"id"`
+  CheckExec int8 `thrift:"checkExec,2" db:"checkExec" json:"checkExec"`
+  Type string `thrift:"type,3" db:"type" json:"type"`
+}
+
+func NewTChainEditParams() *TChainEditParams {
+  return &TChainEditParams{}
+}
+
+
+func (p *TChainEditParams) GetID() int32 {
+  return p.ID
+}
+
+func (p *TChainEditParams) GetCheckExec() int8 {
+  return p.CheckExec
+}
+
+func (p *TChainEditParams) GetType() string {
+  return p.Type
+}
+func (p *TChainEditParams) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.I32 {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 2:
+      if fieldTypeId == thrift.BYTE {
+        if err := p.ReadField2(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    case 3:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField3(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TChainEditParams)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.ID = v
+}
+  return nil
+}
+
+func (p *TChainEditParams)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadByte(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  temp := int8(v)
+  p.CheckExec = temp
+}
+  return nil
+}
+
+func (p *TChainEditParams)  ReadField3(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 3: ", err)
+} else {
+  p.Type = v
+}
+  return nil
+}
+
+func (p *TChainEditParams) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("TChainEditParams"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+    if err := p.writeField2(oprot); err != nil { return err }
+    if err := p.writeField3(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TChainEditParams) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("id", thrift.I32, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:id: ", p), err) }
+  if err := oprot.WriteI32(int32(p.ID)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.id (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:id: ", p), err) }
+  return err
+}
+
+func (p *TChainEditParams) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("checkExec", thrift.BYTE, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:checkExec: ", p), err) }
+  if err := oprot.WriteByte(int8(p.CheckExec)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.checkExec (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:checkExec: ", p), err) }
+  return err
+}
+
+func (p *TChainEditParams) writeField3(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("type", thrift.STRING, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:type: ", p), err) }
+  if err := oprot.WriteString(string(p.Type)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.type (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:type: ", p), err) }
+  return err
+}
+
+func (p *TChainEditParams) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TChainEditParams(%+v)", *p)
+}
+
 type TChainDepositWithdrawService interface {
   // Parameters:
   //  - Params
@@ -1078,6 +1278,9 @@ type TChainDepositWithdrawService interface {
   // Parameters:
   //  - Params
   GetChainWithdraw(ctx context.Context, params *TChainDepositWithdrawParams) (r *TChainDataViewResult_, err error)
+  // Parameters:
+  //  - Params
+  ChainEdit(ctx context.Context, params *TChainEditParams) (r bool, err error)
 }
 
 type TChainDepositWithdrawServiceClient struct {
@@ -1128,6 +1331,18 @@ func (p *TChainDepositWithdrawServiceClient) GetChainWithdraw(ctx context.Contex
   return _result4.GetSuccess(), nil
 }
 
+// Parameters:
+//  - Params
+func (p *TChainDepositWithdrawServiceClient) ChainEdit(ctx context.Context, params *TChainEditParams) (r bool, err error) {
+  var _args5 TChainDepositWithdrawServiceChainEditArgs
+  _args5.Params = params
+  var _result6 TChainDepositWithdrawServiceChainEditResult
+  if err = p.c.Call(ctx, "chainEdit", &_args5, &_result6); err != nil {
+    return
+  }
+  return _result6.GetSuccess(), nil
+}
+
 type TChainDepositWithdrawServiceProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
   handler TChainDepositWithdrawService
@@ -1148,10 +1363,11 @@ func (p *TChainDepositWithdrawServiceProcessor) ProcessorMap() map[string]thrift
 
 func NewTChainDepositWithdrawServiceProcessor(handler TChainDepositWithdrawService) *TChainDepositWithdrawServiceProcessor {
 
-  self5 := &TChainDepositWithdrawServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self5.processorMap["getChainDeposit"] = &tChainDepositWithdrawServiceProcessorGetChainDeposit{handler:handler}
-  self5.processorMap["getChainWithdraw"] = &tChainDepositWithdrawServiceProcessorGetChainWithdraw{handler:handler}
-return self5
+  self7 := &TChainDepositWithdrawServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self7.processorMap["getChainDeposit"] = &tChainDepositWithdrawServiceProcessorGetChainDeposit{handler:handler}
+  self7.processorMap["getChainWithdraw"] = &tChainDepositWithdrawServiceProcessorGetChainWithdraw{handler:handler}
+  self7.processorMap["chainEdit"] = &tChainDepositWithdrawServiceProcessorChainEdit{handler:handler}
+return self7
 }
 
 func (p *TChainDepositWithdrawServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -1162,12 +1378,12 @@ func (p *TChainDepositWithdrawServiceProcessor) Process(ctx context.Context, ipr
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x6 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x8 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x6.Write(oprot)
+  x8.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush(ctx)
-  return false, x6
+  return false, x8
 
 }
 
@@ -1250,6 +1466,54 @@ var retval *TChainDataViewResult_
     result.Success = retval
 }
   if err2 = oprot.WriteMessageBegin("getChainWithdraw", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tChainDepositWithdrawServiceProcessorChainEdit struct {
+  handler TChainDepositWithdrawService
+}
+
+func (p *tChainDepositWithdrawServiceProcessorChainEdit) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TChainDepositWithdrawServiceChainEditArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("chainEdit", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TChainDepositWithdrawServiceChainEditResult{}
+var retval bool
+  var err2 error
+  if retval, err2 = p.handler.ChainEdit(ctx, args.Params); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing chainEdit: " + err2.Error())
+    oprot.WriteMessageBegin("chainEdit", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  } else {
+    result.Success = &retval
+}
+  if err2 = oprot.WriteMessageBegin("chainEdit", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
   if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -1664,6 +1928,204 @@ func (p *TChainDepositWithdrawServiceGetChainWithdrawResult) String() string {
     return "<nil>"
   }
   return fmt.Sprintf("TChainDepositWithdrawServiceGetChainWithdrawResult(%+v)", *p)
+}
+
+// Attributes:
+//  - Params
+type TChainDepositWithdrawServiceChainEditArgs struct {
+  Params *TChainEditParams `thrift:"params,1" db:"params" json:"params"`
+}
+
+func NewTChainDepositWithdrawServiceChainEditArgs() *TChainDepositWithdrawServiceChainEditArgs {
+  return &TChainDepositWithdrawServiceChainEditArgs{}
+}
+
+var TChainDepositWithdrawServiceChainEditArgs_Params_DEFAULT *TChainEditParams
+func (p *TChainDepositWithdrawServiceChainEditArgs) GetParams() *TChainEditParams {
+  if !p.IsSetParams() {
+    return TChainDepositWithdrawServiceChainEditArgs_Params_DEFAULT
+  }
+return p.Params
+}
+func (p *TChainDepositWithdrawServiceChainEditArgs) IsSetParams() bool {
+  return p.Params != nil
+}
+
+func (p *TChainDepositWithdrawServiceChainEditArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRUCT {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TChainDepositWithdrawServiceChainEditArgs)  ReadField1(iprot thrift.TProtocol) error {
+  p.Params = &TChainEditParams{}
+  if err := p.Params.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Params), err)
+  }
+  return nil
+}
+
+func (p *TChainDepositWithdrawServiceChainEditArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("chainEdit_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TChainDepositWithdrawServiceChainEditArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("params", thrift.STRUCT, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:params: ", p), err) }
+  if err := p.Params.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Params), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:params: ", p), err) }
+  return err
+}
+
+func (p *TChainDepositWithdrawServiceChainEditArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TChainDepositWithdrawServiceChainEditArgs(%+v)", *p)
+}
+
+// Attributes:
+//  - Success
+type TChainDepositWithdrawServiceChainEditResult struct {
+  Success *bool `thrift:"success,0" db:"success" json:"success,omitempty"`
+}
+
+func NewTChainDepositWithdrawServiceChainEditResult() *TChainDepositWithdrawServiceChainEditResult {
+  return &TChainDepositWithdrawServiceChainEditResult{}
+}
+
+var TChainDepositWithdrawServiceChainEditResult_Success_DEFAULT bool
+func (p *TChainDepositWithdrawServiceChainEditResult) GetSuccess() bool {
+  if !p.IsSetSuccess() {
+    return TChainDepositWithdrawServiceChainEditResult_Success_DEFAULT
+  }
+return *p.Success
+}
+func (p *TChainDepositWithdrawServiceChainEditResult) IsSetSuccess() bool {
+  return p.Success != nil
+}
+
+func (p *TChainDepositWithdrawServiceChainEditResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.BOOL {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TChainDepositWithdrawServiceChainEditResult)  ReadField0(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+  return thrift.PrependError("error reading field 0: ", err)
+} else {
+  p.Success = &v
+}
+  return nil
+}
+
+func (p *TChainDepositWithdrawServiceChainEditResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("chainEdit_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TChainDepositWithdrawServiceChainEditResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.BOOL, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteBool(bool(*p.Success)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.success (0) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
+}
+
+func (p *TChainDepositWithdrawServiceChainEditResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TChainDepositWithdrawServiceChainEditResult(%+v)", *p)
 }
 
 

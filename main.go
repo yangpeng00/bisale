@@ -106,6 +106,7 @@ func main() {
 	bisale.GET("/reconciliation/engineAccount", controllers.GetEngineAccount)
 	bisale.GET("/reconciliation/blockchainDeposit", controllers.GetBlockchainDeposit)
 	bisale.GET("/reconciliation/blockchainWithdraw", controllers.GetBlockchainWithdraw)
+	bisale.POST("/cancel/exception", controllers.CancelBlockchainException)
 
 	bisale.GET("/appVersion", controllers.GetAppVersion)
 	bisale.POST("/appVersion", controllers.PostAppVersion)

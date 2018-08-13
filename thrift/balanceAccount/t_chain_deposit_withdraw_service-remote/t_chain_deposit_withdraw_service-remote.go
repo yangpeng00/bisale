@@ -24,6 +24,7 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "\nFunctions:")
   fmt.Fprintln(os.Stderr, "  TChainDataViewResult getChainDeposit(TChainDepositWithdrawParams params)")
   fmt.Fprintln(os.Stderr, "  TChainDataViewResult getChainWithdraw(TChainDepositWithdrawParams params)")
+  fmt.Fprintln(os.Stderr, "  bool chainEdit(TChainEditParams params)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -126,19 +127,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "GetChainDeposit requires 1 args")
       flag.Usage()
     }
-    arg7 := flag.Arg(1)
-    mbTrans8 := thrift.NewTMemoryBufferLen(len(arg7))
-    defer mbTrans8.Close()
-    _, err9 := mbTrans8.WriteString(arg7)
-    if err9 != nil {
+    arg9 := flag.Arg(1)
+    mbTrans10 := thrift.NewTMemoryBufferLen(len(arg9))
+    defer mbTrans10.Close()
+    _, err11 := mbTrans10.WriteString(arg9)
+    if err11 != nil {
       Usage()
       return
     }
-    factory10 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt11 := factory10.GetProtocol(mbTrans8)
+    factory12 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt13 := factory12.GetProtocol(mbTrans10)
     argvalue0 := balanceAccount.NewTChainDepositWithdrawParams()
-    err12 := argvalue0.Read(jsProt11)
-    if err12 != nil {
+    err14 := argvalue0.Read(jsProt13)
+    if err14 != nil {
       Usage()
       return
     }
@@ -151,24 +152,49 @@ func main() {
       fmt.Fprintln(os.Stderr, "GetChainWithdraw requires 1 args")
       flag.Usage()
     }
-    arg13 := flag.Arg(1)
-    mbTrans14 := thrift.NewTMemoryBufferLen(len(arg13))
-    defer mbTrans14.Close()
-    _, err15 := mbTrans14.WriteString(arg13)
-    if err15 != nil {
+    arg15 := flag.Arg(1)
+    mbTrans16 := thrift.NewTMemoryBufferLen(len(arg15))
+    defer mbTrans16.Close()
+    _, err17 := mbTrans16.WriteString(arg15)
+    if err17 != nil {
       Usage()
       return
     }
-    factory16 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt17 := factory16.GetProtocol(mbTrans14)
+    factory18 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt19 := factory18.GetProtocol(mbTrans16)
     argvalue0 := balanceAccount.NewTChainDepositWithdrawParams()
-    err18 := argvalue0.Read(jsProt17)
-    if err18 != nil {
+    err20 := argvalue0.Read(jsProt19)
+    if err20 != nil {
       Usage()
       return
     }
     value0 := argvalue0
     fmt.Print(client.GetChainWithdraw(context.Background(), value0))
+    fmt.Print("\n")
+    break
+  case "chainEdit":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "ChainEdit requires 1 args")
+      flag.Usage()
+    }
+    arg21 := flag.Arg(1)
+    mbTrans22 := thrift.NewTMemoryBufferLen(len(arg21))
+    defer mbTrans22.Close()
+    _, err23 := mbTrans22.WriteString(arg21)
+    if err23 != nil {
+      Usage()
+      return
+    }
+    factory24 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt25 := factory24.GetProtocol(mbTrans22)
+    argvalue0 := balanceAccount.NewTChainEditParams()
+    err26 := argvalue0.Read(jsProt25)
+    if err26 != nil {
+      Usage()
+      return
+    }
+    value0 := argvalue0
+    fmt.Print(client.ChainEdit(context.Background(), value0))
     fmt.Print("\n")
     break
   case "":
