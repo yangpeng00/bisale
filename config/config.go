@@ -5,17 +5,17 @@ import (
 )
 
 var Config = struct {
-	Version    string
-	Host       string
-	Port       string `env:"port"`
-	LogLevel   string `yaml:"log_level" default:"debug"`
-	JWTToken   string `yaml:"jwt_token" default:"uuOhxYIw"`
-	KYCBucket  string `yaml:"kyc_bucket" default:"bisale-test-huadong"`
-	BannerBucket string `yaml:"banner_bucket" default:"bisale-test-public"`
-	BannerExpired int32 `yaml:"banner_expired" default: 86400`
-	BannerSize string `yaml:"banner_size" default: "5242880"`
-	OldKYCHost string `yaml:"old_kyc_bucket" default:"http://bi-sale.oss-cn-hongkong.aliyuncs.com/"`
-	EngineUrl string `yaml:"engine_url"`
+	Version       string
+	Host          string
+	Port          string `env:"port"`
+	LogLevel      string `yaml:"log_level" default:"debug"`
+	JWTToken      string `yaml:"jwt_token" default:"uuOhxYIw"`
+	KYCBucket     string `yaml:"kyc_bucket" default:"bisale-test-huadong"`
+	BannerBucket  string `yaml:"banner_bucket" default:"bisale-test-public"`
+	BannerExpired int32  `yaml:"banner_expired" default:"86400"`
+	BannerSize    string `yaml:"banner_size" default:"5242880"`
+	OldKYCHost    string `yaml:"old_kyc_bucket" default:"http://bi-sale.oss-cn-hongkong.aliyuncs.com/"`
+	EngineUrl     string `yaml:"engine_url"`
 	Redis struct {
 		Host        string
 		Port        string
@@ -70,9 +70,9 @@ var Config = struct {
 		IdleTimeout uint32 `yaml:"idle_timeout" default:"1"`
 	} `yaml:"bisale_business_service"`
 
-	WalletService struct{
-		Host		string
-		Port		string
+	WalletService struct {
+		Host        string
+		Port        string
 		MaxConn     uint32 `yaml:"max_conn" default:"10"`
 		ConnTimeout uint32 `yaml:"conn_timeout" default:"1"`
 		IdleTimeout uint32 `yaml:"idle_timeout" default:"1"`
@@ -102,25 +102,25 @@ var Config = struct {
 		DataFormat string
 	} `yaml:"kyc_failed_sms"`
 
-	KycCandySuccessMail struct{
+	KycCandySuccessMail struct {
 		AppId      string `yaml:"app_id" default:"bisale-transfer"`
 		TemplateId string `yaml:"template_id" default:"template::mail::kyc-candy-success"`
 		DataFormat string
 	} `yaml:"kyc_candy_success_sms"`
 
-	KycCandySuccessSMS struct{
+	KycCandySuccessSMS struct {
 		AppId      string `yaml:"app_id" default:"bisale-transfer"`
 		TemplateId string `yaml:"template_id" default:"template::sms::kyc-candy-success"`
 		DataFormat string
 	} `yaml:"kyc_candy_failed_sms"`
 
-	InviteCandySuccessMail struct{
+	InviteCandySuccessMail struct {
 		AppId      string `yaml:"app_id" default:"bisale-transfer"`
 		TemplateId string `yaml:"template_id" default:"template::mail::invite-candy-success"`
 		DataFormat string
 	} `yaml:"invite_candy_success_mail"`
 
-	InviteCandySuccessSMS struct{
+	InviteCandySuccessSMS struct {
 		AppId      string `yaml:"app_id" default:"bisale-transfer"`
 		TemplateId string `yaml:"template_id" default:"template::sms::invite-candy-success"`
 		DataFormat string

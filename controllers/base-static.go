@@ -23,22 +23,37 @@ func GetStatic(c echo.Context) error {
 	userKycService, userKycClient := common.GetBisaleUserKycServiceClient()
 	defer common.BisaleUserKycServicePool.Put(userKycClient)
 
-	userCount, err := userService.SelectSlaveAllUserCount(context.Background(), traceId)
+	//userCount, err := userService.SelectSlaveAllUserCount(context.Background(), traceId)
+	//if err != nil {
+	//	log.Error(err)
+	//	return Status(c, codes.ServiceError, err)
+	//}
 	kycCount, err := userKycService.SelectSlaveAllUserKycCount(context.Background(), traceId)
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
 	registerCountDay, err := userService.SelectSlaveRegisterCountDay(context.Background(), traceId, 7)
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
 	kycCountDay, err := userKycService.SelectSlaveUserKycCountDay(context.Background(), traceId, 7)
-
+	if err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
 	staticResponse := new(StaticResponse)
-	staticResponse.UserCount = userCount
+	//staticResponse.UserCount = userCount
 	staticResponse.KycCount = kycCount
 	staticResponse.RegisterDailyCount = registerCountDay
 	staticResponse.UserKycDailyCount = kycCountDay
-
 
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
 	}
+
 	return Status(c, codes.Success, staticResponse)
 }
 
