@@ -237,6 +237,12 @@ func CancelBlockchainException(c echo.Context) error {
 	balanceAccountService, balanceAccountClient := common.GetBisaleBalanceAccountServiceClient()
 	defer common.BisaleBalanceAccountServicePool.Put(balanceAccountClient)
 
+	params := new(balanceAccount.TChainEditParams)
+	if err := c.Bind(params); err != nil {
+		log.Error(err)
+		return Status(c, codes.ServiceError, err)
+	}
+
 	_, err := balanceAccountService.ChainEdit(context.Background(), nil)
 	if err != nil {
 		log.Error(err)
