@@ -240,7 +240,7 @@ func CancelBlockchainException(c echo.Context) error {
 		return Status(c, codes.ServiceError, err)
 	}
 
-	_, err := balanceAccountService.ChainEdit(context.Background(), nil)
+	_, err := balanceAccountService.ChainEdit(context.Background(), params)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
