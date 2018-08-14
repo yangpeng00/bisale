@@ -98,10 +98,7 @@ func GetTransferRequest(c echo.Context) error {
 	userId, _ := strconv.ParseInt(c.QueryParam("userId"), 10, 32)
 	params.UserId = int32(userId)
 	status, _ := strconv.ParseInt(c.QueryParam("status"), 10, 32)
-	params.Status = int32(status)
-	if params.Status == 0 {
-		params.Status = -1
-	}
+	params.Status = int32(status) - 1
 	transferType, _ := strconv.ParseInt(c.QueryParam("type"), 10, 32)
 	params.Type = int32(transferType)
 	if params.Type == 0 {
