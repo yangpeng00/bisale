@@ -8,42 +8,43 @@ import (
 	"bisale/bisale-console-api/thrift/finance"
 	"bisale/bisale-console-api/thrift/engine"
 	"encoding/json"
+	"time"
 )
 
 type OrderRequest struct {
-	Page int32 `query:"page"`
-	Size int32 `query:"size"`
-	UserId int32 `query:"userId"`
-	Email string `query:"email"`
-	Mobile string `query:"mobile"`
-	Symbol string `query:"symbol"`
-	Status string `query:"status"`
-	Type int32 `query:"type"`
+	Page      int32  `query:"page"`
+	Size      int32  `query:"size"`
+	UserId    int32  `query:"userId"`
+	Email     string `query:"email"`
+	Mobile    string `query:"mobile"`
+	Symbol    string `query:"symbol"`
+	Status    string `query:"status"`
+	Type      int32  `query:"type"`
 	StartTime string `query:"startTime"`
-	EndTime string `query:"endTime"`
+	EndTime   string `query:"endTime"`
 }
 
 type ExchangeRequest struct {
-	Page int32 `query:"page"`
-	Size int32 `query:"size"`
-	UserId int32 `query:"userId"`
-	Email string `query:"email"`
-	Mobile string `query:"mobile"`
-	Side string `query:"side"`
-	Status string `query:"status"`
-	Symbol string `query:"symbol"`
+	Page      int32  `query:"page"`
+	Size      int32  `query:"size"`
+	UserId    int32  `query:"userId"`
+	Email     string `query:"email"`
+	Mobile    string `query:"mobile"`
+	Side      string `query:"side"`
+	Status    string `query:"status"`
+	Symbol    string `query:"symbol"`
 	StartTime string `query:"StartTime"`
-	EndTime string `query:"endTime"`
+	EndTime   string `query:"endTime"`
 }
 
 type ExchangeDetailRequest struct {
-	Page int32 `query:"page"`
-	Size int32 `query:"size"`
+	Page    int32  `query:"page"`
+	Size    int32  `query:"size"`
 	OrderId string `query:"orderId"`
 }
 
 type OrderResult struct {
-	list string
+	list  string
 	count int32
 }
 
@@ -97,7 +98,7 @@ func GetDepositOrder(c echo.Context) error {
 	config["lang"] = "zh-CN"
 	configStr, _ := json.Marshal(config)
 
-	currencyInfo, err := walletService.Execute(context.Background(),"Currency", "getConfigs", string(configStr))
+	currencyInfo, err := walletService.Execute(context.Background(), "Currency", "getConfigs", string(configStr))
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
@@ -156,7 +157,7 @@ func GetWithdrawOrder(c echo.Context) error {
 	config["lang"] = "zh-CN"
 	configStr, _ := json.Marshal(config)
 
-	currencyInfo, err := walletService.Execute(context.Background(),"Currency", "getConfigs", string(configStr))
+	currencyInfo, err := walletService.Execute(context.Background(), "Currency", "getConfigs", string(configStr))
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
@@ -188,19 +189,22 @@ func GetExchangeOrder(c echo.Context) error {
 	params.Email = request.Email
 	params.Mobile = request.Mobile
 
-	list, err := orderService.SelectEngineOrdersListByConditions(context.Background(), params)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	list, err := orderService.SelectEngineOrdersListByConditions(ctx, params)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
 	}
 
-	count, err := orderService.SelectEngineOrdersCountByConditions(context.Background(), params)
+	count, err := orderService.SelectEngineOrdersCountByConditions(ctx, params)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
 	}
 
-	symbolList, err := orderService.SelectSymbolsList(context.Background())
+	symbolList, err := orderService.SelectSymbolsList(ctx)
 	if err != nil {
 		log.Error(err)
 		return Status(c, codes.ServiceError, err)
@@ -243,7 +247,7 @@ func GetExchangeOrderDetail(c echo.Context) error {
 		return Status(c, codes.ServiceError, err)
 	}
 
-	res := make(map[string] interface{})
+	res := make(map[string]interface{})
 	res["list"] = list
 	res["count"] = count
 
