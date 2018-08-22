@@ -14,7 +14,7 @@ import (
         "strconv"
         "strings"
         "git.apache.org/thrift.git/lib/go/thrift"
-        "reformationgh"
+        "bisale/bisale-console-api/thrift/reformationgh"
 )
 
 
@@ -23,6 +23,7 @@ func Usage() {
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
   fmt.Fprintln(os.Stderr, "  TCandyParameter getCandyParameter(string traceId)")
+  fmt.Fprintln(os.Stderr, "  void updateCandyParameter(string traceId)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -128,6 +129,16 @@ func main() {
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
     fmt.Print(client.GetCandyParameter(context.Background(), value0))
+    fmt.Print("\n")
+    break
+  case "updateCandyParameter":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "UpdateCandyParameter requires 1 args")
+      flag.Usage()
+    }
+    argvalue0 := flag.Arg(1)
+    value0 := argvalue0
+    fmt.Print(client.UpdateCandyParameter(context.Background(), value0))
     fmt.Print("\n")
     break
   case "":

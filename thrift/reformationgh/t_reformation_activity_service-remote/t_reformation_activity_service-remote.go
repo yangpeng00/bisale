@@ -14,7 +14,7 @@ import (
         "strconv"
         "strings"
         "git.apache.org/thrift.git/lib/go/thrift"
-        "reformationgh"
+        "bisale/bisale-console-api/thrift/reformationgh"
 )
 
 
@@ -25,7 +25,7 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "  void InsertRelation(string traceId, TParticipantRelation participantRelation)")
   fmt.Fprintln(os.Stderr, "   SelectTop10Account(string traceId)")
   fmt.Fprintln(os.Stderr, "   SelectInviteeListByUserId(string traceId, i32 userId)")
-  fmt.Fprintln(os.Stderr, "  void EnableParticipant(string traceId, i32 userId)")
+  fmt.Fprintln(os.Stderr, "  bool EnableParticipant(string traceId, i32 userId)")
   fmt.Fprintln(os.Stderr, "  TUsername selectRealNameByUsername(string traceId, string username)")
   fmt.Fprintln(os.Stderr, "   selectInviteRecordByUserId(string traceId, i32 userId, i32 page, i32 pageSize)")
   fmt.Fprintln(os.Stderr, "  InviteNum selectInviteNumByUserId(string traceId, i32 userId)")

@@ -108,7 +108,7 @@ func GetCertDetailById(c echo.Context) error {
 func splitByLine(arg string) string {
 	arr := strings.Split(arg, "-")
 	length := len(arr)
-	return arr[length - 1]
+	return arr[length-1]
 }
 
 func PostCertResult(c echo.Context) error {
@@ -126,6 +126,12 @@ func PostCertResult(c echo.Context) error {
 	defer common.BisaleBusinessServicePool.Put(businessClient)
 
 	resp, err := userService.AuditUserKyc(context.Background(), traceId, req.Id, req.Status, req.Mark, req.UserId)
+
+	if err != nil {
+		log.Error(c, codes.ServiceError, err)
+		return Status(c, codes.ServiceError, err)
+	}
+
 	messageService, messageClient := common.GetMessageServiceClient()
 	defer common.MessageServicePool.Put(messageClient)
 
@@ -138,8 +144,11 @@ func PostCertResult(c echo.Context) error {
 		return Status(c, codes.ServiceError, err)
 	}
 
+	// 客服点击认证通过
 	if req.Status == "2" {
-		err := businessService.EnableParticipant(context.Background(), traceId, req.UserId)
+
+		// 调用服务发送糖果
+		sendCandy, err := businessService.EnableParticipant(context.Background(), traceId, req.UserId)
 		if err != nil {
 			log.Error(err)
 			log.WithFields(logrus.Fields{
@@ -151,6 +160,8 @@ func PostCertResult(c echo.Context) error {
 		log.WithFields(logrus.Fields{
 			"user_id": req.UserId,
 		}).Info("邀请糖果发送成功")
+
+		// 糖果发送结果处理，遍历邀请关系发送糖果
 		if resp != nil {
 			inviterList, err := businessService.SelectInviters(ctx, traceId, req.UserId)
 			if err != nil {
@@ -184,7 +195,7 @@ func PostCertResult(c echo.Context) error {
 							}).Info("奖励邮件发送成功")
 						}
 					} else {
-						err := messageService.SendSMS(ctx, traceId, config.Config.InviteCandySuccessSMS.AppId,inviter.PrefixMobile + inviter.Username, config.Config.InviteCandySuccessSMS.TemplateId, string(payload), "zh-CN", 0)
+						err := messageService.SendSMS(ctx, traceId, config.Config.InviteCandySuccessSMS.AppId, inviter.PrefixMobile+inviter.Username, config.Config.InviteCandySuccessSMS.TemplateId, string(payload), "zh-CN", 0)
 						if err != nil {
 							log.WithFields(logrus.Fields{
 								"username": inviter.Username,
@@ -198,8 +209,10 @@ func PostCertResult(c echo.Context) error {
 				}
 			}
 
+			// 发送KYC审核邮件
 			if resp.Email != "" {
-				if (params.StartTime < utils.GetCurrentTimestamp()) && (params.EndTime > utils.GetCurrentTimestamp()) {
+				// 发送糖果邮件通知
+				if (sendCandy && params.StartTime < utils.GetCurrentTimestamp()) && (params.EndTime > utils.GetCurrentTimestamp()) {
 					data := make(map[string]string)
 					data["username"] = resp.Email
 					data["amount"] = "300"
@@ -217,7 +230,8 @@ func PostCertResult(c echo.Context) error {
 						}).Info("奖励邮件发送成功")
 					}
 				}
-				err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":\"" + resp.Email + "\"}", "zh-CN", 0)
+
+				err := messageService.SendMail(ctx, traceId, config.Config.KycSuccessMail.AppId, resp.Email, config.Config.KycSuccessMail.TemplateId, "{\"username\":\""+resp.Email+"\"}", "zh-CN", 0)
 				if err != nil {
 					log.WithFields(logrus.Fields{
 						"user_id": req.UserId,
@@ -228,7 +242,8 @@ func PostCertResult(c echo.Context) error {
 					}).Info("KYC邮件发送成功")
 				}
 			} else {
-				if (params.StartTime < utils.GetCurrentTimestamp()) && (params.EndTime > utils.GetCurrentTimestamp()) {
+				// 发送糖果短信通知
+				if (sendCandy && params.StartTime < utils.GetCurrentTimestamp()) && (params.EndTime > utils.GetCurrentTimestamp()) {
 					data := make(map[string]string)
 					data["username"] = splitByLine(resp.Mobile)
 					data["amount"] = "300"
@@ -245,7 +260,7 @@ func PostCertResult(c echo.Context) error {
 						}).Info("奖励短信发送成功")
 					}
 				}
-				err := messageService.SendSMS(ctx, traceId, config.Config.KycFailedSMS.AppId, resp.Mobile, config.Config.KycSuccessSMS.TemplateId, "{\"username\":" + "\"" + splitByLine(resp.Mobile) + "\"}", "zh-CN", 0)
+				err := messageService.SendSMS(ctx, traceId, config.Config.KycFailedSMS.AppId, resp.Mobile, config.Config.KycSuccessSMS.TemplateId, "{\"username\":"+"\""+splitByLine(resp.Mobile)+"\"}", "zh-CN", 0)
 				if err != nil {
 					log.WithFields(logrus.Fields{
 						"user_id": req.UserId,

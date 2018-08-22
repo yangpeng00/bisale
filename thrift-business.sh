@@ -5,11 +5,12 @@ if [ -d $Dir ];
 then
     cd $Dir
     git checkout .
+    git checkout bisuibao
     git pull
 else
     git clone git@git.bisale.org:backend/thrift-business.git $Dir
     cd $Dir
-    git checkout invitation_trade_dev
+    git checkout bisuibao
 fi
 
 cd ../../

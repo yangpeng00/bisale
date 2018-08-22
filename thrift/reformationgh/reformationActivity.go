@@ -2011,7 +2011,7 @@ type TReformationActivityService interface {
   // Parameters:
   //  - TraceId
   //  - UserId
-  EnableParticipant(ctx context.Context, traceId string, userId int32) (err error)
+  EnableParticipant(ctx context.Context, traceId string, userId int32) (r bool, err error)
   // Parameters:
   //  - TraceId
   //  - Username
@@ -2120,7 +2120,7 @@ func (p *TReformationActivityServiceClient) SelectInviteeListByUserId(ctx contex
 // Parameters:
 //  - TraceId
 //  - UserId
-func (p *TReformationActivityServiceClient) EnableParticipant(ctx context.Context, traceId string, userId int32) (err error) {
+func (p *TReformationActivityServiceClient) EnableParticipant(ctx context.Context, traceId string, userId int32) (r bool, err error) {
   var _args6 TReformationActivityServiceEnableParticipantArgs
   _args6.TraceId = traceId
   _args6.UserId = userId
@@ -2128,7 +2128,7 @@ func (p *TReformationActivityServiceClient) EnableParticipant(ctx context.Contex
   if err = p.c.Call(ctx, "EnableParticipant", &_args6, &_result7); err != nil {
     return
   }
-  return nil
+  return _result7.GetSuccess(), nil
 }
 
 // Parameters:
@@ -2476,15 +2476,18 @@ func (p *tReformationActivityServiceProcessorEnableParticipant) Process(ctx cont
 
   iprot.ReadMessageEnd()
   result := TReformationActivityServiceEnableParticipantResult{}
+var retval bool
   var err2 error
-  if err2 = p.handler.EnableParticipant(ctx, args.TraceId, args.UserId); err2 != nil {
+  if retval, err2 = p.handler.EnableParticipant(ctx, args.TraceId, args.UserId); err2 != nil {
     x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing EnableParticipant: " + err2.Error())
     oprot.WriteMessageBegin("EnableParticipant", thrift.EXCEPTION, seqId)
     x.Write(oprot)
     oprot.WriteMessageEnd()
     oprot.Flush(ctx)
     return true, err2
-  }
+  } else {
+    result.Success = &retval
+}
   if err2 = oprot.WriteMessageBegin("EnableParticipant", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
@@ -3704,11 +3707,25 @@ func (p *TReformationActivityServiceEnableParticipantArgs) String() string {
   return fmt.Sprintf("TReformationActivityServiceEnableParticipantArgs(%+v)", *p)
 }
 
+// Attributes:
+//  - Success
 type TReformationActivityServiceEnableParticipantResult struct {
+  Success *bool `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
 func NewTReformationActivityServiceEnableParticipantResult() *TReformationActivityServiceEnableParticipantResult {
   return &TReformationActivityServiceEnableParticipantResult{}
+}
+
+var TReformationActivityServiceEnableParticipantResult_Success_DEFAULT bool
+func (p *TReformationActivityServiceEnableParticipantResult) GetSuccess() bool {
+  if !p.IsSetSuccess() {
+    return TReformationActivityServiceEnableParticipantResult_Success_DEFAULT
+  }
+return *p.Success
+}
+func (p *TReformationActivityServiceEnableParticipantResult) IsSetSuccess() bool {
+  return p.Success != nil
 }
 
 func (p *TReformationActivityServiceEnableParticipantResult) Read(iprot thrift.TProtocol) error {
@@ -3723,8 +3740,21 @@ func (p *TReformationActivityServiceEnableParticipantResult) Read(iprot thrift.T
       return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
     }
     if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
+    switch fieldId {
+    case 0:
+      if fieldTypeId == thrift.BOOL {
+        if err := p.ReadField0(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
     }
     if err := iprot.ReadFieldEnd(); err != nil {
       return err
@@ -3736,16 +3766,38 @@ func (p *TReformationActivityServiceEnableParticipantResult) Read(iprot thrift.T
   return nil
 }
 
+func (p *TReformationActivityServiceEnableParticipantResult)  ReadField0(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+  return thrift.PrependError("error reading field 0: ", err)
+} else {
+  p.Success = &v
+}
+  return nil
+}
+
 func (p *TReformationActivityServiceEnableParticipantResult) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("EnableParticipant_result"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if p != nil {
+    if err := p.writeField0(oprot); err != nil { return err }
   }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
     return thrift.PrependError("write struct stop error: ", err) }
   return nil
+}
+
+func (p *TReformationActivityServiceEnableParticipantResult) writeField0(oprot thrift.TProtocol) (err error) {
+  if p.IsSetSuccess() {
+    if err := oprot.WriteFieldBegin("success", thrift.BOOL, 0); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 0:success: ", p), err) }
+    if err := oprot.WriteBool(bool(*p.Success)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.success (0) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 0:success: ", p), err) }
+  }
+  return err
 }
 
 func (p *TReformationActivityServiceEnableParticipantResult) String() string {
@@ -5983,6 +6035,9 @@ type TActivityService interface {
   // Parameters:
   //  - TraceId
   GetCandyParameter(ctx context.Context, traceId string) (r *TCandyParameter, err error)
+  // Parameters:
+  //  - TraceId
+  UpdateCandyParameter(ctx context.Context, traceId string) (err error)
 }
 
 type TActivityServiceClient struct {
@@ -6021,6 +6076,18 @@ func (p *TActivityServiceClient) GetCandyParameter(ctx context.Context, traceId 
   return _result68.GetSuccess(), nil
 }
 
+// Parameters:
+//  - TraceId
+func (p *TActivityServiceClient) UpdateCandyParameter(ctx context.Context, traceId string) (err error) {
+  var _args69 TActivityServiceUpdateCandyParameterArgs
+  _args69.TraceId = traceId
+  var _result70 TActivityServiceUpdateCandyParameterResult
+  if err = p.c.Call(ctx, "updateCandyParameter", &_args69, &_result70); err != nil {
+    return
+  }
+  return nil
+}
+
 type TActivityServiceProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
   handler TActivityService
@@ -6041,9 +6108,10 @@ func (p *TActivityServiceProcessor) ProcessorMap() map[string]thrift.TProcessorF
 
 func NewTActivityServiceProcessor(handler TActivityService) *TActivityServiceProcessor {
 
-  self69 := &TActivityServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self69.processorMap["getCandyParameter"] = &tActivityServiceProcessorGetCandyParameter{handler:handler}
-return self69
+  self71 := &TActivityServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self71.processorMap["getCandyParameter"] = &tActivityServiceProcessorGetCandyParameter{handler:handler}
+  self71.processorMap["updateCandyParameter"] = &tActivityServiceProcessorUpdateCandyParameter{handler:handler}
+return self71
 }
 
 func (p *TActivityServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -6054,12 +6122,12 @@ func (p *TActivityServiceProcessor) Process(ctx context.Context, iprot, oprot th
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x70 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x72 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x70.Write(oprot)
+  x72.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush(ctx)
-  return false, x70
+  return false, x72
 
 }
 
@@ -6094,6 +6162,51 @@ var retval *TCandyParameter
     result.Success = retval
 }
   if err2 = oprot.WriteMessageBegin("getCandyParameter", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type tActivityServiceProcessorUpdateCandyParameter struct {
+  handler TActivityService
+}
+
+func (p *tActivityServiceProcessorUpdateCandyParameter) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := TActivityServiceUpdateCandyParameterArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("updateCandyParameter", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := TActivityServiceUpdateCandyParameterResult{}
+  var err2 error
+  if err2 = p.handler.UpdateCandyParameter(ctx, args.TraceId); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing updateCandyParameter: " + err2.Error())
+    oprot.WriteMessageBegin("updateCandyParameter", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush(ctx)
+    return true, err2
+  }
+  if err2 = oprot.WriteMessageBegin("updateCandyParameter", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
   if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -6303,6 +6416,148 @@ func (p *TActivityServiceGetCandyParameterResult) String() string {
     return "<nil>"
   }
   return fmt.Sprintf("TActivityServiceGetCandyParameterResult(%+v)", *p)
+}
+
+// Attributes:
+//  - TraceId
+type TActivityServiceUpdateCandyParameterArgs struct {
+  TraceId string `thrift:"traceId,1" db:"traceId" json:"traceId"`
+}
+
+func NewTActivityServiceUpdateCandyParameterArgs() *TActivityServiceUpdateCandyParameterArgs {
+  return &TActivityServiceUpdateCandyParameterArgs{}
+}
+
+
+func (p *TActivityServiceUpdateCandyParameterArgs) GetTraceId() string {
+  return p.TraceId
+}
+func (p *TActivityServiceUpdateCandyParameterArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if fieldTypeId == thrift.STRING {
+        if err := p.ReadField1(iprot); err != nil {
+          return err
+        }
+      } else {
+        if err := iprot.Skip(fieldTypeId); err != nil {
+          return err
+        }
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TActivityServiceUpdateCandyParameterArgs)  ReadField1(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.TraceId = v
+}
+  return nil
+}
+
+func (p *TActivityServiceUpdateCandyParameterArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("updateCandyParameter_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+    if err := p.writeField1(oprot); err != nil { return err }
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TActivityServiceUpdateCandyParameterArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("traceId", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:traceId: ", p), err) }
+  if err := oprot.WriteString(string(p.TraceId)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.traceId (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:traceId: ", p), err) }
+  return err
+}
+
+func (p *TActivityServiceUpdateCandyParameterArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TActivityServiceUpdateCandyParameterArgs(%+v)", *p)
+}
+
+type TActivityServiceUpdateCandyParameterResult struct {
+}
+
+func NewTActivityServiceUpdateCandyParameterResult() *TActivityServiceUpdateCandyParameterResult {
+  return &TActivityServiceUpdateCandyParameterResult{}
+}
+
+func (p *TActivityServiceUpdateCandyParameterResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *TActivityServiceUpdateCandyParameterResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("updateCandyParameter_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if p != nil {
+  }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *TActivityServiceUpdateCandyParameterResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("TActivityServiceUpdateCandyParameterResult(%+v)", *p)
 }
 
 

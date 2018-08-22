@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 	"bisale/foundation/thrift/pool"
-	"bisale/bisale-console-api/thrift/business"
+	"bisale/bisale-console-api/thrift/reformationgh"
 	"git.apache.org/thrift.git/lib/go/thrift"
 )
 
@@ -26,7 +26,7 @@ func openBisaleBusinessServiceClient(host, port string, ConnTimeout time.Duratio
 
 	standardClient := thrift.NewTStandardClient(mp, mp)
 
-	client := business.NewTReformationActivityServiceClient(standardClient)
+	client := reformationgh.NewTReformationActivityServiceClient(standardClient)
 
 	return &thriftPool.IdleClient{
 		Client: client,
@@ -44,7 +44,7 @@ func closeBisaleBusinessServiceClient(c *thriftPool.IdleClient) error {
 	return nil
 }
 
-func GetBisaleBusinessServiceClient() (s *business.TReformationActivityServiceClient, c *thriftPool.IdleClient) {
+func GetBisaleBusinessServiceClient() (s *reformationgh.TReformationActivityServiceClient, c *thriftPool.IdleClient) {
 
 	client, err := BisaleBusinessServicePool.Get()
 
@@ -66,5 +66,5 @@ func GetBisaleBusinessServiceClient() (s *business.TReformationActivityServiceCl
 	//
 	Log.Info("Get bisale business client from pool success")
 
-	return client.Client.(*business.TReformationActivityServiceClient), client
+	return client.Client.(*reformationgh.TReformationActivityServiceClient), client
 }
